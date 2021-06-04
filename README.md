@@ -230,7 +230,7 @@ Considere la siguiente array que contiene cuatro números:
 ```javascript
 var doc = { first_array: [ 4, 3, 2, 1 ] }
 ```
-Se puede acceder a cada elemento de un array utilizando su posición de índice. El número de índice se incluye entre corchetes. (Los índices empiezan desde 0). Accedamos al tercer elemento de la matriz:
+Se puede acceder a cada elemento de un array utilizando su posición de índice. El número de índice se incluye entre corchetes. (Los índices empiezan desde 0). Accedamos al tercer elemento del array:
 
 ```javascript
 doc.first_array[3]
@@ -238,12 +238,12 @@ doc.first_array[3]
 ```
 1
 ```
-Usando la posición del índice, también puede agregar nuevos elementos a una matriz existente:
+Usando la posición del índice, también puede agregar nuevos elementos al array existente:
 
 ```javascript
 doc.first_array[4] = 99
 ```
-Al imprimir la matriz, verá que el quinto elemento se ha agregado correctamente, que contiene la posición del índice, 4:
+Al imprimir el array, verá el elemento que se ha agregado correctamente, en el índice 4:
 
 ```javascript
 doc.first_array
@@ -251,7 +251,7 @@ doc.first_array
 ```
 [4, 3, 2, 1, 99]
 ```
-Al igual que los objetos que tienen objetos incrustados, los arrays también pueden tener arrays incrustadas. La siguiente sintaxis agrega una matriz incrustada en el sexto elemento:
+Al igual que los objetos que tienen objetos incrustados, los arrays también pueden tener arrays incrustadas. La siguiente sintaxis agrega un array incrustado en el sexto elemento:
 
 ```javascript
 doc.first_array[5] = [11, 12]
@@ -284,7 +284,7 @@ Un array puede contener cualquier campo de tipo de datos válido de MongoDB. Est
 [ 12, "text", 4.35, [ 3, 2 ], { "type" : "object" } ] // array of mixed elements
 ```
 
-**Null**: Nulo es un tipo de datos especial en un documento y denota un campo que no contiene un valor. El campo nulo solo puede tener nulo como valor. Imprimirá el objeto en el siguiente ejemplo, que dará como resultado el valor nulo:
+**Null**: Nulo es un tipo de datos especial en un documento y denota un campo que no contiene un valor. El campo nulo solo puede tener nulo como valor. 
 
 ```javascript
 var obj = null
@@ -294,65 +294,67 @@ obj
 Null
 ````
 ```javascript
-doc.first_array
-[ 4, 3, 2, 1, 99, [11, 12]]
-```
-```javascript
 var nullField = null
 doc.first_array[6] = nullField
-
 doc.first_array
+```
+```
 [ 4, 3, 2, 1, 99, [11, 12], null]
 ```
 
 **ObjectId**: Cada documento de una colección debe tener un **\_id** que contenga un valor único. Este campo actúa como clave principal para estos documentos. Las claves primarias se utilizan para identificar de forma única los documentos y siempre están indexadas. El valor del campo **\_id** debe ser único en una colección.
 
-Si inserta un documento sin un campo **\_id**, el controlador MongoDB generará automáticamente una ID única y la agregará al documento. Cuando el controlador agrega automáticamente el campo \_id, el valor se genera mediante **ObjectId**.
+Si inserta un documento sin un campo **\_id**, el controlador MongoDB generará automáticamente una ID única y la agregará al documento. Cuando el controlador agrega automáticamente el campo **\_id**, el valor se genera mediante **ObjectId**.
 
 El valor **ObjectId** está diseñado para generar código ligero que es único en diferentes máquinas. Genera un valor único de 12 bytes, donde los primeros 4 bytes representan la marca de tiempo, los bytes 5 a 9 representan un valor aleatorio y los últimos 3 bytes son un contador incremental.
 
 ```javascript
 var uniqueID = new ObjectId ()
-
 uniqueID
+```
+```
 ObjectId("5dv.8ff48dd98e621357bd50")
 ```
 
 **Fechas**: MongoDB si admite tipos de fecha explícitamente. Puesto que en JSON no admiten tipos de fecha porque se representan como cadenas sin formato.
 
-Las fechas de MongoDB se almacenan en forma de milisegundos desde el 1 de enero de 1970. Para almacenar la representación de milisegundos de una fecha, MongoDB usa un entero de 64 bits ( long ). Una cosa a tener en cuenta es que todas las fechas se almacenan en UTC y no hay una zona horaria asociada a ellas.
+Las fechas de MongoDB se almacenan en forma de milisegundos desde el 1 de enero de 1970. Para almacenar la representación de milisegundos de una fecha, MongoDB usa un entero de 64 bits ( long ). Todas las fechas se almacenan en UTC y no hay una zona horaria asociada a ellas.
 
-Mientras trabaja en el shell mongo, puede crear instancias de fecha usando **Date () , new Date () o new ISODate ()**
+Puede crear instancias de fecha usando **Date () , new Date () o new ISODate ()**
 
-Las fechas creadas con un **new Date () o new ISODate ()** siempre están en UTC, y las creadas con **Date ()** estarán en la zona horaria local. 
+Las fechas creadas con un **new Date () o new ISODate ()** siempre estarán en UTC, y las creadas con **Date ()** estarán en la zona horaria local. 
 
-Con Date(), para construir una fecha, usa la representación de fecha de JavaScript, que está en forma de cadenas simples. No son útiles para la comparación o manipulación.
+**Date()** usa la representación de fecha de JavaScript, que está en forma de cadenas simples. No son útiles para la comparación o manipulación.
 
 ```javascript
 var date = Date()
-
+```
+```
 Sat Sept 03 1989 07:28:46 GMT-0500 (CDT)
 ```
 
-Con new Date(), obtiene la fecha envuelta en ISODate (). Estas fechas se pueden manipular, comparar y buscar:
+Con new Date(), obtiene la fecha envuelta en ISODate (). Estas fechas se pueden manipular, comparar y buscar.
 
 ```javascript
 var date = new Date()
-
+```
+```
 ISODate("1989-09-03T10:11:23.357Z")
 ```
 
-También puede usar el new ISODate () directamente para crear objetos de fecha. Estas fechas se pueden manipular, comparar y buscar:
+También puede usar el new ISODate () directamente para crear objetos de fecha. Estas fechas se pueden manipular, comparar y buscar.
 
 ```javascript
 var isoDate = new ISODate()
-
+```
+```
 ISODate("1989-09-03T11:13:26.442Z")
 ```
 
 **Timestamps**: Timestamps es una representación de 64 bits de la fecha y la hora. De los 64 bits, los primeros 32 bits almacenan el número de segundos desde la época de Unix, que es el 1 de enero de 1970. Los otros 32 bits indican un contador en aumento. MongoDB utiliza exclusivamente el Timestamps para operaciones internas.
 
 ### Practica 1: Modelar un tweet en un documento JSON
+
 
 Abra un validador JSON para verificar que tiene el formato correcto: [https://jsonlint.com/](https://jsonlint.com/).
 
