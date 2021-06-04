@@ -20,7 +20,7 @@ Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su s
 
 Ir al página oficial de MongoDB https://www.mongodb.com/try/download/community
 
-En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato)
+En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
 
 **Paso 2. Encender el servidor de MongoDB**
 
@@ -387,4 +387,52 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
     "comments_count": 0
 }
 ```
+## 3. Creando tu propia base datos en MongoDB
+
+### Conociendo comandos basicos
+
+Primero debe tener abierto la consola de mongo para comenzar a escribir los comandos.
+
+- El comando `cls` limpia la consola para mayor comodidad.
+
+- El comando `show dbs` todas las bases datos que tenemos.
+```
+show dbs
+```
+- El comando `bd` nos indica en que base datos estamos actualmente usando. Al incio indicará que estamos en un entorno de **test**.
+```
+db
+```
+- El comando `use` sirve para meternos en una base datos que tengamos ya creada. Por ejemplo: 
+```
+use Sample1
+```
+- Una vez estando en la base datos **Sample1** podemos ver las **COLECCIONES** o (TABLAS) con el comando `show collections`. En este caso tenemos 2 colecciones: comments y movies
+```
+show collections
+```
+
+### Creando una base datos sencilla
+
+- Para crear una base datos tambien se usa el comando `use` junto al nombre que queramos. Ejemplo: Crear una base de datos llamada **mibase**
+```
+use mibase
+```
+- Si ejecuta el comando `show dbs` aún no aparecerá en el listado general debido que debe crear una colección (o tabla).
+
+
+
+
+
+
+## 4. Consulta de documentos (Querying Documents)
+
+### Estructura de consulta en MongoDB
+
+Las consultas de MongoDB se basan en documentos JSON. El siguiente diagrama es un ejemplo de una consulta simple de MongoDB que encuentra todos los documentos donde el campo de name contiene el valor David:
+
+
+
+
+
 
