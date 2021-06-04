@@ -63,7 +63,7 @@ Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o sub
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/mongo%20compass.PNG)
 
-Mas adelante veremos como crear una base de datos de dos formas: mediante la consola y con la interfaz de MongoDB Compass. Por el momento utilizaremos la consola.
+En la seccion 3 veremos como crear una base de datos mediante la consola y con la interfaz de MongoDB Compass.
 
 
 ## 2. Documentos y tipos de datos
@@ -127,10 +127,9 @@ En los documentos JSON no admite un tipo de datos Fecha y estas solo se represen
 {"title": "A Swedish Love Story", released: "Fri, 24 Apr 1970"}
 
 ```
-
 Las partes que intercambian la información deben estandarizar el formato fecha durante las transferencias. La forma de leer los datos depende de los intérpretes de los idiomas y de sus contratos de intercambio de datos.
 
-### Ejercicio: Creación de su propio documento JSON
+### Ejercicio: Creación de tu propio documento JSON
 
 Abra un validador JSON, por ejemplo: [https://jsonlint.com/](https://jsonlint.com/).
 
@@ -162,7 +161,7 @@ En comparación con RDBMS, las **colecciones** son análogas a las **tablas** y 
 
 MongoDB almacena documentos similares a JSON.
 
-**Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares.
+**Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares. Ejemplo:
 
 ```javascript
 { "name" : "Tom Walter" }
@@ -175,13 +174,14 @@ int: entero de 32 bits con signo
 long: entero sin signo de 64 bits
 decimal: punto flotante de 128 bits, que cumple con IEE 754
 
-**Booleans**: se utiliza para representar si algo es verdadero o falso.
+**Booleans**: se utiliza para representar si algo es verdadero o falso. Ejemplo:
 
 ```javascript
 { "isMongoDBHard": false }
 ```
 
-**Objects**: Los campos de objeto se utilizan para representar documentos **anidados** o **incrustados,** es decir, un campo cuyo valor es otro documento JSON válido.
+**Objects**: Los campos de objeto se utilizan para representar documentos **ANIDADOS** o **INCRUSTADOS,** es decir, un campo cuyo valor es otro documento JSON válido. 
+Ejemplo: El siguiente documento tiene otro documento anidado llamado **"host"**
 
 ```javascript
 {
@@ -195,11 +195,13 @@ decimal: punto flotante de 128 bits, que cumple con IEE 754
   }
 }
 ```
-El valor del campo de host es otro documento de JSON válido. 
+El valor del campo de host es otro documento de JSON. MongoDB usa una notación de puntos ( . ) para acceder a los objetos incrustados. 
 
-MongoDB usa una notación de puntos ( . ) para acceder a los objetos incrustados. 
+Para acceder a un documento anidado, podemos crear una variable y a partir de ahi usar la notacion de punto para acceder al documento anidado. 
 
-Para acceder a un documento anidado, crearemos una variable del listado en el shell de mongo:
+Ejemplo: Acceder la informacion del **host_name** del documento **listing**.
+
+**"host_name"** es un campo que está dentro del documento **"host"** que a su vez es un documento anidado del documento principal **listing** almacenado en una variable.
 
 ```javascript
 var listing = { 
@@ -213,22 +215,27 @@ var listing = {
   }
 }
 ```
+Usamos la notacion punto de la siguente manera:
 ```javascript
 listing.host.host_name
-
+```
+```
 David
 ```
 
-**Array**: Un campo con un tipo de **Array** tiene una colección de cero o más valores. Considere la siguiente matriz de ejemplo que contiene cuatro números:
+**Array**: es una colección de cero o más valores que deben estar encerrado con corchetes \[ ]. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
+
+Considere la siguiente array que contiene cuatro números:
 
 ```javascript
 var doc = { first_array: [ 4, 3, 2, 1 ] }
 ```
-Se puede acceder a cada elemento de una matriz utilizando su posición de índice. El número de índice se incluye entre corchetes. Accedamos al tercer elemento de la matriz:
+Se puede acceder a cada elemento de un array utilizando su posición de índice. El número de índice se incluye entre corchetes. (Los índices empiezan desde 0). Accedamos al tercer elemento de la matriz:
 
 ```javascript
 doc.first_array[3]
-
+```
+```
 1
 ```
 Usando la posición del índice, también puede agregar nuevos elementos a una matriz existente:
@@ -240,32 +247,32 @@ Al imprimir la matriz, verá que el quinto elemento se ha agregado correctamente
 
 ```javascript
 doc.first_array
-
+```
+```
 [4, 3, 2, 1, 99]
 ```
-Al igual que los objetos que tienen objetos incrustados, las matrices también pueden tener matrices incrustadas. La siguiente sintaxis agrega una matriz incrustada en el sexto elemento:
+Al igual que los objetos que tienen objetos incrustados, los arrays también pueden tener arrays incrustadas. La siguiente sintaxis agrega una matriz incrustada en el sexto elemento:
 
 ```javascript
 doc.first_array[5] = [11, 12]
-
-[11, 12]
 ```
-Si imprime la matriz, verá la matriz incrustada de la siguiente manera:
+Si imprime el array, verá la array incrustada de la siguiente manera:
 
 ```javascript
 doc.first_array
-
+```
+```
 [4, 3, 2, 1, 99, [11, 12]]
 ````
-Ahora, puede usar la notación cuadrada, [ ] , para acceder a los elementos de un índice específico en la matriz incrustada, de la siguiente manera:
-
+Ahora, puede usar la notación de corchetes, \[ ] , para acceder a los elementos de un índice específico. En este ejemplo queremos acceder al primer elemento del quinto elemento del array anidado.
 ```javascript
 doc.first_array[5][1]
-
+```
+```
 12
 ```
 
-La matriz puede contener cualquier campo de tipo de datos válido de MongoDB. Esto se puede ver en el siguiente fragmento:
+Un array puede contener cualquier campo de tipo de datos válido de MongoDB. Esto se puede ver en el siguiente ejemplo:
 
 ```javascript
 [ "this", "is", "a", "text" ] // array of strings
@@ -281,7 +288,8 @@ La matriz puede contener cualquier campo de tipo de datos válido de MongoDB. Es
 
 ```javascript
 var obj = null
-
+```
+```
 obj
 Null
 ````
@@ -344,7 +352,11 @@ ISODate("1989-09-03T11:13:26.442Z")
 
 **Timestamps**: Timestamps es una representación de 64 bits de la fecha y la hora. De los 64 bits, los primeros 32 bits almacenan el número de segundos desde la época de Unix, que es el 1 de enero de 1970. Los otros 32 bits indican un contador en aumento. MongoDB utiliza exclusivamente el Timestamps para operaciones internas.
 
-### Actividad: Modelar un tweet en un documento JSON
+### Practica 1: Modelar un tweet en un documento JSON
+
+Abra un validador JSON para verificar que tiene el formato correcto: [https://jsonlint.com/](https://jsonlint.com/).
+
+**Solución**:
 
 ```javascript
 {
