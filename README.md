@@ -14,6 +14,30 @@ MongoDB es una popular base de datos **NoSQL** que puede almacenar datos estruct
 
 Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su sintaxis intuitiva para consultas y comandos hace que sea fácil de aprender.
 
+### Descarga e instalación de MongoDB
+
+**Paso 1: Descargar e instalar la versión Community Server**
+
+Ir al página oficial de mongodb https://www.mongodb.com/try/download/community
+
+En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato)
+
+**Paso 2. Encender el servidor de mondodb**
+
+La opción fácil de encender el servidor de mongo es ir a la carpeta de tu PC donde se instaló Mongo y abrir el archivo ejecutable mongod. 
+Debes seguir esta ruta para buscar el archivo ejecutable: Program Files -> MongoDB -> Server -> 4.4 -> bin
+```
+C:\Program Files\MongoDB\Server\4.4\bin
+```
+Dentro de la carpeta bin se encuentra los archivos ejecutables: **mondod** y **mongo**
+
+Antes de abrir ejecutar el archivo mongod hay que hace un paso previo. Deberás crear en el disco C una carpeta llamada data y dentro de esta otra capeta llamada db.
+```
+C:\data\db
+```
+Ahora si, abrir el archivo ejecutable mongod y te saldrá la clásica pantalla negra.
+
+
 ## 2. Documentos y tipos de datos
 
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
