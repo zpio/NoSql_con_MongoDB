@@ -355,6 +355,7 @@ ISODate("1989-09-03T11:13:26.442Z")
 
 ### Practica 1: Modelar un tweet en un documento JSON
 
+Tweet: (https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/twitter_practica1.jpg)
 
 Abra un validador JSON para verificar que tiene el formato correcto: [https://jsonlint.com/](https://jsonlint.com/).
 
@@ -365,14 +366,14 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
     "id": 1,
     "created_at": "Sun Apr 17 16:29:24 +0000 2011",
     "user": {
-       "id": "Lord_Of_Winterfell",
+        "id": "Lord_Of_Winterfell",
 	"name": "Office of Ned Stark",
 	"profile_pic": "https://user.profile.pic",
 	"isVerified": true
     },
     "text": "Tweeps in the #north. The long nights are upon us. Do stock enough warm clothes, meat and mead…",
     "hashtags": [
-       "north",
+        "north",
 	"WinterfellCares",
 	"flueshots"
     ],
