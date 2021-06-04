@@ -29,7 +29,7 @@ JSON tiene una estructura de un conjunto de llaves ( { } ), corchetes ( [ ] ), d
 
 En un objeto JSON, los pares **clave-valor** están encerrados con llaves { }. La **clave** es siempre una cadena de texto y el **valor** puede ser cualquier **tipo** especificado por JSON.
 
-```
+```javascript
 { key : value }
 ```
 Un **array** es un conjunto de valores encerrados entre corchetes [ ] y separados por comas. JSON no especifica el orden de los elementos del array.
@@ -39,7 +39,7 @@ Un **array** es un conjunto de valores encerrados entre corchetes [ ] y separado
 ```
 Un ejemplo de un documento JSON que contiene la información básica de una empresa:
 
-```
+```javascript
 {
   "company_name" : "Sparter",
   "founded_year" : 2007,
@@ -69,7 +69,7 @@ En los documentos JSON, un número es solo una secuencia de dígitos. No disting
 
 En los documentos JSON no admite un tipo de datos Fecha y estas solo se representan como cadenas simples. Ejemplos:
 
-```
+```javascript
 {"title": "A Swedish Love Story", released: "1970-04-24"}
 {"title": "A Swedish Love Story", released: "24-04-1970"}
 {"title": "A Swedish Love Story", released: "24th April 1970"}
@@ -85,7 +85,7 @@ Abra un validador JSON, por ejemplo: [https://jsonlint.com/](https://jsonlint.co
 
 Escriba la información anterior en formato JSON:
 
-```
+```javascript
 {
   "id" : 14253,
   "title" : "Beauty and the Beast",
@@ -96,7 +96,6 @@ Escriba la información anterior en formato JSON:
   "director" : "Christophe Gans",
   "runtime" : 112
 }
-
 ``` 
 Recuerde, un documento JSON siempre comienza con { y termina con }. Cada elemento está separado por dos puntos ( : ) y los pares de valores clave están separados por una coma ( , ).
 
@@ -114,7 +113,7 @@ MongoDB almacena documentos similares a JSON.
 
 **Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares.
 
-```
+```javascript
 { "name" : "Tom Walter" }
 ```
 
@@ -127,15 +126,13 @@ decimal: punto flotante de 128 bits, que cumple con IEE 754
 
 **Booleans**: se utiliza para representar si algo es verdadero o falso.
 
-```
+```javascript
 { "isMongoDBHard": false }
 ```
 
-**Objects**
+**Objects**: Los campos de objeto se utilizan para representar documentos **anidados** o **incrustados,** es decir, un campo cuyo valor es otro documento JSON válido.
 
-Los campos de objeto se utilizan para representar documentos **anidados** o **incrustados,** es decir, un campo cuyo valor es otro documento JSON válido.
-
-```
+```javascript
 {
   "listing_url": "https://www.airbnb.com/rooms/1001265",
   "name": "Ocean View Waikiki Marina w/prkg",
@@ -153,7 +150,7 @@ MongoDB usa una notación de puntos ( . ) para acceder a los objetos incrustados
 
 Para acceder a un documento anidado, crearemos una variable del listado en el shell de mongo:
 
-```
+```javascript
 var listing = { 
   "listing_url": "https://www.airbnb.com/rooms/1001265",
   "name": "Ocean View Waikiki Marina w/prkg",
@@ -165,33 +162,163 @@ var listing = {
   }
 }
 ```
-```bash
+```javascript
 listing.host.host_name
 
 David
 ```
 
-**Array**
+**Array**: Un campo con un tipo de **Array** tiene una colección de cero o más valores. Considere la siguiente matriz de ejemplo que contiene cuatro números:
 
-Un campo con un tipo de **Array** tiene una colección de cero o más valores. Considere la siguiente matriz de ejemplo que contiene cuatro números:
-
-```
+```javascript
 var doc = { first_array: [ 4, 3, 2, 1 ] }
 ```
 Se puede acceder a cada elemento de una matriz utilizando su posición de índice. El número de índice se incluye entre corchetes. Accedamos al tercer elemento de la matriz:
 
-```
+```javascript
 doc.first_array[3]
+
 1
 ```
 Usando la posición del índice, también puede agregar nuevos elementos a una matriz existente:
 
-```
+```javascript
 doc.first_array[4] = 99
 ```
 Al imprimir la matriz, verá que el quinto elemento se ha agregado correctamente, que contiene la posición del índice, 4:
 
-```
+```javascript
 doc.first_array
+
 [4, 3, 2, 1, 99]
 ```
+Al igual que los objetos que tienen objetos incrustados, las matrices también pueden tener matrices incrustadas. La siguiente sintaxis agrega una matriz incrustada en el sexto elemento:
+
+```javascript
+doc.first_array[5] = [11, 12]
+
+[11, 12]
+```
+Si imprime la matriz, verá la matriz incrustada de la siguiente manera:
+
+```javascript
+doc.first_array
+
+[4, 3, 2, 1, 99, [11, 12]]
+````
+Ahora, puede usar la notación cuadrada, [ ] , para acceder a los elementos de un índice específico en la matriz incrustada, de la siguiente manera:
+
+```javascript
+doc.first_array[5][1]
+
+12
+```
+
+La matriz puede contener cualquier campo de tipo de datos válido de MongoDB. Esto se puede ver en el siguiente fragmento:
+
+```javascript
+[ "this", "is", "a", "text" ] // array of strings
+
+[ 1.1, 3.2, 553.54 ] // array of doubles
+
+[ { "a" : 1 }, { "a" : 2, "b" : 3 }, { "c" : 1 } ] // array of Json objects
+
+[ 12, "text", 4.35, [ 3, 2 ], { "type" : "object" } ] // array of mixed elements
+```
+
+**Null**: Nulo es un tipo de datos especial en un documento y denota un campo que no contiene un valor. El campo nulo solo puede tener nulo como valor. Imprimirá el objeto en el siguiente ejemplo, que dará como resultado el valor nulo:
+
+```javascript
+var obj = null
+
+obj
+Null
+````
+```javascript
+doc.first_array
+[ 4, 3, 2, 1, 99, [11, 12]]
+```
+```javascript
+var nullField = null
+doc.first_array[6] = nullField
+
+doc.first_array
+[ 4, 3, 2, 1, 99, [11, 12], null]
+```
+
+**ObjectId**: Cada documento de una colección debe tener un **\_id** que contenga un valor único. Este campo actúa como clave principal para estos documentos. Las claves primarias se utilizan para identificar de forma única los documentos y siempre están indexadas. El valor del campo **\_id** debe ser único en una colección.
+
+Si inserta un documento sin un campo **\_id**, el controlador MongoDB generará automáticamente una ID única y la agregará al documento. Cuando el controlador agrega automáticamente el campo \_id, el valor se genera mediante **ObjectId**.
+
+El valor **ObjectId** está diseñado para generar código ligero que es único en diferentes máquinas. Genera un valor único de 12 bytes, donde los primeros 4 bytes representan la marca de tiempo, los bytes 5 a 9 representan un valor aleatorio y los últimos 3 bytes son un contador incremental.
+
+```javascript
+var uniqueID = new ObjectId ()
+
+uniqueID
+ObjectId("5dv.8ff48dd98e621357bd50")
+```
+
+**Fechas**: MongoDB si admite tipos de fecha explícitamente. Puesto que en JSON no admiten tipos de fecha porque se representan como cadenas sin formato.
+
+Las fechas de MongoDB se almacenan en forma de milisegundos desde el 1 de enero de 1970. Para almacenar la representación de milisegundos de una fecha, MongoDB usa un entero de 64 bits ( long ). Una cosa a tener en cuenta es que todas las fechas se almacenan en UTC y no hay una zona horaria asociada a ellas.
+
+Mientras trabaja en el shell mongo, puede crear instancias de fecha usando **Date () , new Date () o new ISODate ()**
+
+Las fechas creadas con un **new Date () o new ISODate ()** siempre están en UTC, y las creadas con **Date ()** estarán en la zona horaria local. 
+
+Con Date(), para construir una fecha, usa la representación de fecha de JavaScript, que está en forma de cadenas simples. No son útiles para la comparación o manipulación.
+
+```javascript
+var date = Date()
+
+Sat Sept 03 1989 07:28:46 GMT-0500 (CDT)
+```
+
+Con new Date(), obtiene la fecha envuelta en ISODate (). Estas fechas se pueden manipular, comparar y buscar:
+
+```javascript
+var date = new Date()
+
+ISODate("1989-09-03T10:11:23.357Z")
+```
+
+También puede usar el new ISODate () directamente para crear objetos de fecha. Estas fechas se pueden manipular, comparar y buscar:
+
+```javascript
+var isoDate = new ISODate()
+
+ISODate("1989-09-03T11:13:26.442Z")
+```
+
+**Timestamps**: Timestamps es una representación de 64 bits de la fecha y la hora. De los 64 bits, los primeros 32 bits almacenan el número de segundos desde la época de Unix, que es el 1 de enero de 1970. Los otros 32 bits indican un contador en aumento. MongoDB utiliza exclusivamente el Timestamps para operaciones internas.
+
+### Actividad: Modelar un tweet en un documento JSON
+
+```javascript
+{
+    "id": 1,
+    "created_at": "Sun Apr 17 16:29:24 +0000 2011",
+    "user": {
+       "id": "Lord_Of_Winterfell",
+	"name": "Office of Ned Stark",
+	"profile_pic": "https://user.profile.pic",
+	"isVerified": true
+    },
+    "text": "Tweeps in the #north. The long nights are upon us. Do stock enough warm clothes, meat and mead…",
+    "hashtags": [
+       "north",
+	"WinterfellCares",
+	"flueshots"
+    ],
+    "mentions": [
+	"MaesterLuwin",
+	"TheNedStark",
+	"CatelynTheCat"
+    ],
+    "likes_count": 14925,
+    "retweet_count": 12165,
+    "comments_count": 0
+}
+```
+
