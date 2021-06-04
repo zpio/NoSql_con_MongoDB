@@ -18,24 +18,52 @@ Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su s
 
 **Paso 1: Descargar e instalar la versión Community Server**
 
-Ir al página oficial de mongodb https://www.mongodb.com/try/download/community
+Ir al página oficial de MongoDB https://www.mongodb.com/try/download/community
 
 En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato)
 
-**Paso 2. Encender el servidor de mondodb**
+**Paso 2. Encender el servidor de MongoDB**
 
-La opción fácil de encender el servidor de mongo es ir a la carpeta de tu PC donde se instaló Mongo y abrir el archivo ejecutable mongod. 
-Debes seguir esta ruta para buscar el archivo ejecutable: Program Files -> MongoDB -> Server -> 4.4 -> bin
+La opción fácil de encender el servidor de mongo es ir a la carpeta de tu PC donde se instaló Mongo y abrir el archivo ejecutable **mongod**. 
+Debes seguir esta ruta para buscar el archivo ejecutable: **Program Files -> MongoDB -> Server -> 4.4 -> bin**
 ```
 C:\Program Files\MongoDB\Server\4.4\bin
 ```
-Dentro de la carpeta bin se encuentra los archivos ejecutables: **mondod** y **mongo**
+Dentro de la carpeta **bin** se encuentra los archivos ejecutables: **mongod** y **mongo**
 
-Antes de abrir ejecutar el archivo mongod hay que hace un paso previo. Deberás crear en el disco C una carpeta llamada data y dentro de esta otra capeta llamada db.
+Antes de abrir ejecutar el archivo **mongod** hay que hace un paso previo. Deberás crear en el **disco C** una carpeta llamada **data** y dentro de esta otra capeta llamada **db**.
 ```
 C:\data\db
 ```
-Ahora si, abrir el archivo ejecutable mongod y te saldrá la clásica pantalla negra.
+Ahora si, abrir el archivo ejecutable **mongod** y te saldrá la clásica pantalla negra.
+
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongo.PNG)
+
+En esta pantalla te mostrará que el servidor de mongo esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
+
+**Paso 3. Abrir la consola y conectarse al servidor**
+
+Ahora deberás abrir el otro ejecutable de la carpeta bin llamada: **mongo**. Este ejecutable es una **consola o terminal** para poder trabajar (la clásica pantalla negra).
+
+Escribimos en la consola **2+2** para probar que funciona.
+
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongod.png)
+
+Para interactuar con servidor de MongoDB además de la consola clásica (ventana negra) hay aplicaciones con entorno visual para comodidad del usuario como **MongoDB Compass**
+
+**MongoDB Compass**
+
+El MongoDB Compass es un entorno visual e intuitivo para interactuar con el servidor. Generalmente se instala junto cuando se instala MongoDB.
+
+Para usar MongoDB Compass debes abrir el programa y conectarte a tu servidor de mongo. Para esto hay que copiar el string que te apareció previamente en la consola de mongo: 
+```
+mongodb://127.0.0.1:27017 
+```
+Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o subir un archivo de base de datos.
+
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/mongo%20compass.PNG)
+
+Mas adelante veremos como crear una base de datos de dos formas: mediante la consola y con la interfaz de MongoDB Compass. Por el momento utilizaremos la consola.
 
 
 ## 2. Documentos y tipos de datos
@@ -43,7 +71,6 @@ Ahora si, abrir el archivo ejecutable mongod y te saldrá la clásica pantalla n
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
 
 Muchas aplicaciones que intercambian datos en forma de documentos **JavaScript Object Notation ( JSON )**. MongoDB almacena datos en formato **JSON binario (BSON)** y los representa en JSON legible por humanos.
-
 
 ### Sintaxis JSON
 
