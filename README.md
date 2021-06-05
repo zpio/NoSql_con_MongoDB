@@ -1,6 +1,6 @@
-# Apuntes de NoSql con MongoDB 
+# 🦄 Apuntes de NoSql con MongoDB 
 
-## 1. Introducción a NoSql con MongoDB 
+## 🐥 1. Introducción a NoSql con MongoDB 
 
 Hay dos tipos de bases de datos: bases de datos relacionales y no relacionales. Las **no relacionales** a menudo se denominan bases de datos **NoSQL**. 
 
@@ -10,24 +10,24 @@ Una base de datos NoSQL se utiliza para almacenar grandes cantidades de datos co
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/Sql%20y%20NoSql.jpg)
 
-### MongoDB
+### 🔥 MongoDB
 
 MongoDB es una popular base de datos **NoSQL** que puede almacenar datos estructurados y no estructurados. Fundada en 2007 por Kevin P. Ryan, Dwight Merriman y Eliot Horowitz en Nueva York, la organización se llamó inicialmente 10gen y luego se renombró como MongoDB, una palabra inspirada en el término **humongous**.
 
 Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su sintaxis intuitiva para consultas y comandos hace que sea fácil de aprender.
 
-### Descarga e instalación de MongoDB
+### 🔥 Descarga e instalación de MongoDB
 
-**Paso 1: Descargar e instalar la versión Community Server**
+**👉Paso 1: Descargar e instalar la versión Community Server**
 
 Ir al página oficial de MongoDB https://www.mongodb.com/try/download/community
 
 En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
 
-**Paso 2. Encender el servidor de MongoDB**
+**👉Paso 2. Encender el servidor de MongoDB**
 
 La opción fácil de encender el servidor de mongo es ir a la carpeta de tu PC donde se instaló Mongo y abrir el archivo ejecutable **mongod**. 
-Debes seguir esta ruta para buscar el archivo ejecutable: **Program Files -> MongoDB -> Server -> 4.4 -> bin**
+Debes seguir esta ruta para buscar el archivo ejecutable: 
 ```
 C:\Program Files\MongoDB\Server\4.4\bin
 ```
@@ -43,7 +43,7 @@ Ahora si, abrir el archivo ejecutable **mongod** y te saldrá la clásica pantal
 
 En esta pantalla te mostrará que el servidor de mongo esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
 
-**Paso 3. Abrir la consola y conectarse al servidor**
+**👉Paso 3. Abrir la consola y conectarse al servidor**
 
 Ahora deberás abrir el otro ejecutable de la carpeta bin llamada: **mongo**. Este ejecutable es una **consola o terminal** para poder trabajar (la clásica pantalla negra).
 
@@ -53,7 +53,7 @@ Escribimos en la consola **2+2** para probar que funciona.
 
 Para interactuar con servidor de MongoDB además de la consola clásica (ventana negra) hay aplicaciones con entorno visual para comodidad del usuario como **MongoDB Compass**
 
-**MongoDB Compass**
+**👉MongoDB Compass**
 
 El MongoDB Compass es un entorno visual e intuitivo para interactuar con el servidor. Generalmente se instala junto cuando se instala MongoDB.
 
@@ -67,13 +67,14 @@ Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o sub
 
 En la seccion 3 veremos como crear una base de datos mediante la consola y con la interfaz de MongoDB Compass.
 
-## 2. Documentos y tipos de datos
+
+## 🐥 2. Documentos y tipos de datos
 
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
 
 Muchas aplicaciones que intercambian datos en forma de documentos **JavaScript Object Notation ( JSON )**. MongoDB almacena datos en formato **JSON binario (BSON)** y los representa en JSON legible por humanos.
 
-### Sintaxis JSON
+### 😻 Sintaxis JSON
 
 Los documentos u objetos **JSON** son un conjunto de texto sin formato de pares **clave-valor**. 
 
@@ -102,22 +103,22 @@ Un ejemplo de un documento JSON que contiene la información básica de una empr
 }
 ```
 
-### Tipos de datos JSON
+### 😻 Tipos de datos JSON
 
-- **String**: se refiere a texto sin formato
-- **Number**: consta de todos los campos numéricos
-- **Boolean**: valores true o false
-- **Object**: otros objetos JSON incrustados
-- **Array**: colección de campos
-- **Null**: valor especial para denotar campos sin ningún valor
+- **👉String**: se refiere a texto sin formato
+- **👉Number**: consta de todos los campos numéricos
+- **👉Boolean**: valores true o false
+- **👉Object**: otros objetos JSON incrustados
+- **👉Array**: colección de campos
+- **👉Null**: valor especial para denotar campos sin ningún valor
 
 JSON es un formato de intercambio de datos. La presencia de tipos de datos básicos proporcionados por JSON reduce la complejidad durante este proceso. Por eso se mantiene simple y mínimo en términos de tipos de datos.
 
-### JSON y números
+### 😻 JSON y números
 
 En los documentos JSON, un número es solo una secuencia de dígitos. No distingue entre números como enteros o flotantes. 
 
-### JSON y fechas
+### 😻 JSON y fechas
 
 En los documentos JSON no admite un tipo de datos Fecha y estas solo se representan como cadenas simples. Ejemplos:
 
@@ -130,7 +131,7 @@ En los documentos JSON no admite un tipo de datos Fecha y estas solo se represen
 ```
 Las partes que intercambian la información deben estandarizar el formato fecha durante las transferencias. La forma de leer los datos depende de los intérpretes de los idiomas y de sus contratos de intercambio de datos.
 
-### Ejercicio: Creación de tu propio documento JSON
+### 💪 Ejercicio: Creación de tu propio documento JSON
 
 Abra un validador JSON, por ejemplo: [https://jsonlint.com/](https://jsonlint.com/).
 
@@ -152,36 +153,36 @@ Recuerde, un documento JSON siempre comienza con { y termina con }. Cada element
 
 Haga clic en **Validar JSON** para validar el código.
 
-### Documentos de MongoDB
+### 😻 Documentos de MongoDB
 
 Una base de datos MongoDB se compone de **colecciones** y **documentos**. Una base de datos puede tener una o más colecciones, y cada colección puede almacenar uno o más documentos relacionados.
 
 En comparación con RDBMS, las **colecciones** son análogas a las **tablas** y los **documentos** son análogos a las **filas** dentro de una tabla. Sin embargo, los documentos son mucho más flexibles en comparación con las filas de una tabla.
 
-### Tipos de datos de MongoDB
+### 😻 Tipos de datos de MongoDB
 
 MongoDB almacena documentos similares a JSON.
 
-**Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares. Ejemplo:
+**👉Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares. Ejemplo:
 
 ```javascript
 { "name" : "Tom Walter" }
 ```
 
-**Numbers**: En MongoDB se admite los varios tipos de números.
+**👉Numbers**: En MongoDB se admite los varios tipos de números.
 
 double: punto flotante de 64 bits
 int: entero de 32 bits con signo
 long: entero sin signo de 64 bits
 decimal: punto flotante de 128 bits, que cumple con IEE 754
 
-**Booleans**: se utiliza para representar si algo es verdadero o falso. Ejemplo:
+**👉Booleans**: se utiliza para representar si algo es verdadero o falso. Ejemplo:
 
 ```javascript
 { "isMongoDBHard": false }
 ```
 
-**Objects**: Los campos de objeto se utilizan para representar documentos **ANIDADOS** o **INCRUSTADOS,** es decir, un campo cuyo valor es otro documento JSON válido. 
+**👉Objects**: Los campos de objeto se utilizan para representar documentos **ANIDADOS** o **INCRUSTADOS,** es decir, un campo cuyo valor es otro documento JSON válido. 
 Ejemplo: El siguiente documento tiene otro documento anidado llamado **"host"**
 
 ```javascript
@@ -224,7 +225,7 @@ listing.host.host_name
 David
 ```
 
-**Array**: es una colección de cero o más valores que deben estar encerrado con corchetes \[ ]. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
+**👉Array**: es una colección de cero o más valores que deben estar encerrado con corchetes \[ ]. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
 
 Considere la siguiente array que contiene cuatro números:
 
@@ -285,7 +286,7 @@ Un array puede contener cualquier campo de tipo de datos válido de MongoDB. Est
 [ 12, "text", 4.35, [ 3, 2 ], { "type" : "object" } ] // array of mixed elements
 ```
 
-**Null**: Nulo es un tipo de datos especial en un documento y denota un campo que no contiene un valor. El campo nulo solo puede tener nulo como valor. 
+**👉Null**: Nulo es un tipo de datos especial en un documento y denota un campo que no contiene un valor. El campo nulo solo puede tener nulo como valor. 
 
 ```javascript
 var obj = null
@@ -303,7 +304,7 @@ doc.first_array
 [ 4, 3, 2, 1, 99, [11, 12], null]
 ```
 
-**ObjectId**: Cada documento de una colección debe tener un **\_id** que contenga un valor único. Este campo actúa como clave principal para estos documentos. Las claves primarias se utilizan para identificar de forma única los documentos y siempre están indexadas. El valor del campo **\_id** debe ser único en una colección.
+**👉ObjectId**: Cada documento de una colección debe tener un **\_id** que contenga un valor único. Este campo actúa como clave principal para estos documentos. Las claves primarias se utilizan para identificar de forma única los documentos y siempre están indexadas. El valor del campo **\_id** debe ser único en una colección.
 
 Si inserta un documento sin un campo **\_id**, el controlador MongoDB generará automáticamente una ID única y la agregará al documento. Cuando el controlador agrega automáticamente el campo **\_id**, el valor se genera mediante **ObjectId**.
 
@@ -317,7 +318,7 @@ uniqueID
 ObjectId("5dv.8ff48dd98e621357bd50")
 ```
 
-**Fechas**: MongoDB si admite tipos de fecha explícitamente. Puesto que en JSON no admiten tipos de fecha porque se representan como cadenas sin formato.
+**👉Fechas**: MongoDB si admite tipos de fecha explícitamente. Puesto que en JSON no admiten tipos de fecha porque se representan como cadenas sin formato.
 
 Las fechas de MongoDB se almacenan en forma de milisegundos desde el 1 de enero de 1970. Para almacenar la representación de milisegundos de una fecha, MongoDB usa un entero de 64 bits ( long ). Todas las fechas se almacenan en UTC y no hay una zona horaria asociada a ellas.
 
@@ -354,7 +355,7 @@ ISODate("1989-09-03T11:13:26.442Z")
 
 **Timestamps**: Timestamps es una representación de 64 bits de la fecha y la hora. De los 64 bits, los primeros 32 bits almacenan el número de segundos desde la época de Unix, que es el 1 de enero de 1970. Los otros 32 bits indican un contador en aumento. MongoDB utiliza exclusivamente el Timestamps para operaciones internas.
 
-### Practica 1: Modelar un tweet en un documento JSON
+### 💪 Practica 1: Modelar un tweet en un documento JSON
 
 Tweet: (https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/twitter_practica1.jpg)
 
@@ -388,9 +389,10 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
     "comments_count": 0
 }
 ```
-## 3. Creando tu propia base datos en MongoDB
 
-### Conociendo comandos basicos
+## 🐥 3. Creando tu propia base datos en MongoDB
+
+### ⚡ Conociendo comandos básicos
 
 Primero debe tener abierto la consola de mongo para comenzar a escribir los comandos.
 
@@ -429,7 +431,7 @@ show collections
 ```
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show%20collections.PNG)
 
-### Creando una base datos sencilla
+### ⚡ Creando una base datos sencilla
 
 - Para crear una base datos tambien se usa el comando **`use`** junto al nombre de la nueva base datos.
 ```
@@ -452,13 +454,31 @@ db.miColeccion.drop()
 ```
 - El comando **`db.dropDatabase()`** borra la base datos que estemos usando.
 
-La forma de insertar colecciones en nuestra base datos estará en la sección 5. 
+### ⚡ Subir una coleccion (documento JSON) a la base datos
 
-## 4. Consulta de documentos (Querying Documents)
+**👉Pimero**, deberás descargar las colecciones (archivo JSON) **movies.json** y **comments.json** para subirla a la base datos **Sample** que deberás crear.
 
-### Estructura de consulta en MongoDB
+- **movies**: [link de descarga](https://raw.githubusercontent.com/zpio/mongodb-sample-dataset/main/sample_mflix/movies.json)
 
-Las consultas de MongoDB se basan en documentos JSON. El siguiente diagrama es un ejemplo de una consulta simple de MongoDB que encuentra todos los documentos donde el campo de name contiene el valor David:
+- **comments**: [link de descarga](https://raw.githubusercontent.com/zpio/mongodb-sample-dataset/main/sample_mflix/comments.json)
+
+**👉Segundo** cree una base datos en la consola llamada **Sample**.
+
+Una forma muy intuitiva de subir colecciones a partir de un documento JSON a nuestra base datos es con el programa **Mongo Compass**.
+
+**👉Tercero**, deberás abrir Mongo Compass y conectarte con servidor de Mongo. Una vez ahi, deberas crear las colecciones en la base datos **Sample** y subir los archivos JSON respectivamente.
+
+Listo, ya tienes una base datos con 2 colecciones para comenzar a hacer las respectivas consultas, filtros, actualización, etc.
+
+
+## 🐥 4. Consulta de documentos (Querying Documents)
+
+### 🧡 Estructura de consulta en MongoDB
+
+Las consultas de MongoDB se basan en documentos JSON. El siguiente diagrama es un ejemplo de una consulta simple de MongoDB que encuentra todos los documentos donde el campo de **name** contiene el valor **David**:
+
+
+
 
 
 
