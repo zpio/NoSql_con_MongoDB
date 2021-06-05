@@ -65,7 +65,6 @@ Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o sub
 
 En la seccion 3 veremos como crear una base de datos mediante la consola y con la interfaz de MongoDB Compass.
 
-
 ## 2. Documentos y tipos de datos
 
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
@@ -393,37 +392,65 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
 
 Primero debe tener abierto la consola de mongo para comenzar a escribir los comandos.
 
-- El comando `cls` limpia la consola para mayor comodidad.
+- El comando **`cls`** limpia la consola.
+```
+cls
+```
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/cls_limpiar_consola.PNG)
 
-- El comando `show dbs` todas las bases datos que tenemos.
+- El comando **`show dbs`** muestra todas las bases datos almacenadas en MongoDB.
 ```
 show dbs
 ```
-- El comando `bd` nos indica en que base datos estamos actualmente usando. Al incio indicará que estamos en un entorno de **test**.
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show_dbs.PNG)
+
+- El comando **`bd`** muestra en que base datos estamos actualmente. Al incio indicará que estamos en un entorno de **test**.
 ```
 db
 ```
-- El comando `use` sirve para meternos en una base datos que tengamos ya creada. Por ejemplo: 
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/db.PNG)
+
+- El comando **`use`** es para movernos a la base datos que vamos a trabajar.
 ```
 use Sample1
 ```
-- Una vez estando en la base datos **Sample1** podemos ver las **COLECCIONES** o (TABLAS) con el comando `show collections`. En este caso tenemos 2 colecciones: comments y movies
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/use%20db.PNG)
+
+- Si ejecuta nuevamente el comando **`db`** mostrará que ahora ya estamos en la base datos **Sample1**.
+```
+use Sample1
+```
+
+- El comando **`show collections`** muestra las **COLECCIONES** (TABLAS) de la base datos **Sample1**. En este caso tenemos 2 colecciones: comments y movies.
 ```
 show collections
 ```
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show%20collections.PNG)
 
 ### Creando una base datos sencilla
 
-- Para crear una base datos tambien se usa el comando `use` junto al nombre que queramos. Ejemplo: Crear una base de datos llamada **mibase**
+- Para crear una base datos tambien se usa el comando **`use`** junto al nombre de la nueva base datos.
 ```
 use mibase
 ```
-- Si ejecuta el comando `show dbs` aún no aparecerá en el listado general debido que debe crear una colección (o tabla).
+- Si ejecuta el comando **`show dbs`** aún no aparecerá en el listado debido que se debe crear una colección (o tabla).
 
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show_dbs.PNG)
 
+- El comando **`db.createCollection()`** crea un colección en la base datos que estemos. Hay que proporcionar un nombre a la collección.
+```
+db.createCollection('miColeccion')
+```
 
+- Si ejecuta nuevamente el comando **`show dbs`** ahora si aparecerá en el listado.
 
+- El comando **`db.miColeccion.drop()`** borra una coleccion de la base datos.
+```
+db.miColeccion.drop()
+```
+- El comando **`db.dropDatabase()`** borra la base datos que estemos usando.
 
+La forma de insertar colecciones en nuestra base datos estará en la sección 5. 
 
 ## 4. Consulta de documentos (Querying Documents)
 
