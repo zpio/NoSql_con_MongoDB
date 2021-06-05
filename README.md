@@ -221,9 +221,7 @@ Usamos la notacion punto de la siguente manera:
 ```javascript
 listing.host.host_name
 ```
-```
-David
-```
+`David`
 
 **👉Array**: es una colección de cero o más valores que deben estar encerrado con corchetes \[ ]. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
 
@@ -237,9 +235,8 @@ Se puede acceder a cada elemento de un array utilizando su posición de índice.
 ```javascript
 doc.first_array[3]
 ```
-```
-1
-```
+` 1 `
+
 Usando la posición del índice, también puede agregar nuevos elementos al array existente:
 
 ```javascript
@@ -250,9 +247,8 @@ Al imprimir el array, verá el elemento que se ha agregado correctamente, en el 
 ```javascript
 doc.first_array
 ```
-```
-[4, 3, 2, 1, 99]
-```
+`[4, 3, 2, 1, 99]`
+
 Al igual que los objetos que tienen objetos incrustados, los arrays también pueden tener arrays incrustadas. La siguiente sintaxis agrega un array incrustado en el sexto elemento:
 
 ```javascript
@@ -263,16 +259,13 @@ Si imprime el array, verá la array incrustada de la siguiente manera:
 ```javascript
 doc.first_array
 ```
-```
-[4, 3, 2, 1, 99, [11, 12]]
-````
+`[4, 3, 2, 1, 99, [11, 12]]`
+
 Ahora, puede usar la notación de corchetes, \[ ] , para acceder a los elementos de un índice específico. En este ejemplo queremos acceder al primer elemento del quinto elemento del array anidado.
 ```javascript
 doc.first_array[5][1]
 ```
-```
-12
-```
+`12`
 
 Un array puede contener cualquier campo de tipo de datos válido de MongoDB. Esto se puede ver en el siguiente ejemplo:
 
@@ -290,19 +283,16 @@ Un array puede contener cualquier campo de tipo de datos válido de MongoDB. Est
 
 ```javascript
 var obj = null
-```
-```
 obj
-Null
-````
+```
+`Null`
+
 ```javascript
 var nullField = null
 doc.first_array[6] = nullField
 doc.first_array
 ```
-```
-[ 4, 3, 2, 1, 99, [11, 12], null]
-```
+`[ 4, 3, 2, 1, 99, [11, 12], null]`
 
 **👉ObjectId**: Cada documento de una colección debe tener un **\_id** que contenga un valor único. Este campo actúa como clave principal para estos documentos. Las claves primarias se utilizan para identificar de forma única los documentos y siempre están indexadas. El valor del campo **\_id** debe ser único en una colección.
 
@@ -314,9 +304,7 @@ El valor **ObjectId** está diseñado para generar código ligero que es único 
 var uniqueID = new ObjectId ()
 uniqueID
 ```
-```
-ObjectId("5dv.8ff48dd98e621357bd50")
-```
+`ObjectId("5dv.8ff48dd98e621357bd50")`
 
 **👉Fechas**: MongoDB si admite tipos de fecha explícitamente. Puesto que en JSON no admiten tipos de fecha porque se representan como cadenas sin formato.
 
@@ -331,27 +319,21 @@ Las fechas creadas con un **new Date () o new ISODate ()** siempre estarán en U
 ```javascript
 var date = Date()
 ```
-```
-Sat Sept 03 1989 07:28:46 GMT-0500 (CDT)
-```
+`Sat Sept 03 1989 07:28:46 GMT-0500 (CDT)`
 
 Con new Date(), obtiene la fecha envuelta en ISODate (). Estas fechas se pueden manipular, comparar y buscar.
 
 ```javascript
 var date = new Date()
 ```
-```
-ISODate("1989-09-03T10:11:23.357Z")
-```
+`ISODate("1989-09-03T10:11:23.357Z")`
 
 También puede usar el new ISODate () directamente para crear objetos de fecha. Estas fechas se pueden manipular, comparar y buscar.
 
 ```javascript
 var isoDate = new ISODate()
 ```
-```
-ISODate("1989-09-03T11:13:26.442Z")
-```
+`ISODate("1989-09-03T11:13:26.442Z")`
 
 **Timestamps**: Timestamps es una representación de 64 bits de la fecha y la hora. De los 64 bits, los primeros 32 bits almacenan el número de segundos desde la época de Unix, que es el 1 de enero de 1970. Los otros 32 bits indican un contador en aumento. MongoDB utiliza exclusivamente el Timestamps para operaciones internas.
 
@@ -489,19 +471,345 @@ MongoDB no tienen palabras clave como **SELECT**, **FROM** y **WHERE**.
 
 Todas las consultas de esta sección son consultas de nivel superior; es decir, se basan en los campos de nivel superior (también conocidos como nivel raíz) de los documentos.
 
-**👉Encontrar documentos con la función find()**
+**👉 Mostrar documentos - función find()**
 
-La función **find** devolverá todos los documentos de la colección. 
+- La función **find** mostrará todos los documentos de la colección. 
 ```javascript
 db.comments.find()
 ```
-Para devolver solo documentos específicos, se puede proporcionar una condición.
+- Para devolver solo documentos específicos, se puede proporcionar una **condición**.
 ```javascript
 db.comments.find ({"name": "Lauren Carr"})
 ```
-Con la función **pretty** muesta un resultado bien formateado.
+- Con la función **pretty** muesta un resultado bien formateado.
+```javascript
+db.comments.find({"name" : "Lauren Carr"}).pretty()
+```
+```javascript
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+        "name" : "Lauren Carr",
+        "email" : "lauren_carr@fakegmail.com",
+        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+        "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim. Quasi eligendi labore saepe rerum modi incidunt accusamus ex. Expedita temporibus consequatur dolore modi.",
+        "date" : ISODate("1978-03-25T06:29:47Z")
+}
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
+        "name" : "Lauren Carr",
+        "email" : "lauren_carr@fakegmail.com",
+        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+        "text" : "Temporibus iste error id molestias. Et quia quas voluptate asperiores. Consectetur quisquam rerum est suscipit ullam.",
+        "date" : ISODate("1986-10-26T11:31:17Z")
+}
+.....
+.....
+```
+- La función **findOne** muestra solo un registro coincidente, devolviendo solo el primero:
+```javascript
+db.comments.findOne ()
+```
+```javascript
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+        "name" : "Lauren Carr",
+        "email" : "lauren_carr@fakegmail.com",
+        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+        "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim. Quasi eligendi labore saepe rerum modi incidunt accusamus ex. Expedita temporibus consequatur dolore modi.",
+        "date" : ISODate("1978-03-25T06:29:47Z")
+}
+```
+Las siguientes consultas tienen el mismo comportamiento. Muestran todos los documentos de la coleccion.
+```javascript
+db.comments.find ()
 
-![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/find_con_pretty.jpg)
+db.comments.find ({})
+```
+**👉 Elegir los campos para la salida - projection**
+
+En las consultas de MongoDB, puede incluir o excluir campos específicos del resultado. Esta técnica se llama **projection**.
+
+La proyección se expresa como un segundo argumento para las funciones **find** o **findOne**. Se puede excluir explícitamente un campo configurándolo en 0 o incluir con 1.
+```javascript
+db.comments.find(
+    {"name" : "Lauren Carr"},
+    {"name" : 1, "date": 1}
+).pretty()
+```
+```javascript
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+        "name" : "Lauren Carr",
+        "date" : ISODate("1978-03-25T06:29:47Z")
+}
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
+        "name" : "Lauren Carr",
+        "date" : ISODate("1986-10-26T11:31:17Z")
+}
+{
+        "_id" : ObjectId("5a9427648b0beebeb6962d2f"),
+        "name" : "Lauren Carr",
+        "date" : ISODate("1972-03-23T02:37:03Z")
+}
+```
+El campo **\_id** siempre se incluirá, a menos que se excluya explícitamente.
+```javascript
+db.comments.find(
+    {"name" : "Lauren Carr"},
+    {"name" : 1, "date": 1, "_id" : 0}
+).pretty()
+```
+```javascript
+{ "name" : "Lauren Carr", "date" : ISODate("1978-03-25T06:29:47Z") }
+{ "name" : "Lauren Carr", "date" : ISODate("1986-10-26T11:31:17Z") }
+{ "name" : "Lauren Carr", "date" : ISODate("1972-03-23T02:37:03Z") }
+```
+**👉Encontrar los campos distintos - distinct**
+
+Usaremos la colección de **movies**. A cada película se le asigna una calificación de idoneidad de audiencia que se basa en el contenido y la edad de los espectadores. Busquemos las ratings únicas que existen en la colección con **distinct**. **Distinct** siempre se devuelve como un array.
+```javascript
+db.movies.distinct("rated")
+```
+```javascript
+[
+        "AO",
+        "APPROVED",
+        "Approved",
+        "G",
+        "GP",
+        "M",
+        "NC-17",
+        "NOT RATED",
+        "Not Rated",
+        "OPEN",
+        "PASSED",
+        "PG",
+        "PG-13",
+        "R",
+        "TV-14",
+        "TV-G",
+        "TV-MA",
+        "TV-PG",
+        "TV-Y7",
+        "UNRATED",
+        "X"
+]
+```
+Encuentre todas las ratings únicas que han recibido las películas que se estrenaron en 1994:
+```javascript
+db.movies.distinct("rated", {"year" : 1994})
+```
+```
+[ "G", "NOT RATED", "PG", "PG-13", "R", "TV-14", "TV-PG", "UNRATED" ]
+```
+**👉Contando los documentos - count**
+
+La función **count** se utiliza para devolver el recuento de documentos dentro de una colección o un recuento de los documentos que coinciden con la consulta dada. Cuando se ejecuta sin ningún argumento de consulta, devuelve el recuento total de documentos en la colección.
+
+```javascript
+db.movies.count()
+```
+` 23539 `
+
+Devolver el recuento de películas que tienen exactamente 6 comentarios:
+```javascript
+db.movies.count({"num_mflix_comments" : 6})
+```
+` 17 `
+
+En MongoDB v4.0 countDocuments( ) devuelve el recuento de documentos que coinciden con la condición dada. Un argumento de consulta es obligatorio db.movies.countDocuments( ) no es valido y fallara.
+```javascript
+db.movies.countDocuments ({"year": 1999})
+```
+` 542 ` 
+
+**👉Operadores condicionales**
+
+👉 **Equals ($eq)** (Operador de Igualdad)
+
+Devolver películas cuyo recuento de comentarios sea igual a 5. Ambas consultas tienen el mismo efecto:
+```javascript
+db.movies.find({"num_mflix_comments" : 5})
+
+db.movies.find({"num_mflix_comments" : {$eq : 5 }})
+```
+
+👉 **Not Equal To ($ne)**
+
+Devolver películas cuyo recuento de comentarios no sea igual a 5:
+```javascript
+db.movies.find(
+    { "num_mflix_comments" :
+        {$ne : 5 }
+    }
+)
+```
+
+👉 **Greater Than ($gt) and Greater Than or Equal To ($gte)**
+```javascript
+db.movies.find(
+    {year : {$gt : 2015}}
+).count()
+```
+`1`
+```javascript
+db.movies.find(
+    {year : {$gte : 2015}}
+).count()
+```
+`485`
+
+Contar las películas que se estrenaron en el siglo XXI (desde el 1 de enero de 2000):
+```javascript
+db.movies.find(
+    {"released" :
+        {$gte: new Date('2000-01-01')}
+    }
+).count()
+```
+`13767`
+
+👉 **Less Than ($lt) and Less Than or Equal To ($lte)**
+
+Contar películas que tienen menos de dos comentarios:
+```javascript
+db.movies.find(
+    {"num_mflix_comments" :
+        {$lt : 2}
+    }
+).count()
+```
+`8514`
+
+Cantidad de películas que tienen un máximo de dos comentarios:
+```javascript
+db.movies.find(
+    {"num_mflix_comments" :
+        {$lte : 2}
+    }
+).count()
+```
+`13185` 
+
+Contar las películas que se lanzaron en el siglo anterior:
+```javascript
+db.movies.find(
+    {"released" :
+        {$lt : new Date('2000-01-01')}
+    }
+).count()
+```
+`9268`
+
+👉 **In ($in) and Not In ($nin)**
+
+Todas las películas que han sido clasificadas como G, PG o PG-13:
+```javascript
+db.movies.find(
+    {"rated" :
+        {$in : ["G", "PG", "PG-13"]}
+    }
+)
+```
+Todas las películas que no han sido clasificadas como G, PG o PG-13:
+```javascript
+db.movies.find(
+    {"rated" :
+        {$nin : ["G", "PG", "PG-13"]}
+    }
+)
+```
+La consulta anterior devuelve películas que no están clasificadas como G , PG o PG-13, incluidas las que no tienen el campo rated
+
+Para ver qué sucede cuando usa `$nin` con un campo inexistente, primero, busque el total de documentos que tiene, de la siguiente manera:
+```javascript
+db.movies.countDocuments ({})
+23539
+```
+Ahora, use `$nin` con algunos valores, excepto null, en un objeto inexistente. Esto significa que todos los documentos coinciden.
+```javascript
+db.movies.countDocuments(
+    {"nef" :
+        {$nin : ["a value", "another value"]}
+    }
+)
+```
+`23539`
+
+Ahora, agregue un valor null a la matriz `$nin`:
+```javascript
+db.movies.countDocuments(
+    {"nef" :
+        {$nin : ["a value", "another value", null ]}
+    }
+)
+```
+`0`
+
+Esta vez, no coincidió con ningún documento. Esto se debe a que, en MongoDB, un campo inexistente siempre tiene un valor de nulo, por lo que la condición `$nin` no se cumplió para ninguno de los documentos.
+
+💪 **Ejercicio: Consulta de películas de un actor**
+
+Encuentre el numero de películas en las que aparece Leonardo DiCaprio usando el campo de cast.
+```javascript
+db.movies.countDocuments ({"cast": "Leonardo DiCaprio"})
+```
+`25`
+
+Encuentre los género de estas películas, devuelva un array.
+```javascript
+db.movies.distinct("genres", {"cast" : "Leonardo DiCaprio"})
+```
+```javascript
+[
+        "Action",
+        "Adventure",
+        "Biography",
+        "Comedy",
+        "Crime",
+        "Documentary",
+        "Drama",
+        "History",
+        "Mystery",
+        "Romance",
+        "Sci-Fi",
+        "Short",
+        "Thriller",
+        "Western"
+]
+```
+Encuentre sus Títulos de películas y sus respectivos años de estreno.
+```javascript
+db.movies.find(
+    {"cast" : "Leonardo DiCaprio"},
+    {"title":1, "year":1, "_id":0}
+)
+```
+```javascript
+{ "year" : 1993, "title" : "This Boy's Life" }
+{ "title" : "What's Eating Gilbert Grape", "year" : 1993 }
+{ "title" : "The Quick and the Dead", "year" : 1995 }
+{ "title" : "Total Eclipse", "year" : 1995 }
+{ "title" : "Marvin's Room", "year" : 1996 }
+{ "year" : 1996, "title" : "Romeo + Juliet" }
+{ "year" : 1997, "title" : "Titanic" }
+{ "year" : 1998, "title" : "The Man in the Iron Mask" }
+{ "year" : 2000, "title" : "The Beach" }
+{ "title" : "Gangs of New York", "year" : 2002 }
+{ "year" : 2002, "title" : "Catch Me If You Can" }
+{ "title" : "The Aviator", "year" : 2004 }
+{ "year" : 2006, "title" : "The Departed" }
+{ "title" : "Blood Diamond", "year" : 2006 }
+{ "year" : 2007, "title" : "The 11th Hour" }
+{ "year" : 2008, "title" : "Body of Lies" }
+{ "year" : 2008, "title" : "Revolutionary Road" }
+{ "year" : 2013, "title" : "The Wolf of Wall Street" }
+{ "year" : 2008, "title" : "Body of Lies" }
+{ "year" : 2010, "title" : "Shutter Island" }
+Type "it" for more
+```
+
 
 
 
