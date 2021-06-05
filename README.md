@@ -442,14 +442,14 @@ use mibase
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show_dbs.PNG)
 
 - El comando **`db.createCollection()`** crea un colección en la base datos que estemos. Hay que proporcionar un nombre a la collección.
-```
+```javascript
 db.createCollection('miColeccion')
 ```
 
 - Si ejecuta nuevamente el comando **`show dbs`** ahora si aparecerá en el listado.
 
 - El comando **`db.miColeccion.drop()`** borra una coleccion de la base datos.
-```
+```javascript
 db.miColeccion.drop()
 ```
 - El comando **`db.dropDatabase()`** borra la base datos que estemos usando.
@@ -473,9 +473,44 @@ Listo, ya tienes una base datos con 2 colecciones para comenzar a hacer las resp
 
 ## 🐥 4. Consulta de documentos (Querying Documents)
 
-### 🧡 Estructura de consulta en MongoDB
+### 🧡 Estructura de consulta MongoDB
 
 Las consultas de MongoDB se basan en documentos JSON. El siguiente diagrama es un ejemplo de una consulta simple de MongoDB que encuentra todos los documentos donde el campo de **name** contiene el valor **David**:
+
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/formato%20find.jpg)
+
+En sintaxis SQL seria:
+
+`SELECT * FROM USERS WHERE name = 'David';`
+
+MongoDB no tienen palabras clave como **SELECT**, **FROM** y **WHERE**.
+
+### 🧡 Consultas básicas de MongoDB
+
+Todas las consultas de esta sección son consultas de nivel superior; es decir, se basan en los campos de nivel superior (también conocidos como nivel raíz) de los documentos.
+
+**👉Encontrar documentos con la función find()**
+
+La función **find** devolverá todos los documentos de la colección. 
+```javascript
+db.comments.find()
+```
+Para devolver solo documentos específicos, se puede proporcionar una condición.
+```javascript
+db.comments.find ({"name": "Lauren Carr"})
+```
+Con la función **pretty** muesta un resultado bien formateado.
+
+![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/find_con_pretty.jpg)
+
+
+
+
+
+
+
+
+
 
 
 
