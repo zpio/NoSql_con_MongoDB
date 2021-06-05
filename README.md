@@ -624,7 +624,7 @@ db.movies.countDocuments ({"year": 1999})
 ```
 ` 542 ` 
 
-**👉Operadores condicionales**
+### 🧡 Operadores condicionales
 
 👉 **Equals ($eq)** (Operador de Igualdad)
 
@@ -809,6 +809,440 @@ db.movies.find(
 { "year" : 2010, "title" : "Shutter Island" }
 Type "it" for more
 ```
+Encuentre la cantidad de películas que ha dirigido.
+```javascript
+db.movies.countDocuments({"directors" : "Leonardo DiCaprio"})
+```
+`0`
+
+### 🧡 Operadores logicos
+
+👉 **$and Operator**
+
+Con el operador $and, puede tener cualquier número de condiciones envueltas en un array y el operador devolverá solo los documentos que satisfacen todas las condiciones. Cuando un documento falla en una verificación de condición, se omiten las siguientes condiciones. Es por eso que al operador se le llama operador de cortocircuito. 
+
+Películas sin clasificación que se lanzaron en 2008:
+```javascript
+db.movies.countDocuments (
+    {$and :
+        [{"rated" : "UNRATED"}, {"year" : 2008}]
+    }
+)
+```
+`37`
+
+En las consultas de MongoDB, el operador $and está implícito y se incluye de forma predeterminada si un documento de consulta tiene más de una condición. 
+```javascript
+db.movies.countDocuments (
+    {"rated": "UNRATED", "year" : 2008}
+)
+```
+`37`
+
+👉 **$or Operator**
+
+En el ejemplo que usamos en la sección In ($ in) y Not In ($ nin) , escribió una consulta para contar las películas clasificadas como G, PG o PG-13. Con el operador $or, reescriba la misma consulta:
+```javascript
+db.movies.find(
+    { $or : [
+        {"rated" : "G"},
+        {"rated" : "PG"},
+        {"rated" : "PG-13"}
+    ]}
+)
+```
+El operador $in se usa para determinar si un campo dado tiene al menos uno de los valores proporcionados en una matriz, mientras que el operador $or no está vinculado a ningún campo específico y acepta múltiples expresiones. 
+```javascript
+{"rated" : "G"}
+{"year" : 2005}
+{"num_mflix_comments" : {$gte : 5}}
+```
+```javascript
+db.movies.find(
+    {$or:[
+        {"rated" : "G"},
+        {"year" : 2005},
+        {"num_mflix_comments" : {$gte : 5}}
+   ]}
+)
+```
+
+👉 **$not Operator**
+
+El operador $not representa la operación lógica NOT que niega la condición dada. 
+
+Devuelva todas las películas que no tienen 5 o más comentarios:
+```javascript
+db.movies.find(
+    {"num_mflix_comments" :
+        {$not : {$gte : 5} }
+    }
+)
+```
+
+💪 **Ejercicio: Combinación de varias consultas**
+
+Encontrar los títulos y años de estreno de películas de drama o crimen en cuya producción han colaborado Leonardo DiCaprio y Martin Scorsese.
+```javascript
+db.movies.find(
+    {
+      "cast": "Leonardo DiCaprio",
+      "directors" : "Martin Scorsese",
+      "$or" : [{"genres" : "Drama"}, {"genres": "Crime"}]
+    },
+    {
+      "title" : 1, "year" : 1, "_id" : 0
+    }
+)
+```
+```javascript
+{ "title" : "Gangs of New York", "year" : 2002 }
+{ "title" : "The Aviator", "year" : 2004 }
+{ "year" : 2006, "title" : "The Departed" }
+{ "year" : 2013, "title" : "The Wolf of Wall Street" }
+```
+
+### 🧡 Expresiones regulares
+
+👉 **Usando $regex**
+
+En las consultas de MongoDB, las expresiones regulares se pueden usar con el operador $regex.
+
+Encontrar todas las películas cuyos títulos contienen la palabra “Opera” en cualquier posicion:
+```javascript
+db.movies.find(
+    {"title" : {$regex :"Opera"}},
+    {"title" : 1}
+)
+```
+
+👉 **Usando El Operador caret (^)**
+
+Para buscar solo las cadenas que comienzan con la expresión regular dada se utiliza el operador ( ^ ).
+
+Buscar solo aquellas películas cuyos títulos comienzan con la palabra Opera :
+```javascript
+db.movies.find (
+    {"title": {$ regex: "^Opera"}},
+    {"title" : 1}
+)
+```
+
+👉 **Usando El Operador Dólar ($)
+
+Para hacer coincidir las cadenas que terminan con la expresión regular dada.
+
+Encontrar títulos de películas que terminen con la palabra "Opera":
+```javascript
+db.movies.find (
+    {"title": {$regex: "Opera$"}}
+)
+```
+👉 **Búsqueda Que No Distingue Entre Mayúsculas Y Minúsculas (Case-Insensitive)
+
+La búsqueda con expresiones regulares distingue entre mayúsculas y minúsculas de forma predeterminada. Las mayúsculas y minúsculas de los caracteres en el patrón de búsqueda proporcionado coincide exactamente.
+
+El operador $options es para hacer búsquedas de expresiones regulares que no distinguen entre mayúsculas y minúsculas.  El argumento $options con un valor de i, donde i significa que no distingue entre mayúsculas y minúsculas.
+```javascript
+db.movies.find(
+    {"title" :
+        {"$regex" : "the", $options: "i"}
+    }
+)
+```
+
+### 🧡 Consultas de Arrays y Documentos Anidados
+
+👉 **Encontrar un Array por elemento**
+
+Consultar un array es similar a consultar cualquier otro campo. En la colección de movies, hay varios arrays y el campo de cast es una de ellas. 
+
+Encontrar películas protagonizadas por el actor Charles Chaplin:
+```javascript
+db.movies.find ({"cast": "Charles Chaplin"})
+```
+```javascript
+db.movies.find ({"cast": "Charles Chaplin"}, {"cast": 1, "_id": 0})
+```
+ ```
+{ "cast" : [ "Charles Chaplin", "Edna Purviance", "Eric Campbell", "Albert Austin" ] }
+{ "cast" : [ "Carl Miller", "Edna Purviance", "Jackie Coogan", "Charles Chaplin" ] }
+{ "cast" : [ "Charles Chaplin", "Mack Swain", "Tom Murray", "Henry Bergman" ] }
+{ "cast" : [ "Charles Chaplin", "Paulette Goddard", "Henry Bergman", "Tiny Sandford" ] }
+{ "cast" : [ "Charles Chaplin", "Jack Oakie", "Reginald Gardiner", "Henry Daniell" ] }
+{ "cast" : [ "Charles Chaplin", "Mady Correll", "Allison Roddan", "Robert Lewis" ] }
+{ "cast" : [ "Charles Chaplin", "Claire Bloom", "Nigel Bruce", "Buster Keaton" ] }
+{ "cast" : [ "Charles Chaplin", "Maxine Audley", "Jerry Desmonde", "Oliver Johnston" ] }
+```
+Buscar películas con los actores Charles Chaplin y Edna Purviance juntos:
+```javascript
+db.movies.find(
+    {$and :[
+        {"cast" : "Charles Chaplin"},
+        {"cast": "Edna Purviance"}
+    ]},
+    {"cast": 1, "_id": 0}
+)
+```
+👉 **Buscar un campo Array usando un Array
+
+Cuando busca un campo de array utilizando un valor de matriz, los elementos y su orden deben coincidir.
+
+Encontrar películas que estén disponibles tanto en inglés como en alemán. Prepare una matriz de ambos valores y consulte el campo de idiomas :
+```javascript
+db.movies.find(
+    {"languages" : ["English", "German"]}, {"languages" : 1}
+)
+```
+```
+{ "_id" : ObjectId("573a1392f29313caabcd9fc4"), "languages" : [ "English", "German" ] }
+{ "_id" : ObjectId("573a1392f29313caabcda64c"), "languages" : [ "English", "German" ] }
+{ "_id" : ObjectId("573a1392f29313caabcdbabd"), "languages" : [ "English", "German" ] }
+{ "_id" : ObjectId("573a1393f29313caabcdc13b"), "languages" : [ "English", "German" ] }
+.....
+.....
+```
+Ahora, cambiemos el orden de los elementos de la matriz y busquemos nuevamente:
+```javascript
+db.movies.find(
+    {"languages" : ["German", "English"]}, {"languages" : 1}
+)
+```
+Tenga en cuenta que la consulta es la misma que la anterior, excepto por el orden de los elementos de la matriz, que se invierte. Debería ver el siguiente resultado:
+```
+{ "_id" : ObjectId("573a1394f29313caabce0e55"), "languages" : [ "German", "English" ] }
+{ "_id" : ObjectId("573a1395f29313caabce1082"), "languages" : [ "German", "English" ] }
+{ "_id" : ObjectId("573a1395f29313caabce1bb0"), "languages" : [ "German", "English" ] }
+....
+....
+```
+Al cambiar el orden de los elementos en la matriz, se han hecho coincidir diferentes registros.
+
+Cuando se buscan campos de array utilizando un valor de array, el valor se compara mediante una verificación de igualdad. Dos matrices cualesquiera solo pasan la verificación de igualdad si tienen los mismos elementos en el mismo orden. Por lo tanto, las dos consultas siguientes no son iguales y devolverán resultados diferentes:
+```javascript
+// Find movies languages by [ "English", "French", "Cantonese", "German"]
+db.movies.find(
+    {"languages": [ "English", "French", "Cantonese", "German"]},
+    {"languages" : 1, "_id": 0}
+)
+```
+```javascript
+// Find movies languages by ["English", "French", "Cantonese"]
+db.movies.find(
+    {"languages": ["English", "French", "Cantonese"]},
+    {"languages" : 1, "_id": 0}
+)
+```
+La única diferencia entre estas dos consultas es que la segunda consulta no contiene el último elemento; es decir, alemán.
+
+👉 **Buscando en un Array con el Operador $all**
+
+El operador $all busca todos aquellos documentos donde el valor del campo contiene todos los elementos, independientemente de su orden o tamaño. La sigueinte consulta usa $all para buscar todas las películas disponibles en inglés, francés y cantonés.
+```javascript
+db.movies.find(
+    {"languages":{
+        "$all" :[ "English", "French", "Cantonese"]
+    }},
+    {"languages" : 1, "_id": 0}
+)
+```
+```javascript
+{ "languages" : [ "English", "French", "Cantonese", "German" ] }
+{ "languages" : [ "Cantonese", "English", "Vietnamese", "French" ] }
+{ "languages" : [ "French", "Cantonese", "English", "Hakka" ] }
+{ "languages" : [ "Cantonese", "English", "French" ] }
+{ "languages" : [ "French", "English", "Cantonese", "Italian" ] }
+{ "languages" : [ "English", "Cantonese", "Italian", "Japanese", "Mandarin", "French" ] }
+{ "languages" : [ "English", "German", "Arabic", "French", "Cantonese" ] }
+{ "languages" : [ "Cantonese", "Mandarin", "English", "Korean", "French", "Turkish" ] }
+{ "languages" : [ "English", "Cantonese", "French", "German", "Hindi", "Turkish" ] }
+{ "languages" : [ "French", "English", "Cantonese" ] }
+{ "languages" : [ "French", "English", "Cantonese" ] }
+{ "languages" : [ "English", "French", "Cantonese" ] }
+{ "languages" : [ "English", "French", "Cantonese", "Gujarati", "Yiddish" ] }
+{ "languages" : [ "French", "English", "Cantonese" ] }
+{ "languages" : [ "English", "French", "Cantonese" ] }
+{ "languages" : [ "Cantonese", "English", "French" ] }
+{ "languages" : [ "English", "French", "Cantonese" ] }
+{ "languages" : [ "Cantonese", "Mandarin", "English", "Shanghainese", "French" ] }
+{ "languages" : [ "Cantonese", "Mandarin", "English", "Shanghainese", "French" ] }
+```
+**Proyectar elementos de Array**
+
+Hasta ahora, hemos visto que siempre que buscamos un campo de array, la salida siempre contiene el array completa. Hay algunas formas de limitar la cantidad de elementos de un array que se devuelven en la salida de la consulta.
+
+👉 **Proyectar Elementos Coincidentes Usando ($)
+
+Puede buscar una matriz por un valor de elemento y usar la proyección para excluir todos menos el primer elemento coincidente de la matriz usando el operador $ .
+
+db.movies.find(
+    {"languages" : "Syriac"},
+    {"languages" :1}
+)
+
+ 
+
+db.movies.find(
+    {"languages" : "Syriac"},
+    {"languages.$" :1}
+)
+
+ 
+
+El campo de matriz en la salida solo contiene el elemento coincidente; el resto de los elementos se omiten. Por lo tanto, la matriz de idiomas en la salida solo contiene el elemento Syriac. Lo más importante que debe recordar es que si se empareja más de un elemento, el operador $ proyecta solo el primer elemento coincidente.
+
+Proyectar Elementos Coincidentes Por Su Posición De Índice ($slice)
+
+El operador $ slice se utiliza para limitar los elementos de la matriz en función de su posición de índice. Este operador se puede utilizar con cualquier campo de matriz, independientemente del campo que se esté consultando o no. Esto significa que puede consultar un campo diferente y todavía utilizan este operador para limitar los elementos de los campos de matriz.
+
+Para ver esto, usaremos la película Juventud sin juventud como ejemplo, que tiene 11 elementos en la matriz de idiomas. 
+
+ 
+
+Use $ slice para imprimir solo los primeros tres elementos de la matriz:
+
+db.movies.find(
+    {"title" : "Youth Without Youth"},
+    {"languages" : {$slice : 3}}
+).pretty()
+
+"languages" : [
+            "English",
+            "Sanskrit",
+            "German"
+    ]
+    "released" : ISODate("2007-10-26T00:00:00Z"),
+    "directors" : [
+La siguiente expresión de proyección devolverá los dos últimos elementos de la matriz:
+
+{"languages" : {$slice : -2}}
+
+"languages" : [
+            "Armenian",
+            "Egyptian (Ancient)",
+    ]
+    "released" : ISODate("2007-10-26T00:00:00Z"),
+
+Se puede indicar omitir y mostrar. Por ejemplo se omitirá los dos primeros elementos de la matriz y devolverá los siguientes cuatro elementos siguientes:
+
+{"languages" : {$slice : [2, 4]}}
+
+"languages" : [
+            "German",
+            "French",
+            "Italian"
+            "Russian"
+    ]
+    "released" : ISODate("2007-10-26T00:00:00Z"),
+    "directors" : [
+
+También se puede utilizar con un valor negativo para omitir. Por ejemplo, el primer número es negativo. Si el valor de salto es negativo, el conteo comienza desde el final. La expresión, se omitirán cinco elementos contados desde el último índice y se devolverán cuatro elementos a partir de ese índice:
+
+{"languages": {$ slice: [-5, 4]}}
+
+"languages" : [
+            "Romanian",
+            "Mandarin",
+            "Latin"
+            "Armenian"
+    ]
+    "released" : ISODate("2007-10-26T00:00:00Z"),
+
+
+Consultar objetos anidados
+
+De manera similar a las matrices, los objetos anidados también se pueden representar como valores de un campo. Por lo tanto, los campos que tienen otros objetos como valores se pueden buscar utilizando el objeto completo como valor. En la colección de movies , hay un campo llamado awards cuyo valor es un objeto anidado. El siguiente fragmento muestra el objeto de awards para una película aleatoria de la colección:
+
+"rated" : "TV-G",
+    "awards" : {
+             "wins" : 1,
+             "nominations" : 0,
+             "text" : "1 win."
+    }
+
+La siguiente consulta busca el objeto de awards proporcionando el objeto completo como su valor:
+
+
+db.movies.find(
+    {"awards":
+        {"wins": 1, "nominations": 0, "text": "1 win."}
+    }
+)
+
+El siguiente resultado muestra que hay varias películas cuyo campo de premios tiene un valor exacto de {"wins": 1, "nominations": 0, "text": "1 win."}:
+
+ 
+Cuando se buscan campos de objeto anidados con valores de objeto, debe haber una coincidencia exacta. Los pares campo-valor, junto con el orden de los campos, deben coincidir exactamente. 
+
+db.movies.find(
+    {"awards":
+        {"nominations": 0, "wins": 1, "text": "1 win."}
+    }
+)
+
+Esta consulta tiene un cambio de orden con respecto al objeto de consulta; por lo tanto, devolverá un resultado vacío.
+
+Consultar campos de objetos anidados
+
+Con la notación de puntos se puede utilizar para buscar objetos anidados proporcionando los valores de sus campos. 
+Buscar películas que hayan ganado cuatro premios:
+
+db.movies.find (
+    {"awards.wins": 4}, {"awards": 1, "_id": 0}
+)
+
+La consulta anterior utiliza la notación de puntos ( . ) en el campo de awards y se refiere al campo anidado llamado wins. Cuando ejecuta la consulta y proyecta solo el campo de awards, obtiene el siguiente resultado:
+
+ 
+
+Se devuelven todas las películas que tienen exactamente cuatro premios.
+
+La búsqueda de campos anidados se realiza de forma independiente en los campos dados, independientemente del orden de los elementos. 
+
+db.movies.find(
+    {
+        "awards.wins" : {$gte : 5},
+        "awards.nominations" : 6
+    },
+    {"awards": 1, "_id": 0}
+)
+
+Esta consulta usa una combinación de dos condiciones en dos campos anidados diferentes. Al ejecutar la consulta excluyendo el resto de los campos, debería ver el siguiente resultado:
+
+ 
+Esta consulta realiza una búsqueda en dos campos utilizando operadores condicionales y devuelve películas que tienen seis nominaciones y han ganado al menos cinco premios. Al igual que los elementos de matriz o cualquier campo en un documento, los campos de objetos anidados también se pueden proyectar como queramos.
+
+Ejercicio 4.04: Proyección de campos de objetos anidados
+
+Devolver todos los registros y proyectar solo el campo de awards, que es un objeto incrustado:
+
+db.movies.find(
+    {},
+    {
+       "awards" :1,
+       "_id":0
+    }
+)
+
+ 
+Proyectar solo campos específicos de objetos incrustados, puede hacer referencia a un campo de un objeto incrustado utilizando notación de puntos:
+
+db.movies.find(
+    {},
+    {
+        "awards.wins" :1,
+        "awards.nominations" : 1,
+        "_id":0
+    }
+)
+
+Solo dos de los campos anidados se incluyen en la respuesta. El objeto de awards en la salida sigue siendo un objeto anidado, pero el campo de texto se ha excluido.
+
+ 
+Limitando el resultado
+
+ 
+
 
 
 
