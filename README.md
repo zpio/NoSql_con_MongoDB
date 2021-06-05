@@ -6,15 +6,13 @@ Hay dos tipos de bases de datos: bases de datos relacionales y no relacionales. 
 
 Una base de datos NoSQL se utiliza para almacenar grandes cantidades de datos complejos y diversos, como catálogos de productos, registros, interacciones de usuarios, análisis y más. 
 
-**MongoDB** es una de las bases de datos NoSQL más establecidas, con características como agregación de datos, transacciones ACID ( Atomicity, Consistency, Isolation, Durability).
-
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/Sql%20y%20NoSql.jpg)
 
 ### 🔥 MongoDB
 
 MongoDB es una popular base de datos **NoSQL** que puede almacenar datos estructurados y no estructurados. Fundada en 2007 por Kevin P. Ryan, Dwight Merriman y Eliot Horowitz en Nueva York, la organización se llamó inicialmente 10gen y luego se renombró como MongoDB, una palabra inspirada en el término **humongous**.
 
-Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su sintaxis intuitiva para consultas y comandos hace que sea fácil de aprender.
+Su diseño basado en **documentos** y su sintaxis intuitiva para consultas y comandos hace que sea fácil de aprender.
 
 ### 🔥 Descarga e instalación de MongoDB
 
@@ -22,42 +20,39 @@ Su diseño basado en **documentos** hace que sea fácil de entender y usar. Su s
 
 Ir al página oficial de MongoDB https://www.mongodb.com/try/download/community
 
-En este video de youtube te indica paso a paso como descargar e instalar y algunas consideraciones a tomar en cuenta: [https://www.youtube.com/watch?v=Y3RUzKNiiIA&ab_channel=programadornovato](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
+En este video de youtube te indica paso a paso como descargar e instalar: [https://www.youtube.com/watch?v=Y3RUzKNiiIA](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
 
-**👉Paso 2. Encender el servidor de MongoDB**
+**👉Paso 2. Encender el servidor MongoDB**
 
-La opción fácil de encender el servidor de mongo es ir a la carpeta de tu PC donde se instaló Mongo y abrir el archivo ejecutable **mongod**. 
-Debes seguir esta ruta para buscar el archivo ejecutable: 
+Una opción fácil para encender el servidor es ir a la carpeta de tu ordenador donde se instaló Mongo y abrir el archivo **mongod**. Dentro de la carpeta **bin** se encuentra los archivos ejecutables: **mongod** y **mongo**
 ```
 C:\Program Files\MongoDB\Server\4.4\bin
 ```
-Dentro de la carpeta **bin** se encuentra los archivos ejecutables: **mongod** y **mongo**
-
-Antes de abrir ejecutar el archivo **mongod** hay que hace un paso previo. Deberás crear en el **disco C** una carpeta llamada **data** y dentro de esta otra capeta llamada **db**.
+Antes de abrir el archivo **mongod** hay que hacer un paso previo: Crear en el **disco C** una carpeta llamada **data** y dentro de esta otra capeta llamada **db**.
 ```
 C:\data\db
 ```
-Ahora si, abrir el archivo ejecutable **mongod** y te saldrá la clásica pantalla negra.
+Ahora si, abrir el archivo **mongod** y te saldrá la clásica pantalla negra.
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongo.PNG)
 
-En esta pantalla te mostrará que el servidor de mongo esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
+En esta pantalla te mostrará que el servidor esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
 
 **👉Paso 3. Abrir la consola y conectarse al servidor**
 
-Ahora deberás abrir el otro ejecutable de la carpeta bin llamada: **mongo**. Este ejecutable es una **consola o terminal** para poder trabajar (la clásica pantalla negra).
+Ahora deberás abrir el otro ejecutable: **mongo**. Este ejecutable es una **consola o terminal** (la clásica pantalla negra).
 
 Escribimos en la consola **2+2** para probar que funciona.
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongod.png)
 
-Para interactuar con servidor de MongoDB además de la consola clásica (ventana negra) hay aplicaciones con entorno visual para comodidad del usuario como **MongoDB Compass**
+Además de la consola clásica (ventana negra) hay aplicaciones de entorno visual para comodidad del usuario como **MongoDB Compass**.
 
 **👉MongoDB Compass**
 
-El MongoDB Compass es un entorno visual e intuitivo para interactuar con el servidor. Generalmente se instala junto cuando se instala MongoDB.
+MongoDB Compass es un entorno visual e intuitivo para interactuar con el servidor. Generalmente se instala junto cuando se instala MongoDB.
 
-Para usar MongoDB Compass debes abrir el programa y conectarte a tu servidor de mongo. Para esto hay que copiar el string que te apareció previamente en la consola de mongo: 
+Para usar MongoDB Compass debes abrir el programa y conectarte a tu servidor de mongo. Para esto hay que copiar el string que te apareció previamente en la consola: 
 ```
 mongodb://127.0.0.1:27017 
 ```
@@ -65,14 +60,14 @@ Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o sub
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/mongo%20compass.PNG)
 
-En la seccion 3 veremos como crear una base de datos mediante la consola y con la interfaz de MongoDB Compass.
+En la seccion 3 se verá como crear una base de datos mediante la consola y con la interfaz MongoDB Compass.
 
 
 ## 🐥 2. Documentos y tipos de datos
 
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
 
-Muchas aplicaciones que intercambian datos en forma de documentos **JavaScript Object Notation ( JSON )**. MongoDB almacena datos en formato **JSON binario (BSON)** y los representa en JSON legible por humanos.
+Muchas aplicaciones que intercambian datos en forma de documentos **JavaScript Object Notation (JSON)**. MongoDB almacena datos en formato **JSON binario (BSON)** y los representa en JSON legible por humanos.
 
 ### 😻 Sintaxis JSON
 
@@ -928,7 +923,7 @@ db.movies.find (
 )
 ```
 
-👉 **Usando El Operador Dólar ($)
+👉 **Usando El Operador Dólar ($)**
 
 Para hacer coincidir las cadenas que terminan con la expresión regular dada.
 
@@ -938,7 +933,7 @@ db.movies.find (
     {"title": {$regex: "Opera$"}}
 )
 ```
-👉 **Búsqueda Que No Distingue Entre Mayúsculas Y Minúsculas (Case-Insensitive)
+👉 **Búsqueda Que No Distingue Entre Mayúsculas Y Minúsculas (Case-Insensitive)**
 
 La búsqueda con expresiones regulares distingue entre mayúsculas y minúsculas de forma predeterminada. Las mayúsculas y minúsculas de los caracteres en el patrón de búsqueda proporcionado coincide exactamente.
 
@@ -984,7 +979,7 @@ db.movies.find(
     {"cast": 1, "_id": 0}
 )
 ```
-👉 **Buscar un campo Array usando un Array
+👉 **Buscar un campo Array usando un Array**
 
 Cuando busca un campo de array utilizando un valor de matriz, los elementos y su orden deben coincidir.
 
@@ -1037,7 +1032,7 @@ La única diferencia entre estas dos consultas es que la segunda consulta no con
 
 👉 **Buscando en un Array con el Operador $all**
 
-El operador $all busca todos aquellos documentos donde el valor del campo contiene todos los elementos, independientemente de su orden o tamaño. La sigueinte consulta usa $all para buscar todas las películas disponibles en inglés, francés y cantonés.
+El operador **$all** busca todos aquellos documentos donde el valor del campo contiene todos los elementos, independientemente de su orden o tamaño. La sigueinte consulta usa $all para buscar todas las películas disponibles en inglés, francés y cantonés.
 ```javascript
 db.movies.find(
     {"languages":{
@@ -1069,43 +1064,36 @@ db.movies.find(
 ```
 **Proyectar elementos de Array**
 
-Hasta ahora, hemos visto que siempre que buscamos un campo de array, la salida siempre contiene el array completa. Hay algunas formas de limitar la cantidad de elementos de un array que se devuelven en la salida de la consulta.
+Hasta ahora, siempre que buscamos un campo de array, la salida siempre contiene el array completo. Hay algunas formas de limitar la cantidad de elementos de un array que se devuelven en la salida de la consulta.
 
 👉 **Proyectar Elementos Coincidentes Usando ($)
 
-Puede buscar una matriz por un valor de elemento y usar la proyección para excluir todos menos el primer elemento coincidente de la matriz usando el operador $ .
-
-db.movies.find(
-    {"languages" : "Syriac"},
-    {"languages" :1}
-)
-
- 
-
+Puede buscar una matriz por un valor de elemento y usar la proyección para excluir todos menos el primer elemento coincidente de la matriz usando el operador **$**.
+```javascript
 db.movies.find(
     {"languages" : "Syriac"},
     {"languages.$" :1}
 )
+```
+```javascript
+{ "_id" : ObjectId("573a1397f29313caabce6443"), "languages" : [ "Syriac" ] }
+{ "_id" : ObjectId("573a139af29313caabcf08fe"), "languages" : [ "Syriac" ] }
+{ "_id" : ObjectId("573a13b0f29313caabd33446"), "languages" : [ "Syriac" ] }
+ ```
+El campo array de la salida solo contiene el elemento coincidente, el resto de los elementos se omiten.
 
- 
+👉 **Proyectar Elementos Coincidentes Por Su Posición De Índice ($slice)**
 
-El campo de matriz en la salida solo contiene el elemento coincidente; el resto de los elementos se omiten. Por lo tanto, la matriz de idiomas en la salida solo contiene el elemento Syriac. Lo más importante que debe recordar es que si se empareja más de un elemento, el operador $ proyecta solo el primer elemento coincidente.
+El operador **$slice** se utiliza para limitar los elementos de la matriz en función de su posición de índice. Este operador se puede utilizar con cualquier campo de array, independientemente del campo que se esté consultando o no. Esto significa que puede consultar un campo diferente y todavía utilizan este operador para limitar los elementos de los campos array.
 
-Proyectar Elementos Coincidentes Por Su Posición De Índice ($slice)
-
-El operador $ slice se utiliza para limitar los elementos de la matriz en función de su posición de índice. Este operador se puede utilizar con cualquier campo de matriz, independientemente del campo que se esté consultando o no. Esto significa que puede consultar un campo diferente y todavía utilizan este operador para limitar los elementos de los campos de matriz.
-
-Para ver esto, usaremos la película Juventud sin juventud como ejemplo, que tiene 11 elementos en la matriz de idiomas. 
-
- 
-
-Use $ slice para imprimir solo los primeros tres elementos de la matriz:
-
+Ejemplo: La película Youth Without Youth tiene 11 elementos en campo array languages. Use **$slice** para imprimir solo los primeros tres elementos:
+```javascript
 db.movies.find(
     {"title" : "Youth Without Youth"},
     {"languages" : {$slice : 3}}
 ).pretty()
-
+```
+```javascript
 "languages" : [
             "English",
             "Sanskrit",
@@ -1113,20 +1101,23 @@ db.movies.find(
     ]
     "released" : ISODate("2007-10-26T00:00:00Z"),
     "directors" : [
+```
 La siguiente expresión de proyección devolverá los dos últimos elementos de la matriz:
-
+```javascript
 {"languages" : {$slice : -2}}
-
+```
+```javascript
 "languages" : [
             "Armenian",
             "Egyptian (Ancient)",
     ]
     "released" : ISODate("2007-10-26T00:00:00Z"),
-
-Se puede indicar omitir y mostrar. Por ejemplo se omitirá los dos primeros elementos de la matriz y devolverá los siguientes cuatro elementos siguientes:
-
+```
+Se puede indicar omitir y mostrar. Por ejemplo se omitirá los 2 primeros elementos de la matriz y devolverá los siguientes 4 elementos siguientes:
+```javascript
 {"languages" : {$slice : [2, 4]}}
-
+```
+```javascript
 "languages" : [
             "German",
             "French",
@@ -1135,7 +1126,7 @@ Se puede indicar omitir y mostrar. Por ejemplo se omitirá los dos primeros elem
     ]
     "released" : ISODate("2007-10-26T00:00:00Z"),
     "directors" : [
-
+```
 También se puede utilizar con un valor negativo para omitir. Por ejemplo, el primer número es negativo. Si el valor de salto es negativo, el conteo comienza desde el final. La expresión, se omitirán cinco elementos contados desde el último índice y se devolverán cuatro elementos a partir de ese índice:
 
 {"languages": {$ slice: [-5, 4]}}
