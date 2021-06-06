@@ -621,7 +621,7 @@ db.movies.countDocuments ({"year": 1999})
 
 ### 🧡 Operadores condicionales
 
-👉 **Equals ($eq)** (Operador de Igualdad)
+👉 **Equals ($eq) (Operador de Igualdad)**
 
 Devolver películas cuyo recuento de comentarios sea igual a 5. Ambas consultas tienen el mismo efecto:
 ```javascript
@@ -1065,7 +1065,7 @@ db.movies.find(
 
 Hasta ahora, siempre que buscamos un campo de array, la salida siempre contiene el array completo. Hay algunas formas de limitar la cantidad de elementos de un array que se devuelven en la salida de la consulta.
 
-👉 **Proyectar Elementos Coincidentes Usando ($)
+👉 **Proyectar Elementos Coincidentes Usando ($)**
 
 Puede buscar una matriz por un valor de elemento y usar la proyección para excluir todos menos el primer elemento coincidente de la matriz usando el operador **$**.
 ```javascript
@@ -1411,12 +1411,14 @@ findMoviesByGenre("Action", 3, 5)
 ```
 Obtenemos lo siguiente:
 ```javascript
+/*
 ************* Page : 3
 Harakiri
 Battlestar Galactica
 Star Wars: Episode IV - A New Hope
 The Matrix
 Sholay
+*/
 ```
 
  
