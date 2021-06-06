@@ -1283,7 +1283,7 @@ db.movies.find(
 ```
 Solo dos de los campos anidados se incluyen en la respuesta. El objeto de awards en la salida sigue siendo un objeto anidado, pero el campo de texto se ha excluido.
 
-### 🧡 Limitando el resultado
+### 🧡 Limitando el resultado con limit
 
 Con la función **limit** se puede restringir el tamaño del resultado. Ejemplo: Limitar el resultado a 3 registros.
 ```javascript
@@ -1301,7 +1301,7 @@ Establecer el límite en cero equivale a no establecer ningún límite, devolver
 
 Un límite de tamaño negativo se considera equivalente al límite de un número positivo.
 
-### 🧡 Excluir documentos - Skip
+### 🧡 Excluir documentos con Skip
 
 La funcion **Skip*** se utiliza para excluir algunos documentos del conjunto de resultados y devolver el resto. El cursor MongoDB proporciona la función skip (), que acepta un número entero y omite el número especificado de documentos del cursor, devolviendo el resto.
 ```javascript
@@ -1421,24 +1421,594 @@ Sholay
 */
 ```
 
+ ## 🐥 5. Insertar, actualizar y eliminar documentos
+
+### 🧡 Insertar documentos con insert()
+
+La funcion **insert()** se utiliza para crear un nuevo documento en una colección. Cuando se ejecuta un comando de inserción de documento, MongoDB también creará la colección dada, si aún no existe.
+
+Cree una nueva base de datos **`use newbase`**. Luego inserte una película en la coleccion **new_movies** con la funcion **insert** asi:
+```javascript
+db.new_movies.insert({"_id" : 1, "title" : "Dunkirk"})
+```
+`WriteResult({ "nInserted" : 1 })`
+
+Realice una consulta con **find** y confirme si el registro se creó:
+```javascript
+db.new_movies.find({"_id" : 1})
+```
+`{ "_id" : 1, "title" : "Dunkirk" }`
+```
+``javascript
+show collections
+```
+`new_movies`
+
+### 🧡 Insertar varios documentos con insertMany()
+
+Se puede usar tanto la funcion **insert** o la funcion **insertMany**, que toma un array de documentos.
+```javascript
+db.new_movies.insert({"_id": 2, "title": "Baby Driver"})
+db.new_movies.insert({"_id": 3, "title" : "Logan"})
+db.new_movies.insert({"_id": 4, "title": "John Wick: Chapter 2"})
+db.new_movies.insert({"_id": 5, "title": "A Ghost Story"})
+```
+```javascript
+db.new_movies.insertMany([
+    {"_id" : 2, "title": "Baby Driver"},
+    {"_id" : 3, "title": "Logan"},
+    {"_id" : 4, "title": "John Wick: Chapter 2"},
+    {"_id" : 5, "title": "A Ghost Story"}
+])
+```
+Para insertar varios documentos, es preferible usar la función **insertMany()**, porque la inserción ocurre como una sola operación. La inserción de cada documento por separado se ejecutará como una serie de comandos de base de datos diferentes y hará que el proceso sea más lento.
+
+### 🧡 Insertar claves duplicadas
+
+El valor expresado por el campo **\_id** es una clave principal, por lo que debe ser único. Si intenta insertar un documento cuya clave ya está presente en la colección, obtendrá un error de clave duplicada. Esto aplica también cuando se usa **insertMany**.
+```javascript
+db.new_movies.insert({"_id" : 2, "title" : "Some other movie"})
+```
+```
+WriteResult({
+        "nInserted" : 0,
+        "writeError" : {
+                "code" : 11000,
+                "errmsg" : "E11000 duplicate key error collection: CH05.new_movies index: _id_ dup key: { _id: 1.0 }"
+        }
+})
+```
+Pruebe la siguiente consulta:
+```javascript
+db.new_movies.insertMany([
+    {"_id" : 6, "title" : "some movie 1"},
+    {"_id" : 7, "title" : "some movie 2"},
+    {"_id" : 2, "title" : "Movie with duplicate _id"},
+    {"_id" : 8, "title" : "some movie 3"},
+])
+``` 
+El resultado muestra que dos documentos se han insertado correctamente el 6 y el 7. 
+```javascript
+db.new_movies.find({"_id" : {$in : [6, 7, 2, 8]}})
+```
+```javascript
+{ "_id" : 2, "title" : "Baby Driver" }
+{ "_id" : 6, "title" : "some movie 1" }
+{ "_id" : 7, "title" : "some movie 2" }
+```
+Podemos concluir que el comando falló al insertar el tercer documento. Sin embargo, los documentos insertados antes del tercero permanecerán en la base de datos.
+
+### 🧡 Insertar sin \_id
+
+MongoDB verifica la presencia y unicidad de una clave primaria dada y, si la clave primaria aún no está presente, la base de datos la genera automáticamente y la agrega a el documento.
+```javascript
+db.new_movies.insert ({"título": "Thelma"})
+```
+`WriteResult ({"nInserted": 1})`
+```javascript
+db.new_movies.find ({"título": "Thelma"})
+```
+`{"_id": ObjectId ("5df6a0e1b32aea114de21834"), "title": "Thelma"}`
+```javascript
+db.new_movies.insertMany([
+    {"_id" : 9, "title" : "movie_1"},
+    {"_id" : 10, "title" : "movie_2"},
+    {"title" : "movie_3"},
+    {"_id" : 8, "title" : "movie_4"}
+])
+```
  
+### 🧡 Eliminar Documentos usando deleteOne()
 
+La función **deleteOne()** se usa para eliminar un solo documento de una colección. Como el método elimina solo un documento, el valor de **deletedCount** es siempre 1. Si la condición de consulta dada coincide con más de un documento en la colección, solo se eliminará el primer documento.
+```javascript
+db.new_movies.deleteOne({"_id": 2})
+{ "acknowledged" : true, "deletedCount" : 1 }
+```
 
+💪 **Ejercicio 5.01: eliminar uno de los muchos documentos coincidentes**
 
+En este ejercicio, usará una consulta que coincida con más de un documento y verificará que solo se elimine el primer documento cuando lo haga.
+```javascript
+db.new_movies.find({"title" : {"$regex": "^movie"}})
+{ "_id" : 9, "title" : "movie_1" }
+{ "_id" : 10, "title" : "movie_2" }
+{ "_id" : ObjectId("5ef2666a6c3f28e14fddc816"), "title" : "movie_3" }
+{ "_id" : 8, "title" : "movie_4" }
+```
+```javascript
+db.new_movies.deleteOne({"title" : {"$regex": "^movie"}})
+```
+`{ "acknowledged" : true, "deletedCount" : 1 }`
+```javascript
+db.new_movies.find({"title" : {"$regex": "^movie"}})
+```
+```
+{ "_id" : 10, "title" : "movie_2" }
+{ "_id" : ObjectId("5ef2666a6c3f28e14fddc816"), "title" : "movie_3" }
+{ "_id" : 8, "title" : "movie_4" }
+```
 
+### 🧡 Eliminación de varios documentos con deleteMany()
 
+La función **deleteMany** sirve para eliminar varios documentos en un solo comando. Debe proporcionarse con una condición de consulta, y se eliminarán todos los documentos que coincidan con la consulta dada.
+```javascript
+db.new_movies.deleteMany({"title" : {"$regex": "^movie"}})
+```
+`{ "acknowledged" : true, "deletedCount" : 3 }`
 
+Pasar un documento de consulta vacío equivale a no pasar ningún filtro y, por lo tanto, todos los documentos coinciden. La función **deleteOne** eliminará el documento que se encuentre primero. La función **deleteMany** eliminará todos los documentos de la colección. 
+```javascript
+db.new_movies.deleteOne ({})
+db.new_movies.deleteMany ({})
+```
+Un campo inexistente se considera nulo y, por tanto, la condición dada coincidirá con todos los documentos de la colección:
+```javascript
+db.new_movies.deleteOne({"non_existent_field" : null})
+db.new_movies.deleteMany({"non_existent_field" : null})
+```
+Siempre debe asegurarse de que no haya errores tipográficos en el nombre del campo. Un nombre de campo incorrecto puede dar lugar a la eliminación de todos los documentos de la colección.
 
+### 🧡 Eliminar usando findOneAndDelete()
 
+Busca y elimina un documento de la colección. Si se encuentra más de un documento, solo se eliminará el primero. Una vez eliminado, **muestra el documento eliminado** como respuesta. En el caso de coincidencias de varios documentos, la opción de **sort** se puede utilizar para influir en qué documento se elimina. La proyección se puede utilizar para incluir o excluir campos del documento en respuesta.
+```javascript
+db.new_movies.findOneAndDelete({"_id": 3})
+```
+`{ "_id" : 3, "title" : "Logan" }`
 
+```javascript
+db.new_movies.insertMany([
+  { "_id" : 11, "title" : "movie_11" },
+  { "_id" : 12, "title" : "movie_12" },
+  { "_id" : 13, "title" : "movie_13" },
+  { "_id" : 14, "title" : "movie_14" },
+  { "_id" : 15, "title" : "series_15" }
+])
+```
+```javascript
+db.new_movies.findOneAndDelete(
+      {"title" : {"$regex" : "^movie"}},
+      {sort : {"_id" : -1}}
+  )
+```
+`{ "_id" : 14, "title" : "movie_14" }`
+```javascript
+db.new_movies.findOneAndDelete(
+     {"title" : {"$regex" : "^movie"}},
+     {sort : {"_id" : -1}, projection : {"_id" : 0, "title" : 1}}
+)
+```
+`{ "title" : "movie_13" }`
 
+💪 **Ejercicio 5.02: Eliminación de una película de baja calificación**
 
+Usando la coleccion de **movies** ejecutar un comando de eliminación para que se elimine una película con menos premios, una calificación de IMDb de menos de 2 y más de 50,000 votos. Luego, solo muestre el título y el \_id de la película eliminada.
 
+La clasificación de IMDb es un campo anidado; por lo tanto, usará la notación de puntos para acceder al campo:
+```javascript
+db.movies.findOneAndDelete(
+  {"imdb.rating" : {$lt : 2}, "imdb.votes" : {$gt : 50000}},
+  {
+    "sort" : {"awards.won": 1},
+    "projection" : {"title" : 1}
+  }
+)
+```
 
+### 🧡 Reemplazo de documentos con replaceOne()
 
+Reemplazar completamente los documentos de una colección. 
 
+Usando la base de datos **newbase** cree una colección denominada **users** e inserte algunos usuarios en ella:
+```javascript
+db.users.insertMany([
+  {"_id": 2, "name": "Jon Snow", "email": "Jon.Snow@got.es"},
+  {"_id": 3, "name": "Joffrey Baratheon", "email": "Joffrey.Baratheon@got.es"},
+  {"_id": 5, "name": "Margaery Tyrell", "email": "Margaery.Tyrell@got.es"},
+  {"_id": 6, "name": "Khal Drogo", "email": "Khal.Drogo@got.es"}
+])
+```
+`{ "acknowledged" : true, "insertedIds" : [ 2, 3, 5, 6 ] }`
+```javascript
+db.users.find()
+```
+```javascript
+{ "_id" : 2, "name" : "Jon Snow", "email" : "Jon.Snow@got.es" }
+{ "_id" : 3, "name" : "Joffrey Baratheon", "email" : "Joffrey.Baratheon@got.es" }
+{ "_id" : 5, "name" : "Margaery Tyrell", "email" : "Margaery.Tyrell@got.es" }
+{ "_id" : 6, "name" : "Khal Drogo", "email" : "Khal.Drogo@got.es" }
+```
+MongoDB proporciona el método **replaceOne()**, que acepta un filtro de consulta y un documento de reemplazo.  El primer argumento es el filtro de consulta para identificar el documento que se reemplazará y el segundo argumento es el nuevo documento. 
+```javascript
+db.users.replaceOne(
+  {"_id" : 5},
+  {"name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es"}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
 
+No es necesario que el filtro de consulta sea siempre el campo \_id . Puede ser cualquier consulta que filtre usando cualquier campo o combinación de múltiples campos y operadores.
+```javascript
+db.users.replaceOne(
+  {"name": "Margaery Tyrell },
+  {"name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es"}
+)
+```
 
+### 🧡 Los Campos _Id Son Inmutables
+
+El \_id del documento original se conserva en el nuevo documento. El campo \_id sirve como identificador único de un documento y, por lo tanto, no debe cambiarse mientras exista el documento.
+```javascript
+db.users.find({"name" : "Margaery Baratheon"})
+{"_id": 5, "name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es" }
+```
+El siguiente reemplazo no se ejcutará:
+```javascript
+db.users.replaceOne(
+  {"name" : "Margaery Baratheon"},
+  {"_id": 9, "name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es"}
+)
+```
+
+### 🧡 Reemplazar y/o actualizar con replaceOne y upsert
+
+Habrá ocasiones en las que desee reemplazar un documento existente por uno nuevo y, si el documento aún no existe, inserta el nuevo documento. Actualización o **update** (si se encuentra) o inserción **insert** (si no se encuentra), que se abrevia con **upsert**. Se debe pasar un argumento adicional **{upsert: true}**.
+
+Considere los siguientes registros en la colección de usuarios:
+```javascript
+db.users.find()
+{"_id": 2, "name": "Jon Snow", "email": "Jon.Snow@got.es"}
+{"_id": 3, "name": "Joffrey Baratheon", "email": "Joffrey.Baratheon@got.es"}
+{"_id": 5, "name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es"}
+{"_id": 6, "name": "Khal Drogo", "email": "Khal.Drogo@got.es"}
+```
+La actualización que recibe del servidor de usuarios contiene el registro actualizado para Margaery y el nuevo registro para Tommen, de la siguiente manera:
+```
+{"name": "Margaery Tyrell", "email": "Margaery.Tyrell@got.es"}
+{"name": "Tommen Baratheon", "email": "Tommen.Baratheon@got.es"}
+```
+```javascript
+db.users.replaceOne(
+  {"name" : "Margaery Baratheon"},
+  {"name": "Margaery Tyrell", "email": "Margaery.Tyrell@got.es"},
+  { upsert: true }
+)
+```
+```javascript
+db.users.replaceOne(
+  {"name" : "Tommen Baratheon"},
+  {"name": "Tommen Baratheon", "email": "Tommen.Baratheon@got.es"},
+  { upsert: true }
+)
+```
+El resultado del primer upsert indica que se encontró una coincidencia y que el documento se actualizó. Sin embargo, el segundo denota que no se encontró la coincidencia y se insertó un nuevo documento con una clave primaria generada automáticamente.
+
+### 🧡 Reemplazo con findOneAndReplace()
+
+Las principales características de findOneAndReplace() son las siguientes:
+
+- Busca un documento y lo reemplaza.
+- Si se encuentra más de un documento que coincide con la consulta, se reemplazará el primero.
+- Se puede utilizar una opción de **sort** para influir en qué documento se reemplaza si se hace coincidir más de un documento.
+- De forma predeterminada, devuelve el documento original.
+- Si se establece la opción de **{returnNewDocument: true}**, se devolverá el documento recién agregado.
+- La proyección de campo se puede utilizar para incluir solo campos específicos en el documento devuelto como respuesta.
+
+Para ver findOneAndReplace() en acción, agregue cinco documentos a una colección de películas:
+```javascript
+db.movies.insertMany([
+    { "_id": 1011, "title" : "Macbeth" },
+    { "_id": 1513, "title" : "Macbeth" },
+    { "_id": 1651, "title" : "Macbeth" },
+    { "_id": 1819, "title" : "Macbeth" },
+    { "_id": 2117, "title" : "Macbeth" }
+])
+```
+Debe utilizar el campo \_id incremental, donde la película con el valor \_id más grande es la última. Para simplificar las consultas de búsqueda en el futuro, se le ha indicado que busque el documento de la última película con este título y agregue una marca de **latest: true** a ese documento.
+```javascript
+db.movies.findOneAndReplace(
+    {"title" : "Macbeth"},
+    {"title" : "Macbeth", "latest" : true},
+    {
+        sort : {"_id" : -1},
+        projection : {"_id" : 0}
+    }
+)
+```
+El codigo anterior, encontró el documento de una película por su título y lo reemplazó con otro documento que contiene un campo adicional **"latest" : true**. Aparte de eso, el comando utilizó la opción de **sort** para que el registro con el valor más grande \_id aparezca en la parte superior. El comando también usa una opción de **proyección** para incluir solo el campo de título en la respuesta.
+
+Alternativamente, si se le solicita que obtenga el documento actualizado en la respuesta, puede hacer uso del indicador **returnNewDocument**.
+```javascript
+db.movies.findOneAndReplace(
+    {"title" : "Macbeth"},
+    {"title" : "Macbeth", "latest" : true},
+    {
+        sort : {"_id" : -1},
+        projection : {"_id" : 0},
+        returnNewDocument : true
+    }
+)
+```
+```javascript
+db.movies.find({"title" : "Macbeth"})
+```
+```javascript
+{ "_id" : 1011, "title" : "Macbeth" }
+{ "_id" : 1513, "title" : "Macbeth" }
+{ "_id" : 1651, "title" : "Macbeth" }
+{ "_id" : 1819, "title" : "Macbeth" }
+{ "_id" : 2117, "title" : "Macbeth", "latest" : true }
+```
+
+### 🧡 Replace versus Delete and Re-Insert
+
+Es posible reemplazar un documento usando una combinación de eliminar e insertar, donde elimina un documento existente e inserta uno nuevo. 
+
+Primero, elimine todos los documentos previamente insertados o modificados de la colección:
+```javascript
+db.movies.deleteMany({})
+```
+`{ "acknowledged" : true, "deletedCount" : 5 }`
+
+Ahora, inserte los cinco documentos nuevamente:
+```javascript
+db.movies.insertMany([
+    { "_id": 1011, "title" : "Macbeth" },
+    { "_id": 1513, "title" : "Macbeth" },
+    { "_id": 1651, "title" : "Macbeth" },
+    { "_id": 1819, "title" : "Macbeth" },
+    { "_id": 2117, "title" : "Macbeth" }
+])
+```
+Ahora, busque el documento de la última película titulada Macbeth y agregue la marca "latest" : true a ella:
+```javascript
+var deletedDocument = db.movies.findOneAndDelete(
+                          {"title" : "Macbeth"},
+                          {sort : {"_id" : -1}}
+    )
+db.movies.insert(
+  {"_id" : deletedDocument._id, "title" : "Macbeth", "latest" : true}
+)
+```
+Este fragmento muestra dos comandos diferentes. El primero es un comando findOneAndDelete() que busca una película por su título y también usa la opción de sort para que solo se elimine la película con el \_id más grande . El resultado de la operación es el documento eliminado, se almacena en una variable de deletedDocument.
+
+El siguiente comando en el fragmento anterior es una operación de inserción que vuelve a insertar la misma película junto con la marca latest: true. Mientras lo hace, utiliza el valor \_id del documento eliminado, de modo que el nuevo registro se inserta con la misma clave principal:
+```javascript
+db.movies.find()
+{ "_id" : 1011, "title" : "Macbeth" }
+{ "_id" : 1513, "title" : "Macbeth" }
+{ "_id" : 1651, "title" : "Macbeth" }
+{ "_id" : 1819, "title" : "Macbeth" }
+{ "_id" : 2117, "title" : "Macbeth", "latest" : true }
+```
+Aunque los resultados son exactamente los mismos, la operación de dos pasos es más propensa a errores. Por lo tanto, siempre es preferible utilizar las funciones especiales proporcionadas por MongoDB.
+
+### 🧡 Actualizar un documento con updateOne() y $set
+
+Para modificar uno o solo algunos campos de un documento, MongoDB proporciona el comando de updateOne.
+
+Antes de usar esta función, primero elimine todos los registros previamente insertados y modificados de la colección:
+```javascript
+db.movies.deleteMany({})
+{ "acknowledged" : true, "deletedCount" : 5 }
+```
+Luego:
+```javascript
+db.movies.insertMany([
+  {"_id": 1, "title": "Macbeth", "year": 2014, "type": "series"},
+  {"_id": 2, "title": "Inside Out", "year": 2015, "type": "movie", "num_mflix_comments": 1},
+  {"_id": 3, "title": "The Martian", "year": 2015, "type": "movie", "num_mflix_comments": 1},
+  {"_id": 4, "title": "Everest", "year": 2015, "type": "movie", "num_mflix_comments": 1}
+])
+```
+`{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4 ] }`
+
+Actualize un documento con updateOne() y $set:
+```javascript
+db.movies.updateOne(
+    {"title" : "Macbeth"},
+    {$set : {"year" : 2015}}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+
+EL primer argumento es la condición de consulta. El segundo argumento es un documento que especifica un nuevo campo de año y su valor. Se usa $set, para asignar valores a los campos proporcionados en un documento. 
+```javascript
+db.movies.find({"title" : "Macbeth"})
+```
+`{ "_id" : 1, "title" : "Macbeth", "year" : 2015, "type" : "series" }`
+```javascript
+db.movies.updateOne(
+    {"title" : "Macbeth"},
+    {$set : {"year" : 2015}}
+)
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+```
+No se realizará ninguna actualización ya que el valor ya es 2015.
+
+### 🧡 Modificar Más De Un Campo coon updateOne y $set
+
+```javascript
+db.movies.updateOne(
+  {"title" : "Macbeth"},
+  {$set : {"type" : "movie", "num_mflix_comments" : 1}}
+)
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
+El campo num_mflix_comment no existe en la película respectiva, un registro se modificó como se esperaba.
+```javascript
+db.movies.find({"title" : "Macbeth"}).pretty()
+```
+```javascript
+{
+  "_id" : 1,
+  "title" : "Macbeth",
+  "year" : 2015,
+  "type" : "movie",
+  "num_mflix_comments" : 1
+}
+```
+Se ha agregado un nuevo campo llamado num_mflix_comments con el valor dado. Con $set se puede usar para actualizar varios campos en el mismo comando, y si un campo es nuevo, se agregará al documento con el valor especificado.
+
+Actualizar el mismo campo varias veces es válido, independientemente del valor del campo.
+```javascript
+db.movies.updateOne(
+  {"title" : "Macbeth"},
+  {$set : {"year" : 2015, "year" : 2015, "year" : 2016, "year" : 2017}}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+```javascript
+db.movies.find({"title" : "Macbeth"}).pretty()
+{
+  "_id" : 1,
+  "title" : "Macbeth",
+  "year" : 2017,
+  "type" : "movie",
+  "num_mflix_comments" : 1
+}
+```
+
+### 🧡 Varios Documentos Que Coinciden Con Una Condición
+
+La función updateOne, siempre actualiza solo un documento en la colección. Si la condición de consulta dada coincide con más de un documento, solo se modificará el primer documento:
+```javascript
+db.movies.updateOne(
+  {"type" : "movie"},
+  {$set : {"flag" : "modified"}}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+
+Recuerde que tenemos un total de tres documentos de tipo película en nuestra colección de películas. Si hay más de un documento que coincide con la condición de consulta dada, solo se elige y actualiza un documento.
+
+### 🧡 Upsert Con UpdateOne
+
+Cuando se ejecutan actualizaciones con upsert, el documento se actualizará si se encuentra; si no se encuentra el documento, se crea un nuevo documento dentro de la colección. updateOne también admite actualizaciones con un indicador adicional en el comando. 
+```javascript
+db.movies.updateOne(
+  {"title" : "Sicario"},
+  {$set : {"year" : 2015}}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 0, "modifiedCount" : 0 }`
+
+El resultado indica que no se comparó ningún documento y no se actualizó ningún documento.
+
+```javascript
+db.movies.updateOne(
+  {"title" : "Sicario"},
+  {$set : {"year" : 2015}},
+  {"upsert" : true}
+)
+```
+La operación anterior utiliza un tercer argumento, que contiene un documento con upsert establecido en true, que es falso de forma predeterminada.
+En este caso no se comparó ningún documento y no se actualizó ningún documento. Sin embargo, "upsertedId": ObjectId ("5e ...") indica que se insertó un documento con una clave primaria generada automáticamente .
+```javascript
+db.movies.find({"_id" : ObjectId("5ef5484b76db1f20a60917d2")}).pretty()
+```
+```
+{
+  "_id" : ObjectId("5ef5484b76db1f20a60917d2"),
+  "title" : "Sicario",
+  "year" : 2015
+}
+```
+Una cosa a tener en cuenta aquí es que el nuevo documento tiene dos campos, de los cuales el año del campo era parte de la expresión de actualización; sin embargo, el título formaba parte de la condición de la consulta. Cuando MongoDB crea un nuevo documento como parte de una operación upsert, combina campos de las expresiones de actualización y condiciones de consulta.
+
+### 🧡 Actualizar un documento con findOneAndUpdate
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$set : {"num_mflix_comments" : 10}}
+)
+```
+La operacion anterior no devolvió las estadísticas de la consulta, como cuántos registros coincidieron y cuántos registros se modificaron. En cambio, devuelve el documento en su estado anterior.
+```javascript
+db.movies.find({"title" : "Macbeth"}).pretty()
+```
+```
+{
+  "_id" : 1,
+  "title" : "Macbeth",
+  "year" : 2017,
+  "type" : "movie",
+  "num_mflix_comments" : 10,
+  "flag" : "modified"
+}
+```
+
+### 🧡 Mostrar el documento nuevo como respuesta
+```javascript
+db.movies.findOneAndUpdate (
+  {"title": "Macbeth"},
+  {$ set: {"num_mflix_comments": 15}},
+  {"returnNewDocument": true}
+)
+```
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$set : {"num_mflix_comments" : 20}},
+  {
+    "projection" : {"_id" : 0, "num_mflix_comments" : 1},
+    "returnNewDocument" : true
+  }
+)
+```
+ 
+### 🧡 Ordenar Para Encontrar Un Documento
+
+La función **findOneAndUpdate** proporciona una opción adicional para ordenar los documentos coincidentes en un orden específico. Con la opción de sort, puede influir en qué documento se selecciona para la modificación.
+```javascript
+db.movies.findOneAndUpdate(
+  {"type" : "movie"},
+  {$set : {"latest" : true}},
+  {
+    "returnNewDocument" : true,
+    "sort" : {"_id" : -1}
+  }
+)
+```
+
+### 🧡 Actualización de varios documentos con updateMany ()
+
+Considere que nuestra colección de películas tiene cuatro películas que se lanzaron en 2015. Agregue un campo llamado idiomas a estas películas:
+```javascript
+db.movies.updateMany(
+  {"year" : 2015},
+  {$set : {"languages" : ["English"]}}
+)
+```
+`{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }`
+
+Algunos puntos importantes sobre las **operaciones de actualización** y son aplicables a las tres funciones:
+
+- Ninguna de las funciones de actualización le permite cambiar el campo _id .
+- El orden de los campos en un documento siempre se mantiene, excepto cuando la actualización incluye cambiar el nombre de un campo. Sin embargo, el campo _id siempre aparecerá primero. (Cubriremos los campos de cambio de nombre en la siguiente sección).
+- Las operaciones de actualización son atómicas en un solo documento. Un documento no se puede modificar hasta que otro proceso haya terminado de actualizarlo.
+- Todas las funciones de actualización admiten upsert. Para ejecutar un comando upsert, upsert: true debe pasarse como una opción.
 
 
 
