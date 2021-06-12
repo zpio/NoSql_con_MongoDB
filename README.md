@@ -5,6 +5,7 @@
 - [2. Documentos y tipos de datos](#documentos_tipos_datos)
 - [3. Creando una base datos en MongoDB](#creando_bd_mongodb)
 - [4. Consulta de documentos (Querying Documents)](#querying_documents)
+- [5. Insertar, actualizar y eliminar documentos](#insertar_actualizar_eliminar)
 
 ## 🐥 1. Introducción a NoSql con MongoDB <a name="introduction_nosql_mongodb"></a>
 
@@ -1439,7 +1440,7 @@ Sholay
 */
 ```
 
- ## 🐥 5. Insertar, actualizar y eliminar documentos
+ ## 🐥 5. Insertar, actualizar y eliminar documentos <a name="insertar_actualizar_eliminar"></a>
 
 ### 🧡 Insertar documentos con insert()
 
