@@ -1,8 +1,16 @@
 # 🦄 Apuntes de NoSql con MongoDB 
 
-## 🐥 1. Introducción a NoSql con MongoDB 
+## Tabla de Contenido
+- [1. Introducción a NoSql con MongoDB](#introduction_nosql_mongodb)
+- [2. Documentos y tipos de datos](#documentos_tipos_datos)
+- [3. Creando una base datos en MongoDB](#creando_bd_mongodb)
+- [4. Consulta de documentos (Querying Documents)](#querying_documents)
 
-Hay dos tipos de bases de datos: bases de datos relacionales y no relacionales. Las **no relacionales** a menudo se denominan bases de datos **NoSQL**. 
+## 🐥 1. Introducción a NoSql con MongoDB <a name="introduction_nosql_mongodb"></a>
+
+Hay dos tipos de bases de datos: bases de datos relacionales y no relacionales. 
+
+Las bases datos **no relacionales** a menudo se denominan bases de datos **NoSQL**. 
 
 Una base de datos NoSQL se utiliza para almacenar grandes cantidades de datos complejos y diversos, como catálogos de productos, registros, interacciones de usuarios, análisis y más. 
 
@@ -20,11 +28,13 @@ Su diseño basado en **documentos** y su sintaxis intuitiva para consultas y com
 
 Ir al página oficial de MongoDB https://www.mongodb.com/try/download/community
 
-En este video de youtube te indica paso a paso como descargar e instalar: [https://www.youtube.com/watch?v=Y3RUzKNiiIA](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
+El siguiente video de youtube indica paso a paso como descargar e instalar: [Link](https://www.youtube.com/watch?v=Y3RUzKNiiIA)
 
 **👉Paso 2. Encender el servidor MongoDB**
 
-Una opción fácil para encender el servidor es ir a la carpeta de tu ordenador donde se instaló Mongo y abrir el archivo **mongod**. Dentro de la carpeta **bin** se encuentra los archivos ejecutables: **mongod** y **mongo**
+Una opción fácil para encender el servidor es ir a la carpeta del ordenador donde se instaló Mongo y abrir el archivo **mongod**. 
+
+Dentro de la carpeta **bin** se encuentra los archivos ejecutables: **mongod** y **mongo**
 ```
 C:\Program Files\MongoDB\Server\4.4\bin
 ```
@@ -32,38 +42,38 @@ Antes de abrir el archivo **mongod** hay que hacer un paso previo: Crear en el *
 ```
 C:\data\db
 ```
-Ahora si, abrir el archivo **mongod** y te saldrá la clásica pantalla negra.
+Ahora si, al abrir el archivo **mongod** y saldrá la clásica pantalla negra.
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongo.PNG)
 
-En esta pantalla te mostrará que el servidor esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
+En esta pantalla mostrará que el servidor esta encendido y está esperando que alguien se conecte. (No debes cerrar esta pantalla)
 
 **👉Paso 3. Abrir la consola y conectarse al servidor**
 
-Ahora deberás abrir el otro ejecutable: **mongo**. Este ejecutable es una **consola o terminal** (la clásica pantalla negra).
+Ahora se deberá abrir el otro ejecutable: **mongo**. Este ejecutable es una **consola o terminal**.
 
 Escribimos en la consola **2+2** para probar que funciona.
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/consola%20mongod.png)
 
-Además de la consola clásica (ventana negra) hay aplicaciones de entorno visual para comodidad del usuario como **MongoDB Compass**.
+Además de la consola clásica hay aplicaciones de entorno visual para comodidad del usuario como **MongoDB Compass**.
 
 **👉MongoDB Compass**
 
 MongoDB Compass es un entorno visual e intuitivo para interactuar con el servidor. Generalmente se instala junto cuando se instala MongoDB.
 
-Para usar MongoDB Compass debes abrir el programa y conectarte a tu servidor de mongo. Para esto hay que copiar el string que te apareció previamente en la consola: 
+Para usar MongoDB Compass se debe abrir el programa y conectase al servidor de mongo. Para esto hay que copiar el string que apareció previamente en la consola: 
 ```
 mongodb://127.0.0.1:27017 
 ```
-Luego clic en Connect y listo. Ahora podrás crear tu propia base de datos o subir un archivo de base de datos.
+Luego clic en Connect y listo. Ahora podrás crear su propia base de datos o subir un archivo de base de datos.
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/mongo%20compass.PNG)
 
 En la seccion 3 se verá como crear una base de datos mediante la consola y con la interfaz MongoDB Compass.
 
 
-## 🐥 2. Documentos y tipos de datos
+## 🐥 2. Documentos y tipos de datos <a name="documentos_tipos_datos"></a>
 
 Una de las características de **MongoDB** es su modelo de datos basado en **documentos**, que son aceptados como una forma flexible de transportar información. 
 
@@ -73,19 +83,23 @@ Muchas aplicaciones que intercambian datos en forma de documentos **JavaScript O
 
 Los documentos u objetos **JSON** son un conjunto de texto sin formato de pares **clave-valor**. 
 
-JSON tiene una estructura de un conjunto de llaves ( { } ), corchetes ( [ ] ), dos puntos ( : ), y comas ( , ). 
+JSON tiene una estructura de un conjunto de llaves `{ }`, corchetes `[ ]`, dos puntos `:` y comas `,`. 
 
-En un objeto JSON, los pares **clave-valor** están encerrados con llaves { }. La **clave** es siempre una cadena de texto y el **valor** puede ser cualquier **tipo** especificado por JSON.
+**Clave : Valor**
+
+En un objeto JSON, los pares **clave-valor** están encerrados con llaves `{ }`. La **clave** es siempre una cadena de texto y el **valor** puede ser cualquier **tipo** especificado por JSON.
 
 ```javascript
 { key : value }
 ```
-Un **array** es un conjunto de valores encerrados entre corchetes [ ] y separados por comas. JSON no especifica el orden de los elementos del array.
+**Array**
 
-```
+Un **array** es un conjunto de valores encerrados entre corchetes `[ ]` y separados por comas `,`.
+
+```javascript
 [ value1, value2, value3 ]
 ```
-Un ejemplo de un documento JSON que contiene la información básica de una empresa:
+Ejemplo de un documento JSON que contiene la información básica de una empresa:
 
 ```javascript
 {
@@ -100,12 +114,12 @@ Un ejemplo de un documento JSON que contiene la información básica de una empr
 
 ### 😻 Tipos de datos JSON
 
-- **👉String**: se refiere a texto sin formato
-- **👉Number**: consta de todos los campos numéricos
-- **👉Boolean**: valores true o false
-- **👉Object**: otros objetos JSON incrustados
-- **👉Array**: colección de campos
-- **👉Null**: valor especial para denotar campos sin ningún valor
+- **👉 String**
+- **👉 Number**
+- **👉 Boolean**
+- **👉 Object**
+- **👉 Array**
+- **👉 Null**
 
 JSON es un formato de intercambio de datos. La presencia de tipos de datos básicos proporcionados por JSON reduce la complejidad durante este proceso. Por eso se mantiene simple y mínimo en términos de tipos de datos.
 
@@ -118,15 +132,14 @@ En los documentos JSON, un número es solo una secuencia de dígitos. No disting
 En los documentos JSON no admite un tipo de datos Fecha y estas solo se representan como cadenas simples. Ejemplos:
 
 ```javascript
-{"title": "A Swedish Love Story", released: "1970-04-24"}
-{"title": "A Swedish Love Story", released: "24-04-1970"}
-{"title": "A Swedish Love Story", released: "24th April 1970"}
-{"title": "A Swedish Love Story", released: "Fri, 24 Apr 1970"}
-
+{
+  "title": "A Swedish Love Story", 
+  "released": "1970-04-24"
+}
 ```
-Las partes que intercambian la información deben estandarizar el formato fecha durante las transferencias. La forma de leer los datos depende de los intérpretes de los idiomas y de sus contratos de intercambio de datos.
+Las partes que intercambian la información deben estandarizar el formato fecha durante las transferencias. La forma de leer los datos depende de los intérpretes de los lenguajes y de sus contratos de intercambio de datos.
 
-### 💪 Ejercicio: Creación de tu propio documento JSON
+### 💪 Ejercicio: Creación de un documento JSON
 
 Abra un validador JSON, por ejemplo: [https://jsonlint.com/](https://jsonlint.com/).
 
@@ -144,7 +157,7 @@ Escriba la información anterior en formato JSON:
   "runtime" : 112
 }
 ``` 
-Recuerde, un documento JSON siempre comienza con { y termina con }. Cada elemento está separado por dos puntos ( : ) y los pares de valores clave están separados por una coma ( , ).
+Recuerde, un documento JSON siempre comienza con `{` y termina con `}`. Cada elemento está separado por dos puntos `:` y los pares `clave:valor` están separados por una coma.
 
 Haga clic en **Validar JSON** para validar el código.
 
@@ -158,7 +171,7 @@ En comparación con RDBMS, las **colecciones** son análogas a las **tablas** y 
 
 MongoDB almacena documentos similares a JSON.
 
-**👉Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares. Ejemplo:
+**👉Strings**: en MongoDB, los campos de cadena están codificados en UTF-8. Ademas, admiten capacidades de búsqueda con expresiones regulares.
 
 ```javascript
 { "name" : "Tom Walter" }
@@ -166,19 +179,24 @@ MongoDB almacena documentos similares a JSON.
 
 **👉Numbers**: En MongoDB se admite los varios tipos de números.
 
-double: punto flotante de 64 bits
-int: entero de 32 bits con signo
-long: entero sin signo de 64 bits
-decimal: punto flotante de 128 bits, que cumple con IEE 754
+- **double**: punto flotante de 64 bits
+- **int**: entero de 32 bits con signo
+- **long**: entero sin signo de 64 bits
+- **decimal**: punto flotante de 128 bits, que cumple con IEE 754
 
-**👉Booleans**: se utiliza para representar si algo es verdadero o falso. Ejemplo:
+```javascript
+{ "edad" : 25 }
+```
+
+**👉Booleans**: se utiliza para representar si algo es verdadero o falso.
 
 ```javascript
 { "isMongoDBHard": false }
 ```
 
-**👉Objects**: Los campos de objeto se utilizan para representar documentos **ANIDADOS** o **INCRUSTADOS,** es decir, un campo cuyo valor es otro documento JSON válido. 
-Ejemplo: El siguiente documento tiene otro documento anidado llamado **"host"**
+**👉Objects**: Se utilizan para representar documentos **ANIDADOS** o **INCRUSTADOS,** es decir, un campo cuyo valor es otro documento JSON válido. 
+
+El siguiente documento tiene otro documento anidado llamado **"host"**
 
 ```javascript
 {
@@ -192,7 +210,7 @@ Ejemplo: El siguiente documento tiene otro documento anidado llamado **"host"**
   }
 }
 ```
-El valor del campo de host es otro documento de JSON. MongoDB usa una notación de puntos ( . ) para acceder a los objetos incrustados. 
+El valor del campo de host es otro documento de JSON. MongoDB usa una notación de puntos `.` para acceder a los objetos anidados. 
 
 Para acceder a un documento anidado, podemos crear una variable y a partir de ahi usar la notacion de punto para acceder al documento anidado. 
 
@@ -218,15 +236,16 @@ listing.host.host_name
 ```
 `David`
 
-**👉Array**: es una colección de cero o más valores que deben estar encerrado con corchetes \[ ]. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
+**👉Array**: es una colección de cero o más valores que deben estar encerrado con corchetes `\[ ]`. En MongoDB, no hay límite para la cantidad de elementos que puede contener un array o la cantidad de arrays que puede tener un documento. Sin embargo, el tamaño total del documento no debe exceder los 16 MB.
 
 Considere la siguiente array que contiene cuatro números:
 
 ```javascript
 var doc = { first_array: [ 4, 3, 2, 1 ] }
 ```
-Se puede acceder a cada elemento de un array utilizando su posición de índice. El número de índice se incluye entre corchetes. (Los índices empiezan desde 0). Accedamos al tercer elemento del array:
+Se puede acceder a cada elemento de un array utilizando su posición de **índice**. El número de índice se incluye entre corchetes. (Los índices empiezan desde 0). 
 
+Accedamos al tercer elemento del array:
 ```javascript
 doc.first_array[3]
 ```
@@ -244,7 +263,7 @@ doc.first_array
 ```
 `[4, 3, 2, 1, 99]`
 
-Al igual que los objetos que tienen objetos incrustados, los arrays también pueden tener arrays incrustadas. La siguiente sintaxis agrega un array incrustado en el sexto elemento:
+Los arrays también pueden tener arrays anidados. La siguiente sintaxis agrega un array incrustado en el sexto elemento:
 
 ```javascript
 doc.first_array[5] = [11, 12]
@@ -256,7 +275,7 @@ doc.first_array
 ```
 `[4, 3, 2, 1, 99, [11, 12]]`
 
-Ahora, puede usar la notación de corchetes, \[ ] , para acceder a los elementos de un índice específico. En este ejemplo queremos acceder al primer elemento del quinto elemento del array anidado.
+Ahora, puede usar la notación de corchetes, `\[ ]` , para acceder a los elementos de un índice específico. Ejemplo: acceder al primer elemento del quinto elemento del array anidado.
 ```javascript
 doc.first_array[5][1]
 ```
@@ -367,11 +386,11 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
 }
 ```
 
-## 🐥 3. Creando tu propia base datos en MongoDB
+## 🐥 3. Creando una base datos en MongoDB <a name="creando_bd_mongodb"></a>
 
 ### ⚡ Conociendo comandos básicos
 
-Primero debe tener abierto la consola de mongo para comenzar a escribir los comandos.
+Abier la consola de mongo y comenzar a escribir los siguientes comandos:
 
 - El comando **`cls`** limpia la consola.
 ```
@@ -385,7 +404,7 @@ show dbs
 ```
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show_dbs.PNG)
 
-- El comando **`bd`** muestra en que base datos estamos actualmente. Al incio indicará que estamos en un entorno de **test**.
+- El comando **`bd`** muestra en que base datos estamos actualmente. Al incio indicará que estamos en **test**.
 ```
 db
 ```
@@ -398,9 +417,6 @@ use Sample1
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/use%20db.PNG)
 
 - Si ejecuta nuevamente el comando **`db`** mostrará que ahora ya estamos en la base datos **Sample1**.
-```
-use Sample1
-```
 
 - El comando **`show collections`** muestra las **COLECCIONES** (TABLAS) de la base datos **Sample1**. En este caso tenemos 2 colecciones: comments y movies.
 ```
@@ -410,11 +426,11 @@ show collections
 
 ### ⚡ Creando una base datos sencilla
 
-- Para crear una base datos tambien se usa el comando **`use`** junto al nombre de la nueva base datos.
+- Para crear una base datos tambien se utiliza el comando **`use`** junto al nombre de la nueva base datos.
 ```
 use mibase
 ```
-- Si ejecuta el comando **`show dbs`** aún no aparecerá en el listado debido que se debe crear una colección (o tabla).
+- Si ejecuta el comando **`show dbs`** aún no aparecerá en el listado debido que se debe crear una colección (tabla).
 
 ![](https://github.com/zpio/Apuntes_NoSql_con_MongoDB/blob/main/imagenes/show_dbs.PNG)
 
@@ -422,7 +438,6 @@ use mibase
 ```javascript
 db.createCollection('miColeccion')
 ```
-
 - Si ejecuta nuevamente el comando **`show dbs`** ahora si aparecerá en el listado.
 
 - El comando **`db.miColeccion.drop()`** borra una coleccion de la base datos.
@@ -430,25 +445,28 @@ db.createCollection('miColeccion')
 db.miColeccion.drop()
 ```
 - El comando **`db.dropDatabase()`** borra la base datos que estemos usando.
+```javascript
+db.dropDatabase()
+```
 
 ### ⚡ Subir una coleccion (documento JSON) a la base datos
 
-**👉Pimero**, deberás descargar las colecciones (archivo JSON) **movies.json** y **comments.json** para subirla a la base datos **Sample** que deberás crear.
+**👉 Pimero**: descargar las colecciones (archivo JSON) **movies.json** y **comments.json** para subirla a la base datos **Sample** que deberás crear.
 
 - **movies**: [link de descarga](https://raw.githubusercontent.com/zpio/mongodb-sample-dataset/main/sample_mflix/movies.json)
 
 - **comments**: [link de descarga](https://raw.githubusercontent.com/zpio/mongodb-sample-dataset/main/sample_mflix/comments.json)
 
-**👉Segundo** cree una base datos en la consola llamada **Sample**.
+**👉Segundo**: creear una base datos en la consola llamada **Sample**.
 
 Una forma muy intuitiva de subir colecciones a partir de un documento JSON a nuestra base datos es con el programa **Mongo Compass**.
 
-**👉Tercero**, deberás abrir Mongo Compass y conectarte con servidor de Mongo. Una vez ahi, deberas crear las colecciones en la base datos **Sample** y subir los archivos JSON respectivamente.
+**👉Tercero**: abrir Mongo Compass y conectarse al servidor de Mongo. Una vez ahi, deberas crear las colecciones en la base datos **Sample** y subir los archivos JSON respectivamente.
 
 Listo, ya tienes una base datos con 2 colecciones para comenzar a hacer las respectivas consultas, filtros, actualización, etc.
 
 
-## 🐥 4. Consulta de documentos (Querying Documents)
+## 🐥 4. Consulta de documentos (Querying Documents) <a name="querying_documents"></a>
 
 ### 🧡 Estructura de consulta MongoDB
 
@@ -2006,7 +2024,7 @@ db.movies.updateMany(
 Algunos puntos importantes sobre las **operaciones de actualización** y son aplicables a las tres funciones:
 
 - Ninguna de las funciones de actualización le permite cambiar el campo _id .
-- El orden de los campos en un documento siempre se mantiene, excepto cuando la actualización incluye cambiar el nombre de un campo. Sin embargo, el campo _id siempre aparecerá primero. (Cubriremos los campos de cambio de nombre en la siguiente sección).
+- El orden de los campos en un documento siempre se mantiene, excepto cuando la actualización incluye cambiar el nombre de un campo. Sin embargo, el campo \_id siempre aparecerá primero. (Cubriremos los campos de cambio de nombre en la siguiente sección).
 - Las operaciones de actualización son atómicas en un solo documento. Un documento no se puede modificar hasta que otro proceso haya terminado de actualizarlo.
 - Todas las funciones de actualización admiten upsert. Para ejecutar un comando upsert, upsert: true debe pasarse como una opción.
 
