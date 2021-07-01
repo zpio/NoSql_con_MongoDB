@@ -2070,5 +2070,113 @@ Algunos puntos importantes sobre las **operaciones de actualización** y son apl
 - Las operaciones de actualización son atómicas en un solo documento. Un documento no se puede modificar hasta que otro proceso haya terminado de actualizarlo.
 - Todas las funciones de actualización admiten **upsert**. Para ejecutar un comando upsert, `upsert: true` debe pasarse como una opción.
 
+### 🧡 Operadores de actualización
 
+1. El operador **$set** ya visto anteriormente, que es uno de los operadores de actualización proporcionados por MongoDB. Que se usa para establecer los valores de los campos en un documento o agregar nuevos campos.
+
+2. El operador de incremento **$inc** se utiliza para **incrementar** o **decrementar** el valor de un campo numérico en un número específico. 
+
+Ejemplo: Incrementar en 3 unidades el campo num_mflix_comments. 
+
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$inc : {"num_mflix_comments" : 3, "rating" : 1.5}},
+  {returnNewDocument : true}
+)
+```
+En el ejemolo se utilizó el operador $ inc en dos campos, de los cuales "num_mflix_comments existe en el documento y rating, findOneAndUpdate agregara este nuevo campo.
+
+3. El operador de Multiplicar **$mul** se utiliza para multiplicar el valor de un campo numérico en un número específico.
+
+Ejemplo: Multiplicar por 2 el campo rating.
+```javascript
+db.movies.findOneAndUpdate (
+  {"title": "Macbeth"},
+  {$mul: {"rating": 2}},
+  {returnNewDocument: true}
+)
+```
+Cuando use un campo inexistente con $mul, no importa qué multiplicador proporcionemos, el campo se creará y siempre se establecerá en cero. 
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$mul : {"box_office_collection" : 16.3}},
+  {returnNewDocument : true}
+)
+```
+4. El operador Rename **$rename** se usa para cambiar el nombre de los campos. Si el campo aún no está presente en el documento, el operador lo ignora y no hace nada. El campo proporcionado y su nuevo nombre deben ser diferentes. Si son iguales, la operación falla con un error. Si un documento ya contiene un campo con el nuevo nombre proporcionado, se eliminará el campo existente.
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$rename : {"num_mflix_comments" : "comments", "imdb_rating" : "rating"}},
+  {returnNewDocument : true}
+)
+```
+Con este operador rename, un campo también se puede mover hacia y desde documentos anidados. Para hacerlo, debe usar una notación de puntos:
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$rename : {"rating" : "imdb.rating"}},
+  {returnNewDocument : true}
+)
+```
+5. El operador currentDate **$currentDate** se usa para establecer el valor de un campo dado como Date o timestamp. Si el campo aún no está presente, se creará. Proporcionar un nombre de campo con un valor de true insertará la fecha actual como una Date. Se puede usar un operador **$type** para especificar el valor como una Date o timestamp. La notación de puntos anida documentos.
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$currentDate : {
+       "created_date" : true,
+       "last_updated.date" : {$type : "date"},
+       "last_updated.timestamp" : {$type : "timestamp"},
+  }},
+  {returnNewDocument : true}
+)
+```
+6. El operador de eliminacion **$unset** elimina todos los campos dados del documento coincidente. A medida que se eliminan los campos proporcionados, sus valores especificados no tienen ningún impacto.
+```javascript
+db.movies.findOneAndUpdate(
+  {"title" : "Macbeth"},
+  {$unset : {
+    "created_date" : "",
+    "last_updated" : "dummy_value",
+    "box_office_collection": 142.2,
+    "imdb" : null,
+    "flag" : ""
+  }},
+  {returnNewDocument : true}
+)
+```
+
+7. El otro operador de inserción **$setOnInsert** es similar a **$set**; sin embargo, solo establece los campos dados cuando ocurre una inserción durante una operación upsert. No tiene ningún impacto cuando la operación upsert da como resultado la actualización de documentos existentes. 
+```javascript
+db.movies.findOneAndUpdate(
+  {"title":"Macbeth"},
+  {
+    $rename:{"comments":"num_mflix_comments"},
+    $setOnInsert:{"created_time":new Date()}
+  },
+  {
+    upsert : true,
+    returnNewDocument:true
+  }
+)
+```
+El campo created_time no se agrega porque la operación upsert se usó para actualizar un documento existente.
+
+Ahora vea este ejemplo:
+```javascript
+db.movies.findOneAndUpdate(
+  {"title":"Spy"},
+  {
+    $rename:{"comments":"num_mflix_comments"},
+    $setOnInsert:{"created_time":new Date()}
+  },
+  {
+    upsert : true,
+    returnNewDocument:true
+  }
+)
+```
+La única diferencia entre este fragmento y el anterior es que esta operación encuentra una película llamada Spy, que no está presente en nuestra colección. Debido a la actualización, la operación dará como resultado la adición de un documento a la colección. Y se ha creado un nuevo registro de película junto con el campo created_time.
 
