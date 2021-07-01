@@ -501,20 +501,20 @@ db.comments.find({"name" : "Lauren Carr"}).pretty()
 ```
 ```javascript
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
-        "name" : "Lauren Carr",
-        "email" : "lauren_carr@fakegmail.com",
-        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
-        "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim. Quasi eligendi labore saepe rerum modi incidunt accusamus ex. Expedita temporibus consequatur dolore modi.",
-        "date" : ISODate("1978-03-25T06:29:47Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+  "name" : "Lauren Carr",
+  "email" : "lauren_carr@fakegmail.com",
+  "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+  "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim...",
+  "date" : ISODate("1978-03-25T06:29:47Z")
 }
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
-        "name" : "Lauren Carr",
-        "email" : "lauren_carr@fakegmail.com",
-        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
-        "text" : "Temporibus iste error id molestias. Et quia quas voluptate asperiores. Consectetur quisquam rerum est suscipit ullam.",
-        "date" : ISODate("1986-10-26T11:31:17Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
+  "name" : "Lauren Carr",
+  "email" : "lauren_carr@fakegmail.com",
+  "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+  "text" : "Temporibus iste error id molestias. Et quia quas voluptate asperiores. Consectetur quisquam rerum est suscipit ullam.",
+  "date" : ISODate("1986-10-26T11:31:17Z")
 }
 .....
 .....
@@ -525,12 +525,12 @@ db.comments.findOne ()
 ```
 ```javascript
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
-        "name" : "Lauren Carr",
-        "email" : "lauren_carr@fakegmail.com",
-        "movie_id" : ObjectId("573a139af29313caabcf0d74"),
-        "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim. Quasi eligendi labore saepe rerum modi incidunt accusamus ex. Expedita temporibus consequatur dolore modi.",
-        "date" : ISODate("1978-03-25T06:29:47Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+  "name" : "Lauren Carr",
+   "email" : "lauren_carr@fakegmail.com",
+   "movie_id" : ObjectId("573a139af29313caabcf0d74"),
+   "text" : "Sit ullam tenetur atque delectus. Pariatur eos sequi enim. Quasi eligendi labore saepe rerum modi incidunt accusamus ex. Expedita temporibus consequatur dolore modi.",
+   "date" : ISODate("1978-03-25T06:29:47Z")
 }
 ```
 Las siguientes consultas tienen el mismo comportamiento. Muestran todos los documentos de la coleccion.
@@ -539,7 +539,7 @@ db.comments.find ()
 
 db.comments.find ({})
 ```
-**👉 Elegir los campos para la salida - projection**
+**👉 Elegir los campos para la salida con projection**
 
 En las consultas de MongoDB, puede incluir o excluir campos específicos del resultado. Esta técnica se llama **projection**.
 
@@ -552,26 +552,26 @@ db.comments.find(
 ```
 ```javascript
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
-        "name" : "Lauren Carr",
-        "date" : ISODate("1978-03-25T06:29:47Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2d"),
+  "name" : "Lauren Carr",
+  "date" : ISODate("1978-03-25T06:29:47Z")
 }
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
-        "name" : "Lauren Carr",
-        "date" : ISODate("1986-10-26T11:31:17Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2e"),
+  "name" : "Lauren Carr",
+  "date" : ISODate("1986-10-26T11:31:17Z")
 }
 {
-        "_id" : ObjectId("5a9427648b0beebeb6962d2f"),
-        "name" : "Lauren Carr",
-        "date" : ISODate("1972-03-23T02:37:03Z")
+  "_id" : ObjectId("5a9427648b0beebeb6962d2f"),
+  "name" : "Lauren Carr",
+  "date" : ISODate("1972-03-23T02:37:03Z")
 }
 ```
 El campo **\_id** siempre se incluirá, a menos que se excluya explícitamente.
 ```javascript
 db.comments.find(
-    {"name" : "Lauren Carr"},
-    {"name" : 1, "date": 1, "_id" : 0}
+  {"name" : "Lauren Carr"},
+  {"name" : 1, "date": 1, "_id" : 0}
 ).pretty()
 ```
 ```javascript
@@ -587,37 +587,39 @@ db.movies.distinct("rated")
 ```
 ```javascript
 [
-        "AO",
-        "APPROVED",
-        "Approved",
-        "G",
-        "GP",
-        "M",
-        "NC-17",
-        "NOT RATED",
-        "Not Rated",
-        "OPEN",
-        "PASSED",
-        "PG",
-        "PG-13",
-        "R",
-        "TV-14",
-        "TV-G",
-        "TV-MA",
-        "TV-PG",
-        "TV-Y7",
-        "UNRATED",
-        "X"
+  "AO",
+  "APPROVED",
+  "Approved",
+  "G",
+  "GP",
+  "M",
+  "NC-17",
+  "NOT RATED",
+  "Not Rated",
+  "OPEN",
+  "PASSED",
+  "PG",
+  "PG-13",
+  "R",
+  "TV-14",
+  "TV-G",
+  "TV-MA",
+  "TV-PG",
+  "TV-Y7",
+  "UNRATED",
+  "X"
 ]
 ```
 Encuentre todas las ratings únicas que han recibido las películas que se estrenaron en 1994:
 ```javascript
-db.movies.distinct("rated", {"year" : 1994})
+db.movies.distinct(
+  "rated", {"year" : 1994}
+)
 ```
 ```
 [ "G", "NOT RATED", "PG", "PG-13", "R", "TV-14", "TV-PG", "UNRATED" ]
 ```
-**👉Contando los documentos - count**
+**👉Contando los documentos con count**
 
 La función **count** se utiliza para devolver el recuento de documentos dentro de una colección o un recuento de los documentos que coinciden con la consulta dada. Cuando se ejecuta sin ningún argumento de consulta, devuelve el recuento total de documentos en la colección.
 
@@ -628,13 +630,17 @@ db.movies.count()
 
 Devolver el recuento de películas que tienen exactamente 6 comentarios:
 ```javascript
-db.movies.count({"num_mflix_comments" : 6})
+db.movies.count(
+  {"num_mflix_comments" : 6}
+)
 ```
 ` 17 `
 
-En MongoDB v4.0 countDocuments( ) devuelve el recuento de documentos que coinciden con la condición dada. Un argumento de consulta es obligatorio db.movies.countDocuments( ) no es valido y fallara.
+En MongoDB v4.0 **countDocuments** devuelve el recuento de documentos que coinciden con la condición dada. Un argumento de consulta es obligatorio.
 ```javascript
-db.movies.countDocuments ({"year": 1999})
+db.movies.countDocuments (
+  {"year": 1999}
+)
 ```
 ` 542 ` 
 
@@ -644,9 +650,13 @@ db.movies.countDocuments ({"year": 1999})
 
 Devolver películas cuyo recuento de comentarios sea igual a 5. Ambas consultas tienen el mismo efecto:
 ```javascript
-db.movies.find({"num_mflix_comments" : 5})
+db.movies.find(
+  {"num_mflix_comments" : 5}
+)
 
-db.movies.find({"num_mflix_comments" : {$eq : 5 }})
+db.movies.find(
+  {"num_mflix_comments": {$eq : 5}}
+)
 ```
 
 👉 **Not Equal To ($ne)**
@@ -654,19 +664,21 @@ db.movies.find({"num_mflix_comments" : {$eq : 5 }})
 Devolver películas cuyo recuento de comentarios no sea igual a 5:
 ```javascript
 db.movies.find(
-    { "num_mflix_comments" :
-        {$ne : 5 }
-    }
+  {"num_mflix_comments" : {$ne : 5} }
 )
 ```
 
 👉 **Greater Than ($gt) and Greater Than or Equal To ($gte)**
+
+Devolver la cantidad de películas cuya fecha sea mayor a 2015:
 ```javascript
 db.movies.find(
     {year : {$gt : 2015}}
 ).count()
 ```
 `1`
+
+Devolver la cantidad de películas cuya fecha sea mayor igual a 2015:
 ```javascript
 db.movies.find(
     {year : {$gte : 2015}}
@@ -674,7 +686,7 @@ db.movies.find(
 ```
 `485`
 
-Contar las películas que se estrenaron en el siglo XXI (desde el 1 de enero de 2000):
+Devolver la cantidad de películas que se estrenaron en el siglo XXI (desde el 1 de enero de 2000):
 ```javascript
 db.movies.find(
     {"released" :
@@ -718,45 +730,46 @@ db.movies.find(
 
 👉 **In ($in) and Not In ($nin)**
 
-Todas las películas que han sido clasificadas como G, PG o PG-13:
+Encontrar todas las películas que han sido clasificadas como G, PG o PG-13:
 ```javascript
 db.movies.find(
-    {"rated" :
-        {$in : ["G", "PG", "PG-13"]}
-    }
+  {"rated" :
+    {$in : ["G", "PG", "PG-13"]}
+  }
 )
 ```
 Todas las películas que no han sido clasificadas como G, PG o PG-13:
 ```javascript
 db.movies.find(
-    {"rated" :
-        {$nin : ["G", "PG", "PG-13"]}
-    }
+  {"rated" :
+    {$nin : ["G", "PG", "PG-13"]}
+  }
 )
 ```
-La consulta anterior devuelve películas que no están clasificadas como G , PG o PG-13, incluidas las que no tienen el campo rated
+La consulta anterior devuelve películas que no están clasificadas como G , PG o PG-13, incluidas las que no tienen el campo rated.
 
-Para ver qué sucede cuando usa **$nin** con un campo inexistente, primero, busque el total de documentos que tiene, de la siguiente manera:
+Para ver qué sucede cuando usa **$nin** con un campo inexistente, primero, busque el total de documentos que tiene:
 ```javascript
 db.movies.countDocuments ({})
 23539
 ```
-Ahora, use **$nin** con algunos valores, excepto null, en un objeto inexistente. Esto significa que todos los documentos coinciden.
+Ahora, use **$nin** con algunos valores, excepto null, en un campo inexistente:
 ```javascript
 db.movies.countDocuments(
-    {"nef" :
-        {$nin : ["a value", "another value"]}
-    }
+  {"nef" :
+    {$nin : ["a value", "another value"]}
+  }
 )
 ```
 `23539`
+Esto significa que todos los documentos coinciden.
 
 Ahora, agregue un valor **null** a la matriz `$nin`:
 ```javascript
 db.movies.countDocuments(
-    {"nef" :
-        {$nin : ["a value", "another value", null ]}
-    }
+  {"nef" :
+     {$nin: ["a value", "another value", null ]}
+  }
 )
 ```
 `0`
@@ -765,32 +778,36 @@ Esta vez, no coincidió con ningún documento. Esto se debe a que, en MongoDB, u
 
 💪 **Ejercicio: Consulta de películas de un actor**
 
-Encuentre el numero de películas en las que aparece Leonardo DiCaprio usando el campo de cast.
+Encuentre el numero de películas en las que aparece `Leonardo DiCaprio` usando el campo de cast.
 ```javascript
-db.movies.countDocuments ({"cast": "Leonardo DiCaprio"})
+db.movies.countDocuments(
+  {"cast": "Leonardo DiCaprio"}
+)
 ```
 `25`
 
-Encuentre los género de estas películas, devuelva un array.
+Encuentre los géneros de estas películas, devuelva un array.
 ```javascript
-db.movies.distinct("genres", {"cast" : "Leonardo DiCaprio"})
+db.movies.distinct(
+  "genres", {"cast" : "Leonardo DiCaprio"}
+)
 ```
 ```javascript
 [
-        "Action",
-        "Adventure",
-        "Biography",
-        "Comedy",
-        "Crime",
-        "Documentary",
-        "Drama",
-        "History",
-        "Mystery",
-        "Romance",
-        "Sci-Fi",
-        "Short",
-        "Thriller",
-        "Western"
+  "Action",
+  "Adventure",
+  "Biography",
+  "Comedy",
+  "Crime",
+  "Documentary",
+  "Drama",
+  "History",
+  "Mystery",
+  "Romance",
+  "Sci-Fi",
+  "Short",
+  "Thriller",
+  "Western"
 ]
 ```
 Encuentre sus Títulos de películas y sus respectivos años de estreno.
@@ -837,60 +854,56 @@ Con el operador **$and**, puede tener cualquier número de condiciones envueltas
 
 Películas sin clasificación que se lanzaron en 2008:
 ```javascript
-db.movies.countDocuments (
-    {$and :
-        [{"rated" : "UNRATED"}, {"year" : 2008}]
-    }
+db.movies.countDocuments(
+  {$and :
+    [{"rated" : "UNRATED"}, {"year" : 2008}]
+  }
 )
 ```
 `37`
 
-En las consultas de MongoDB, el operador $and está implícito y se incluye de forma predeterminada si un documento de consulta tiene más de una condición. 
+En las consultas de MongoDB, el operador **$and** está implícito y se incluye de forma predeterminada si un documento de consulta tiene más de una condición. 
 ```javascript
 db.movies.countDocuments (
-    {"rated": "UNRATED", "year" : 2008}
+  {"rated": "UNRATED", "year" : 2008}
 )
 ```
 `37`
 
 👉 **$or Operator**
 
-En el ejemplo que usamos en la sección In ($ in) y Not In ($ nin) , escribió una consulta para contar las películas clasificadas como G, PG o PG-13. Con el operador $or, reescriba la misma consulta:
+En el ejemplo que usamos en la sección de In ($ in) y Not In ($ nin), escribió una consulta para contar las películas clasificadas como G, PG o PG-13. Con el operador $or, reescriba la misma consulta:
 ```javascript
 db.movies.find(
-    { $or : [
-        {"rated" : "G"},
-        {"rated" : "PG"},
-        {"rated" : "PG-13"}
-    ]}
+  {$or : [
+     {"rated" : "G"},
+     {"rated" : "PG"},
+     {"rated" : "PG-13"}
+  ]}
 )
 ```
-El operador **$in** se usa para determinar si un campo dado tiene al menos uno de los valores proporcionados en una matriz, mientras que el operador $or no está vinculado a ningún campo específico y acepta múltiples expresiones. 
-```javascript
-{"rated" : "G"}
-{"year" : 2005}
-{"num_mflix_comments" : {$gte : 5}}
-```
+El operador **$in** se usa para determinar si un campo dado tiene al menos uno de los valores proporcionados en una matriz, mientras que el operador **$or** no está vinculado a ningún campo específico y acepta múltiples expresiones de diferentes campos.
+
 ```javascript
 db.movies.find(
-    {$or:[
-        {"rated" : "G"},
-        {"year" : 2005},
-        {"num_mflix_comments" : {$gte : 5}}
-   ]}
+  {$or:[
+    {"rated" : "G"},
+    {"year" : 2005},
+    {"num_mflix_comments" : {$gte : 5}}
+  ]}
 )
 ```
 
 👉 **$not Operator**
 
-El operador $not representa la operación lógica NOT que niega la condición dada. 
+El operador **$not** representa la operación lógica NOT que niega la condición dada. 
 
-Ejemplo: Devuelva todas las películas que no tienen 5 o más comentarios.
+Ejemplo: Devuelva todas las películas que no tienen 5 o más comentarios:
 ```javascript
 db.movies.find(
-    {"num_mflix_comments" :
-        {$not : {$gte : 5} }
-    }
+  {"num_mflix_comments" :
+    {$not: {$gte : 5}}
+  }
 )
 ```
 
@@ -920,9 +933,9 @@ db.movies.find(
 
 👉 **Usando $regex**
 
-En las consultas de MongoDB, las expresiones regulares se pueden usar con el operador $regex.
+En las consultas de MongoDB, las expresiones regulares se pueden usar con el operador **$regex**.
 
-Ejemplo: Encontrar todas las películas cuyos títulos contienen la palabra “Opera” en cualquier posicion.
+Ejemplo: Encontrar todas las películas cuyos títulos contienen la palabra **Opera** en cualquier posicion:
 ```javascript
 db.movies.find(
     {"title" : {$regex :"Opera"}},
@@ -934,7 +947,7 @@ db.movies.find(
 
 Para buscar solo las cadenas que comienzan con la expresión regular dada se utiliza el operador ( ^ ).
 
-Ejemplo: Buscar solo aquellas películas cuyos títulos comienzan con la palabra Opera.
+Ejemplo: Buscar solo aquellas películas cuyos títulos comienzan con la palabra Opera:
 ```javascript
 db.movies.find (
     {"title": {$ regex: "^Opera"}},
@@ -969,7 +982,7 @@ db.movies.find(
 
 👉 **Encontrar un Array por elemento**
 
-Consultar un array es similar a consultar cualquier otro campo. En la colección de movies, hay varios arrays y el campo de cast es una de ellas. 
+Consultar un array es similar a consultar cualquier otro campo. En la colección de **movies**, hay varios arrays y el campo de **cast** es una de ellas. 
 
 Ejemplo: Encontrar películas protagonizadas por el actor Charles Chaplin.
 ```javascript
@@ -985,7 +998,7 @@ db.movies.find ({"cast": "Charles Chaplin"}, {"cast": 1, "_id": 0})
 { "cast" : [ "Charles Chaplin", "Claire Bloom", "Nigel Bruce", "Buster Keaton" ] }
 { "cast" : [ "Charles Chaplin", "Maxine Audley", "Jerry Desmonde", "Oliver Johnston" ] }
 ```
-Buscar películas con los actores Charles Chaplin y Edna Purviance juntos:
+Ejemplo: Buscar películas con los actores Charles Chaplin y Edna Purviance juntos:
 ```javascript
 db.movies.find(
     {$and :[
@@ -997,9 +1010,9 @@ db.movies.find(
 ```
 👉 **Buscar un campo Array usando un Array**
 
-Cuando busca un campo de array utilizando un valor de matriz, los elementos y su orden deben coincidir.
+Cuando busca un campo de array utilizando un array, los elementos y su orden deben coincidir.
 
-Encontrar películas que estén disponibles tanto en inglés como en alemán. Prepare una matriz de ambos valores y consulte el campo de languages:
+Ejemplo: Encontrar películas que estén disponibles tanto en English como en German. Prepare un array de ambos valores y consulte el campo de languages:
 ```javascript
 db.movies.find(
     {"languages" : ["English", "German"]}, {"languages" : 1}
@@ -1029,7 +1042,7 @@ Tenga en cuenta que la consulta es la misma que la anterior, excepto por el orde
 ```
 Al cambiar el orden de los elementos en la matriz, se han hecho coincidir diferentes registros.
 
-Cuando se buscan campos de array utilizando un valor de array, el valor se compara mediante una verificación de igualdad. Dos matrices cualesquiera solo pasan la verificación de igualdad si tienen los mismos elementos en el mismo orden. Por lo tanto, las dos consultas siguientes no son iguales y devolverán resultados diferentes:
+Cuando se buscan campos de array utilizando un array, el valor se compara mediante una verificación de igualdad. Dos array cualesquiera solo pasan la verificación de igualdad si tienen los mismos elementos en el mismo orden. Por lo tanto, las dos consultas siguientes no son iguales y devolverán resultados diferentes:
 ```javascript
 // Find movies languages by [ "English", "French", "Cantonese", "German"]
 db.movies.find(
@@ -1044,13 +1057,13 @@ db.movies.find(
     {"languages" : 1, "_id": 0}
 )
 ```
-La única diferencia entre estas dos consultas es que la segunda consulta no contiene el último elemento; es decir, alemán.
+La única diferencia entre estas dos consultas es que la segunda consulta no contiene el último elemento "German".
 
 👉 **Buscando en un Array con el Operador $all**
 
 El operador **$all** busca todos aquellos documentos donde el valor del campo contiene todos los elementos, independientemente de su orden o tamaño.
 
-Ejemplo: Buscar todas las películas disponibles en inglés, francés y cantonés.
+Ejemplo: Buscar todas las películas disponibles en English, French y Cantonese.
 ```javascript
 db.movies.find(
     {"languages":{
@@ -1086,7 +1099,7 @@ Hasta ahora, siempre que buscamos un campo de array, la salida siempre contiene 
 
 👉 **Proyectar Elementos Coincidentes Usando ($)**
 
-Puede buscar una matriz por un valor de elemento y usar la proyección para excluir todos menos el primer elemento coincidente de la matriz usando el operador **$**.
+Puede buscar una array por un valor de elemento y usar la proyección para excluir todos excepto el elemento coincidente del array usando el operador **$**.
 ```javascript
 db.movies.find(
     {"languages" : "Syriac"},
@@ -1102,7 +1115,7 @@ El campo array de la salida solo contiene el elemento coincidente, el resto de l
 
 👉 **Proyectar Elementos Coincidentes Por Su Posición De Índice ($slice)**
 
-El operador **$slice** se utiliza para limitar los elementos de la matriz en función de su posición de índice. Este operador se puede utilizar con cualquier campo de array, independientemente del campo que se esté consultando o no. Esto significa que puede consultar un campo diferente y todavía utilizan este operador para limitar los elementos de los campos array.
+El operador **$slice** se utiliza para limitar los elementos del array en función de su posición de índice. Este operador se puede utilizar con cualquier campo de array, independientemente del campo que se esté consultando o no. Esto significa que puede consultar un campo diferente y todavía utilizan este operador para limitar los elementos de los campos array.
 
 Ejemplo: La película Youth Without Youth tiene 11 elementos en campo array languages. Use **$slice** para imprimir solo los primeros tres elementos:
 ```javascript
@@ -1165,9 +1178,11 @@ db.movies.find(
 "released" : ISODate("2007-10-26T00:00:00Z"),
 ```
 
-👉 **Consultar objetos anidados**
+👉 **Consultar objetos anidados completos**
 
-De manera similar a las matrices, los objetos anidados también se pueden representar como valores de un campo. Por lo tanto, los campos que tienen otros objetos como valores se pueden buscar utilizando el objeto completo como valor. En la colección de movies, hay un campo llamado **awards** cuyo valor es un objeto anidado. El siguiente fragmento muestra el objeto de awards para una película aleatoria de la colección:
+De manera similar a las matrices, los objetos anidados también se pueden representar como valores de un campo. Por lo tanto, los campos que tienen otros objetos como valores se pueden buscar utilizando el **objeto completo como valor**. 
+
+En la colección de movies, hay un campo llamado **awards** cuyo valor es un objeto anidado. El siguiente fragmento muestra el objeto de awards para una película aleatoria de la colección:
 ```javascript
 "rated" : "TV-G",
     "awards" : {
@@ -1218,7 +1233,7 @@ db.movies.find(
 ```
 👉 **Consultar campos de objetos anidados**
 
-Con la notación de puntos se puede utilizar para buscar objetos anidados proporcionando los valores de sus campos. 
+Con la notación de puntos (.) se puede utilizar para buscar objetos anidados proporcionando los valores de sus campos. 
 
 Ejemplo: Buscar películas que hayan ganado cuatro premios.
 ```javascript
@@ -1226,7 +1241,7 @@ db.movies.find (
     {"awards.wins": 4}, {"awards": 1, "_id": 0}
 )
 ```
-La consulta anterior utiliza la notación de puntos ( . ) en el campo de **awards** y refiere al campo anidado **wins**. 
+La consulta anterior utiliza la notación de puntos (.) en el campo de **awards** y refiere al campo anidado **wins**. 
 
 Cuando ejecuta la consulta y proyecta solo el campo de awards, muestra todas las películas que tienen exactamente cuatro premios:
 ```javascript
@@ -1277,7 +1292,7 @@ Al ejecutar la consulta excluyendo el resto de los campos, debería ver el sigui
 ...
 ```
 
-💪 **Ejercicio 4.04: Proyección de campos de objetos anidados**
+💪 **Ejercicio: Proyección de campos de objetos anidados**
 
 Mostrar todos los registros y proyectar solo el campo de awards, que es un objeto incrustado:
 ```javascript
@@ -1329,7 +1344,7 @@ db.movies.find(
     {"title": 1, "_id" :0}
 ).skip(2)
 ```
-Dado que la función skip () se ha proporcionado con el valor 2, los dos primeros documentos se excluirán de la salida, como se muestra en la siguiente captura de pantalla:
+Dado que la función skip se ha proporcionado con el valor 2, los dos primeros documentos se excluirán de la salida:
 ```javascript
 { "title" : "The Gold Rush" }
 { "title" : "Modern Times" }
@@ -1353,7 +1368,7 @@ Error: error: {
         "codeName" : "BadValue"
 }
  ```
-### 🧡 Ordenando documentos
+### 🧡 Ordenando documentos con sort
 
 La ordenación de documentos se puede realizar en varios campos y cada campo puede tener un ordenamiento diferente.
 
@@ -1524,10 +1539,12 @@ MongoDB verifica la presencia y unicidad de una clave primaria dada y, si la cla
 db.new_movies.insert ({"título": "Thelma"})
 ```
 `WriteResult ({"nInserted": 1})`
+
 ```javascript
 db.new_movies.find ({"título": "Thelma"})
 ```
 `{"_id": ObjectId ("5df6a0e1b32aea114de21834"), "title": "Thelma"}`
+
 ```javascript
 db.new_movies.insertMany([
     {"_id" : 9, "title" : "movie_1"},
@@ -1539,17 +1556,20 @@ db.new_movies.insertMany([
  
 ### 🧡 Eliminar Documentos usando deleteOne()
 
-La función **deleteOne()** se usa para eliminar un solo documento de una colección. Como el método elimina solo un documento, el valor de **deletedCount** es siempre 1. Si la condición de consulta dada coincide con más de un documento en la colección, solo se eliminará el primer documento.
+La función **deleteOne()** se usa para eliminar un solo documento de una colección. Como el método elimina solo un documento, el valor de respuesta **deletedCount** es 1. Si la condición de consulta dada coincide con más de un documento en la colección, solo se eliminará el primer documento.
 ```javascript
 db.new_movies.deleteOne({"_id": 2})
-{ "acknowledged" : true, "deletedCount" : 1 }
 ```
+`{ "acknowledged" : true, "deletedCount" : 1 }`
+
 
 💪 **Ejercicio 5.01: eliminar uno de los muchos documentos coincidentes**
 
 En este ejercicio, usará una consulta que coincida con más de un documento y verificará que solo se elimine el primer documento cuando lo haga.
 ```javascript
 db.new_movies.find({"title" : {"$regex": "^movie"}})
+```
+```
 { "_id" : 9, "title" : "movie_1" }
 { "_id" : 10, "title" : "movie_2" }
 { "_id" : ObjectId("5ef2666a6c3f28e14fddc816"), "title" : "movie_3" }
@@ -1559,6 +1579,7 @@ db.new_movies.find({"title" : {"$regex": "^movie"}})
 db.new_movies.deleteOne({"title" : {"$regex": "^movie"}})
 ```
 `{ "acknowledged" : true, "deletedCount" : 1 }`
+
 ```javascript
 db.new_movies.find({"title" : {"$regex": "^movie"}})
 ```
@@ -1591,6 +1612,7 @@ Siempre debe asegurarse de que no haya errores tipográficos en el nombre del ca
 ### 🧡 Eliminar usando findOneAndDelete()
 
 Busca y elimina un documento de la colección. Si se encuentra más de un documento, solo se eliminará el primero. Una vez eliminado, **muestra el documento eliminado** como respuesta. En el caso de coincidencias de varios documentos, la opción de **sort** se puede utilizar para influir en qué documento se elimina. La proyección se puede utilizar para incluir o excluir campos del documento en respuesta.
+
 ```javascript
 db.new_movies.findOneAndDelete({"_id": 3})
 ```
@@ -1612,6 +1634,7 @@ db.new_movies.findOneAndDelete(
   )
 ```
 `{ "_id" : 14, "title" : "movie_14" }`
+
 ```javascript
 db.new_movies.findOneAndDelete(
      {"title" : {"$regex" : "^movie"}},
@@ -1622,12 +1645,15 @@ db.new_movies.findOneAndDelete(
 
 💪 **Ejercicio 5.02: Eliminación de una película de baja calificación**
 
-Usando la coleccion de **movies** ejecutar un comando de eliminación para que se elimine una película con menos premios, una calificación de IMDb de menos de 2 y más de 50,000 votos. Luego, solo muestre el título y el \_id de la película eliminada.
+Usando la coleccion de **movies** ejecutar un comando de eliminación para que se elimine una película con menos premios, una calificación de IMDb de menos de 2 y más de 50000 votos. Luego, solo muestre el título y el \_id de la película eliminada.
 
 La clasificación de IMDb es un campo anidado; por lo tanto, usará la notación de puntos para acceder al campo:
 ```javascript
 db.movies.findOneAndDelete(
-  {"imdb.rating" : {$lt : 2}, "imdb.votes" : {$gt : 50000}},
+  { 
+    "imdb.rating" : {$lt : 2}, 
+    "imdb.votes" : {$gt : 50000}
+  },
   {
     "sort" : {"awards.won": 1},
     "projection" : {"title" : 1}
@@ -1649,6 +1675,7 @@ db.users.insertMany([
 ])
 ```
 `{ "acknowledged" : true, "insertedIds" : [ 2, 3, 5, 6 ] }`
+
 ```javascript
 db.users.find()
 ```
@@ -1658,7 +1685,7 @@ db.users.find()
 { "_id" : 5, "name" : "Margaery Tyrell", "email" : "Margaery.Tyrell@got.es" }
 { "_id" : 6, "name" : "Khal Drogo", "email" : "Khal.Drogo@got.es" }
 ```
-MongoDB proporciona el método **replaceOne()**, que acepta un filtro de consulta y un documento de reemplazo.  El primer argumento es el filtro de consulta para identificar el documento que se reemplazará y el segundo argumento es el nuevo documento. 
+MongoDB proporciona el método **replaceOne()**, que acepta un filtro de consulta y un documento de reemplazo. El primer argumento es el filtro de consulta para identificar el documento que se reemplazará y el segundo argumento es el nuevo documento. 
 ```javascript
 db.users.replaceOne(
   {"_id" : 5},
@@ -1675,7 +1702,7 @@ db.users.replaceOne(
 )
 ```
 
-### 🧡 Los Campos _Id Son Inmutables
+### 🧡 Los Campos \_Id Son Inmutables
 
 El \_id del documento original se conserva en el nuevo documento. El campo \_id sirve como identificador único de un documento y, por lo tanto, no debe cambiarse mientras exista el documento.
 ```javascript
@@ -1692,9 +1719,13 @@ db.users.replaceOne(
 
 ### 🧡 Reemplazar y/o actualizar con replaceOne y upsert
 
-Habrá ocasiones en las que desee reemplazar un documento existente por uno nuevo y, si el documento aún no existe, inserta el nuevo documento. Actualización o **update** (si se encuentra) o inserción **insert** (si no se encuentra), que se abrevia con **upsert**. Se debe pasar un argumento adicional **{upsert: true}**.
+Habrá ocasiones en las que desee reemplazar un documento existente por uno nuevo y, si el documento aún no existe, inserte el nuevo documento. 
 
-Considere los siguientes registros en la colección de usuarios:
+Actualización o **update** (si se encuentra) o inserción **insert** (si no se encuentra), que se abrevia con **upsert**. 
+
+Se debe pasar un argumento adicional **{upsert: true}**.
+
+Considere los siguientes registros en la colección de users:
 ```javascript
 db.users.find()
 {"_id": 2, "name": "Jon Snow", "email": "Jon.Snow@got.es"}
@@ -1730,11 +1761,11 @@ Las principales características de findOneAndReplace() son las siguientes:
 - Busca un documento y lo reemplaza.
 - Si se encuentra más de un documento que coincide con la consulta, se reemplazará el primero.
 - Se puede utilizar una opción de **sort** para influir en qué documento se reemplaza si se hace coincidir más de un documento.
-- De forma predeterminada, devuelve el documento original.
+- De forma predeterminada, devuelve el **documento original**.
 - Si se establece la opción de **{returnNewDocument: true}**, se devolverá el documento recién agregado.
-- La proyección de campo se puede utilizar para incluir solo campos específicos en el documento devuelto como respuesta.
+- La **proyección** de campo se puede utilizar para incluir solo campos específicos en el documento devuelto como respuesta.
 
-Para ver findOneAndReplace() en acción, agregue cinco documentos a una colección de películas:
+Para ver findOneAndReplace() en acción, agregue cinco documentos a una colección de movies:
 ```javascript
 db.movies.insertMany([
     { "_id": 1011, "title" : "Macbeth" },
@@ -1800,19 +1831,23 @@ db.movies.insertMany([
     { "_id": 2117, "title" : "Macbeth" }
 ])
 ```
-Ahora, busque el documento de la última película titulada Macbeth y agregue la marca "latest" : true a ella:
+Ahora, busque el documento de la última película titulada Macbeth y agregue la marca **latest: true** a ella:
 ```javascript
 var deletedDocument = db.movies.findOneAndDelete(
                           {"title" : "Macbeth"},
                           {sort : {"_id" : -1}}
     )
+    
 db.movies.insert(
-  {"_id" : deletedDocument._id, "title" : "Macbeth", "latest" : true}
+  {
+    "_id" : deletedDocument._id, 
+    "title" : "Macbeth", "latest" : true
+   }
 )
 ```
 Este fragmento muestra dos comandos diferentes. El primero es un comando findOneAndDelete() que busca una película por su título y también usa la opción de sort para que solo se elimine la película con el \_id más grande . El resultado de la operación es el documento eliminado, se almacena en una variable de deletedDocument.
 
-El siguiente comando en el fragmento anterior es una operación de inserción que vuelve a insertar la misma película junto con la marca latest: true. Mientras lo hace, utiliza el valor \_id del documento eliminado, de modo que el nuevo registro se inserta con la misma clave principal:
+El siguiente comando en el fragmento anterior es una operación de inserción que vuelve a insertar la misma película junto con la marca **latest: true**. Mientras lo hace, utiliza el valor \_id del documento eliminado, de modo que el nuevo registro se inserta con la misma clave principal:
 ```javascript
 db.movies.find()
 { "_id" : 1011, "title" : "Macbeth" }
@@ -1825,7 +1860,7 @@ Aunque los resultados son exactamente los mismos, la operación de dos pasos es 
 
 ### 🧡 Actualizar un documento con updateOne() y $set
 
-Para modificar uno o solo algunos campos de un documento, MongoDB proporciona el comando de updateOne.
+Para modificar uno o solo algunos campos de un documento, MongoDB proporciona el comando de updateOne. Devolve las estadísticas de la consulta, como cuántos registros coincidieron y cuántos registros se modificaron.
 
 Antes de usar esta función, primero elimine todos los registros previamente insertados y modificados de la colección:
 ```javascript
@@ -1866,7 +1901,7 @@ db.movies.updateOne(
 ```
 No se realizará ninguna actualización ya que el valor ya es 2015.
 
-### 🧡 Modificar Más De Un Campo coon updateOne y $set
+### 🧡 Modificar Más De Un Campo con updateOne y $set
 
 ```javascript
 db.movies.updateOne(
@@ -1898,6 +1933,7 @@ db.movies.updateOne(
 )
 ```
 `{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+
 ```javascript
 db.movies.find({"title" : "Macbeth"}).pretty()
 {
@@ -1909,7 +1945,7 @@ db.movies.find({"title" : "Macbeth"}).pretty()
 }
 ```
 
-### 🧡 Varios Documentos Que Coinciden Con Una Condición
+### 🧡 Varios Documentos Que Coinciden Con Una Condición con UpdateOne
 
 La función updateOne, siempre actualiza solo un documento en la colección. Si la condición de consulta dada coincide con más de un documento, solo se modificará el primer documento:
 ```javascript
@@ -1942,7 +1978,7 @@ db.movies.updateOne(
   {"upsert" : true}
 )
 ```
-La operación anterior utiliza un tercer argumento, que contiene un documento con upsert establecido en true, que es falso de forma predeterminada.
+La operación anterior utiliza un tercer argumento, que contiene un documento con **upsert: true**, que es falso de forma predeterminada.
 En este caso no se comparó ningún documento y no se actualizó ningún documento. Sin embargo, "upsertedId": ObjectId ("5e ...") indica que se insertó un documento con una clave primaria generada automáticamente .
 ```javascript
 db.movies.find({"_id" : ObjectId("5ef5484b76db1f20a60917d2")}).pretty()
@@ -1957,13 +1993,16 @@ db.movies.find({"_id" : ObjectId("5ef5484b76db1f20a60917d2")}).pretty()
 Una cosa a tener en cuenta aquí es que el nuevo documento tiene dos campos, de los cuales el año del campo era parte de la expresión de actualización; sin embargo, el título formaba parte de la condición de la consulta. Cuando MongoDB crea un nuevo documento como parte de una operación upsert, combina campos de las expresiones de actualización y condiciones de consulta.
 
 ### 🧡 Actualizar un documento con findOneAndUpdate
+
+Cuando se usa findOneAndUpdate no devolve las estadísticas de la consulta, como cuántos registros coincidieron y cuántos registros se modificaron. En cambio, devuelve el documento en su estado anterior.
+
 ```javascript
 db.movies.findOneAndUpdate(
   {"title" : "Macbeth"},
   {$set : {"num_mflix_comments" : 10}}
 )
 ```
-La operacion anterior no devolvió las estadísticas de la consulta, como cuántos registros coincidieron y cuántos registros se modificaron. En cambio, devuelve el documento en su estado anterior.
+
 ```javascript
 db.movies.find({"title" : "Macbeth"}).pretty()
 ```
@@ -1978,7 +2017,9 @@ db.movies.find({"title" : "Macbeth"}).pretty()
 }
 ```
 
-### 🧡 Mostrar el documento nuevo como respuesta
+### 🧡 Mostrar el documento nuevo como respuesta en findOneAndUpdate
+
+Para conocer el nuevo documento actualizado debe usar **"returnNewDocument": true**
 ```javascript
 db.movies.findOneAndUpdate (
   {"title": "Macbeth"},
@@ -1997,9 +2038,9 @@ db.movies.findOneAndUpdate(
 )
 ```
  
-### 🧡 Ordenar Para Encontrar Un Documento
+### 🧡 Ordenar Para Encontrar Un Documento findOneAndUpdate y sort
 
-La función **findOneAndUpdate** proporciona una opción adicional para ordenar los documentos coincidentes en un orden específico. Con la opción de sort, puede influir en qué documento se selecciona para la modificación.
+La función **findOneAndUpdate** proporciona una opción adicional para ordenar los documentos coincidentes en un orden específico. Con la opción de **sort**, puede influir en qué documento se selecciona para la modificación.
 ```javascript
 db.movies.findOneAndUpdate(
   {"type" : "movie"},
@@ -2011,9 +2052,9 @@ db.movies.findOneAndUpdate(
 )
 ```
 
-### 🧡 Actualización de varios documentos con updateMany ()
+### 🧡 Actualización de varios documentos con updateMany
 
-Considere que nuestra colección de películas tiene cuatro películas que se lanzaron en 2015. Agregue un campo llamado idiomas a estas películas:
+Considere que nuestra colección **movies** tiene 4 películas que se lanzaron en 2015. Agregue un campo llamado **languages** a estas películas:
 ```javascript
 db.movies.updateMany(
   {"year" : 2015},
@@ -2024,10 +2065,10 @@ db.movies.updateMany(
 
 Algunos puntos importantes sobre las **operaciones de actualización** y son aplicables a las tres funciones:
 
-- Ninguna de las funciones de actualización le permite cambiar el campo _id .
-- El orden de los campos en un documento siempre se mantiene, excepto cuando la actualización incluye cambiar el nombre de un campo. Sin embargo, el campo \_id siempre aparecerá primero. (Cubriremos los campos de cambio de nombre en la siguiente sección).
+- Ninguna de las funciones de actualización le permite cambiar el campo \_id.
+- El orden de los campos en un documento siempre se mantiene, excepto cuando la actualización incluye cambiar el nombre de un campo. Sin embargo, el campo \_id siempre aparecerá primero.
 - Las operaciones de actualización son atómicas en un solo documento. Un documento no se puede modificar hasta que otro proceso haya terminado de actualizarlo.
-- Todas las funciones de actualización admiten upsert. Para ejecutar un comando upsert, upsert: true debe pasarse como una opción.
+- Todas las funciones de actualización admiten **upsert**. Para ejecutar un comando upsert, `upsert: true` debe pasarse como una opción.
 
 
 
