@@ -6,6 +6,10 @@
 - [3. Creando una base datos en MongoDB](#creando_bd_mongodb)
 - [4. Consulta de documentos (Querying Documents)](#querying_documents)
 - [5. Insertar, actualizar y eliminar documentos](#insertar_actualizar_eliminar)
+- [6. Insertar, actualizar y eliminar campos Array](#actualizar_campos_array)
+- [7. Data Aggregation](#data_aggregation)
+- [8. Joins entre colecciones](#joins_colecciones)
+- [9. Bibliografía](#bibliografia)
 
 ## 🐥 1. Introducción a NoSql con MongoDB <a name="introduction_nosql_mongodb"></a>
 
@@ -2179,4 +2183,736 @@ db.movies.findOneAndUpdate(
 )
 ```
 La única diferencia entre este fragmento y el anterior es que esta operación encuentra una película llamada Spy, que no está presente en nuestra colección. Debido a la actualización, la operación dará como resultado la adición de un documento a la colección. Y se ha creado un nuevo registro de película junto con el campo created_time.
+
+
+## 🐥 6. Insertar, actualizar y eliminar campos Array <a name="actualizar_campos_array"></a>
+
+### 🧡 Actualización de campos Array (Agregando un elemento a la vez con $push)
+
+Insertemos el siguiente documento en la colección de movies:
+```javascript
+db.movies.insert({"_id" : 111, "title" : "Macbeth"})
+```
+Luego, con $set insertemos un nuevo campo array:
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$set : {"genre" : ["Unknown"]}},
+    {"returnNewDocument" : true}
+)
+```
+Con $unset podemos eliminar el campo ingresado previamente:
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$unset : {"genre" : ""}},
+    {"returnNewDocument" : true}
+)
+ ```
+Es útil cuando queremos reemplazar completamente un valor de matriz. Sin embargo, para agregar más elementos a una matriz, se puede usar un operador **$push**.
+
+Para insertar un solo documento, agregue el siguiente comando:
+```javascript
+db.movies.findOneAndUpdate (
+    {_id: 111},
+    {$push: {"genre": "unknown"}},
+    {"returnNewDocument": true}
+)
+```
+Ahora agregue un género más, como sigue:
+```javascript
+db.movies.findOneAndUpdate (
+    {_id: 111},
+    {$push: {"genre": "Drama"}},
+    {"returnNewDocument": true}
+)
+```
+
+### 🧡 Actualización de campos Array (Agregando varios elementos a la vez con $push y $each)
+
+Para agregar varios elementos a una matriz en un solo comando de actualización, tenemos que usar $push junto con $each.
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$push : {
+        "genre" : {
+            $each : ["History", "Action"]
+        }}
+    },
+    {"returnNewDocument" : true}
+)
+```
+
+### 🧡 Ordenar un Array con $sort
+
+Las Arrays en MongoDB, y en general, son una colección que permanecerán en el orden en que fueron insertados. Con $push, también podemos ordenar un array. Hay que usar el operador $sort con $each.   
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$push : {
+        "genre" : {
+            $each : [],
+            $sort : 1
+        }}
+    },
+    {"returnNewDocument" : true}
+)
+```
+Podemos agregar un elemento mas y luego ordenarlos:
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$push : {
+        "genre" : {
+            $each : ["Crime"],
+            $sort : -1
+        }}
+    },
+    {"returnNewDocument" : true}
+)
+```
+Sin embargo, si tenemos una array de objetos que contiene varios campos, la clasificación se puede realizar en función de los campos de los objetos anidados. Considere el siguiente registro en una colección de items:
+```javascript
+db.items.insert({_id : 11, items: [
+    {"name" : "backpack", "price" : 127.59, "quantity" : 3},
+    {"name" : "notepad", "price" : 17.6, "quantity" : 4},
+    {"name" : "binder", "price" : 18.17, "quantity" : 2},
+    {"name" : "pens", "price" : 60.56, "quantity" : 3},
+    
+]})
+```
+`WriteResult({ "nInserted" : 1 })`
+
+Vamos a ordenar el objeto items en funcion del precio:
+```javascript
+db.items.findOneAndUpdate(
+    {_id : 11},
+    {$push : {
+        "items" : {
+            $each : [],
+            $sort : {"price" : -1}
+        }}
+    },
+    {"returnNewDocument" : true}
+)
+```
+
+### 🧡 Una Array como conjunto (set)
+
+Un Array es una colección sobre los que se puede iterar o acceder a ellos utilizando su posición de índice específica. Un set es una colección de elementos únicos cuyo orden no está garantizado. MongoDB solo admite array simples y ningún otro tipo de colecciones. Sin embargo, es posible que desee que su matriz contenga solo elementos únicos. MongoDB proporciona una forma de hacerlo mediante el operador **$addToSet**.
+
+El operador **$addToSet** es como $push, con la única diferencia de que un elemento se enviará solo si aún no está presente.
+```javascript
+db.movies.find({"_id" : 111}).pretty()
+```
+```
+{
+    "_id" : 111,
+    "title" : "Macbeth",
+    "genre" : [
+        "unknown",
+        "History",
+        "Drama",
+        "Crime",
+        "Action"
+    ]
+}
+```
+Se va agregar el genero "Action" con $addToSet. En este caso no se actualizará lel array dado que $addToSet solo ingresará el elemento si no esta presente.
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$addToSet : {"genre" : "Action"}},
+    {"returnNewDocument" : true }
+)
+```
+El mismo comportamiento es evidente incluso cuando usamos $each para insertar varios elementos.
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$addToSet : {
+        "genre" : {
+            $each : ["History", "Thriller", "Drama"]
+        }}
+    },
+    {"returnNewDocument" : true}
+)
+```
+### 🧡 Eliminación de elementos de Arrays
+
+## Eliminar El Primer o Último Elemento con $Pop
+
+El operador $pop, cuando se usa en un comando de actualización, le permite eliminar el primer o último elemento de un array. Elimina un elemento a la vez y solo se puede usar con los valores 1 (para el último elemento) o -1 (para el primer elemento):
+```javascript
+db.movies.find({"_id" : 111}).pretty()
+```
+```
+{
+    "_id" : 111,
+    "title" : "Macbeth",
+    "genre" : [
+        "unknown",
+        "History",
+        "Drama",
+        "Crime",
+        "Action",
+        "Thriller"
+    ]
+}
+```
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$pop : {"genre" : 1}},
+    {"returnNewDocument" : true    }
+)
+```
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$pop : {"genre" : -1}},
+    {"returnNewDocument" : true    }
+)
+```
+
+## Eliminación De Todos Los Elementos con $pullAll
+
+Cuando solo necesita eliminar ciertos elementos de un Array, puede usar el operador $pullAll. Para hacerlo, proporcione uno o más elementos al operador, que luego elimina todas las apariciones de esos elementos de la matriz. 
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$pullAll : {"genre" : ["Action", "Crime"]}},
+    {"returnNewDocument" : true    }
+)
+```
+
+## Eliminar Elementos Coincidentes con $pull
+
+Usaremos $pull, para escribir una condición de consulta, usando varios operadores lógicos y condicionales, y luego se eliminarán los elementos del array que coinciden con la consulta. 
+```javascript
+db.items.find({"_id" : 11}).pretty()
+```
+```
+{
+    "_id" : 11,
+    "items" : [
+        {
+            "name" : "backpack",
+            "price" : 127.59,
+            "quantity" : 3
+        },
+        {
+            "name" : "pens",
+            "price" : 60.56,
+            "quantity" : 3
+        },
+        {
+            "name" : "binder",
+            "price" : 18.17,
+            "quantity" : 2
+        },
+        {
+            "name" : "notepad",
+            "price" : 17.6,
+            "quantity" : 4
+        }
+    ]
+}
+```
+```javascript
+db.items.findOneAndUpdate(
+    {_id : 11},
+    {$pull : {
+        "items" : {
+            "quantity" : 3,
+            "name" : {$regex: "ck$"}
+        }
+    }},
+    {"returnNewDocument" : true    }
+)
+```
+
+### 🧡 Actualización de elementos Array segun su indice
+
+En un Array, cada elemento tiene una posición de índice específica que comienzan en cero, y podemos usar un par de corchetes ( \[ ] ) con la posición de índice respectiva para referirnos a un elemento de la matriz. El uso de este par de corchetes con $set permite actualizar elementos de un array. 
+
+Considere el siguiente fragmento:
+```javascript
+db.movies.find({"_id" : 111})
+```
+```
+{ "_id" : 111, "title" : "Macbeth", "genre" : [ "History", "Drama" ] }
+```
+El operador $\[] se refiere a todos los elementos contenidos en un array y la expresión de actualización se aplicará a todos ellos. El array género sigue siendo una matriz de dos elementos.
+```javascript
+db.movies.findOneAndUpdate(
+    {_id : 111},
+    {$set : {"genre.$[]" : "Action"}},
+    {"returnNewDocument" : true}
+)
+```
+```
+{ "_id" : 111, "title" : "Macbeth", "genre" : [ "Action", "Action" ] }
+```
+Para ctualizar elementos específicos de una matriz primero debemos encontrar dichos elementos e identificarlos. Para derivar un **identificador** de elemento, podemos usar la opción de actualización de **arrayFilters** para proporcionar una condición de consulta y asignarle una variable (conocida como **identificador**) a los elementos coincidentes. Luego usamos el identificador junto con $\[] para actualizar los valores de esos elementos específicos.
+
+Considere el siguiente el siguiente fragmento:
+```javascript
+db.items.findOneAndUpdate(
+    {"_id" : 11},
+    {$push : {"items" : {"name" : "it"}}},
+    {"returnNewDocument": true}
+)
+```
+```
+{
+    "_id" : 11,
+    "items" : [
+        {
+            "name" : "pens",
+            "price" : 60.56,
+            "quantity" : 3
+        },
+        {
+            "name" : "binder",
+            "price" : 18.17,
+            "quantity" : 2
+        },
+        {
+            "name" : "notepad",
+            "price" : 17.6,
+            "quantity" : 4
+        },
+        {
+            "name" : "it"
+        }
+    ]
+}
+```
+El elemento del array que se actualizará se denomina mediante una expresión de **$\[myElements]** y se le asigna un nuevo valor, que es un objeto anidado. El **identificador** de **myElements** se define mediante un **arrayFilters** en función de una condición de consulta. Todos los elementos que coinciden con la condición dada son identificados por myElements, que luego se actualizan usando $set:
+```javascript
+db.items.findOneAndUpdate(
+    {_id : 11},
+    {$set : {
+        "items.$[myElements]" : {
+            "quantity" : 7,
+            "price" : 4.5,
+            "name" : "marker"
+        }
+    }},
+    {
+        "returnNewDocument" : true,
+        "arrayFilters" : [{"myElements.quantity" : null}]
+    }
+)
+```
+La condición de consulta de **{quantity: null}** coincide con el último elemento de la matriz y se ha actualizado con el nuevo documento.
+
+
+## 🐥 7. Data Aggregation <a name="data_aggregation"></a>
+
+La **aggregation pipeline** le permite definir una serie de etapas que filtran, fusionan y organizan datos con mucho más control que el comando de find estándar.
+
+El comando **aggregate** en MongoDB es similar al comando de find.
+
+El elemento clave de la agregación se llama **pipeline**. Un **pipeline** es una serie de instrucciones, donde la entrada a cada instrucción es la salida de la anterior. La agregación es un método para tomar una colección y, de manera procedimental, filtrar, transformar y unir datos de otras colecciones para crear conjuntos de datos nuevos y significativos.
+
+### 🧡 Aggregate Syntax
+
+El comando aggregate opera en una colección como los otros comandos Create, Read, Update, Delete (CRUD):
+```javascript
+var pipeline = [] // Pipeline es una matriz de etapas.
+var options = {} 
+```
+```javascript
+db.movies.aggregate(pipeline, options)
+```
+
+Hay dos **parámetros** que se utilizan para la agregación:
+
+El parámetro de **Pipeline** contiene toda la lógica para encontrar, ordenar, proyectar, limitar, transformar y agregar nuestros datos. El propio parámetro de Pipeline se pasa como una matriz de documentos JSON. Puede pensar en esto como una serie de instrucciones que se enviarán a la base de datos, y luego los datos resultantes después de la etapa final se almacenan en un cursor que se le devuelve. Cada etapa de la tubería se completa de forma independiente, una tras otra, hasta que no quede ninguna. La entrada a la primera etapa es la colección (por ejemplo movies) y la entrada a cada etapa posterior es la salida de la etapa anterior.
+
+El segundo parámetro es el parámetro de **opciones**. Esto es opcional y le permite especificar los detalles de la configuración, como cómo se debe ejecutar la agregación o algunos indicadores que se requieren durante la depuración y la construcción de sus canalizaciones.
+
+Los parámetros de un comando agregado son menores que los del comando de búsqueda. Por ahora podemos simplificar nuestro comando excluyendo las opciones por completo:
+```javascript
+db.movies.aggregate(pipeline)
+```
+En lugar de escribir la canalización directamente en el comando aggregate, primero guardamos la canalización como una variable. Las canalizaciones de agregación pueden volverse muy grandes y difíciles de analizar durante el desarrollo. A veces puede ser útil separar la canalización (o incluso grandes secciones de la canalización) en variables independientes para la claridad del código. 
+
+### 🧡 Pipeline Syntax
+
+La canalización (Pipeline) es un array, y cada elemento del array es un objeto:
+```javascript
+var pipeline = [
+        { . . . },
+        { . . . },
+        { . . . },
+];
+```
+Cada uno de los objetos del array representa una única etapa en la canalización general, y las etapas se ejecutan en su orden de matriz (de arriba a abajo). Cada objeto de escenario tiene la forma siguiente:
+```
+{$etapa : parametros}
+```
+La $etapa representa la acción que queremos realizar sobre los datos (como limitar u ordenar) y los parámetros pueden ser un valor único u otro objeto, dependiendo de la etapa.
+
+La canalización se puede pasar de dos formas, ya sea como una variable guardada o directamente como un comando.
+```javascript
+var pipeline = [
+        { $match: { "location.address.state": "MN"} },
+        { $project: { "location.address.city": 1 } },
+        { $sort: { "location.address.city": 1 } },
+        { $limit: 3 }
+     ];
+```
+Luego, escribir el comando db.theaters.aggregate(pipeline) en el shell de MongoDB proporcionará el siguiente resultado:
+```javascript
+db.theaters.aggregate(pipeline)
+```
+```javascript
+{ "_id" : ObjectId("59a47287cfa9a3a73e51e94f"), "location" : { "address" : { "city" : "Apple Valley" } } }
+{ "_id" : ObjectId("59a47287cfa9a3a73e51eb8f"), "location" : { "address" : { "city" : "Baxter" } } }
+{ "_id" : ObjectId("59a47286cfa9a3a73e51e833"), "location" : { "address" : { "city" : "Blaine" } } }
+```
+Pasándolo directamente al comando aggregate, la salida se verá de la siguiente manera: 
+```javascript
+db.theaters.aggregate([
+... ... { $match: { "location.address.state": "MN"} },
+... ... { $project: { "location.address.city": 1 } },
+... ... { $sort: { "location.address.city": 1 } },
+... ... { $limit: 3 }
+... ... ]
+... );
+```
+```javascript
+{ "_id" : ObjectId("59a47287cfa9a3a73e51e94f"), "location" : { "address" : { "city" : "Apple Valley" } } }
+{ "_id" : ObjectId("59a47287cfa9a3a73e51eb8f"), "location" : { "address" : { "city" : "Baxter" } } }
+{ "_id" : ObjectId("59a47286cfa9a3a73e51e833"), "location" : { "address" : { "city" : "Blaine" } } }
+```
+Como puede ver, obtiene el mismo resultado con cualquiera de los métodos.
+
+### 🧡 Creando agregaciones
+
+El siguiente código nos ayudará a obtener una lista de todos los cines del estado de Minnesota (MN) usando la coleccion de **theaters**
+```javascript
+var simpleFind = function() {
+    print("Find Result:")
+    db.theaters.find(
+          {"location.address.state" : "MN"},
+          {"location.address.city" : 1} )
+    .sort({"location.address.city": 1})
+    .limit(3)
+    .forEach(printjson);
+}
+simpleFind();
+```
+Ejecutando la funcion:
+```javascript
+simpleFind();
+
+Find Result:
+{
+        "_id" : ObjectId("59a47287cfa9a3a73e51e94f"),
+        "location" : {
+                "address" : {
+                        "city" : "Apple Valley"
+                }
+        }
+}
+{
+        "_id" : ObjectId("59a47287cfa9a3a73e51eb8f"),
+        "location" : {
+                "address" : {
+                        "city" : "Baxter"
+                }
+        }
+}
+{
+        "_id" : ObjectId("59a47286cfa9a3a73e51e7e2"),
+        "location" : {
+                "address" : {
+                        "city" : "Blaine"
+                }
+        }
+}
+```
+Reconstruyamos este comando como una agregación. 
+```javascript
+var simpleFindAsAggregate = function() {
+    print ("Aggregation Result:")
+    var pipeline = [
+        { $match: { "location.address.state": "MN"} },
+        { $project: { "location.address.city": 1 } },
+        { $sort: { "location.address.city": 1 } },
+        { $limit: 3 }
+    ];
+    db.theaters.aggregate(pipeline).forEach(printjson);
+}; 
+
+simpleFindAsAggregate();
+```
+Los comandos **find** y **aggregate** devuelven un **cursor**, pero estamos usando **.forEach (printjson)**; al final para imprimirlos en la consola para facilitar su comprensión.
+
+La etapa $match al comienzo de la canalización es el equivalente a nuestro documento de filtro.
+
+### 🧡 Agrupaciones - La etapa Group
+
+Si desea responder preguntas complejas o extraer el mayor valor posible de sus datos, necesitará saber cómo lograr la parte de agregación de sus canales de agregación.
+
+La etapa **$group** le permite agrupar (o agregar) documentos en función de una condición específica. 
+
+La implementación básica de la etapa $group acepta solo una clave \_id , siendo el valor una expresión. 
+
+Esta expresión define los criterios por los cuales la canalización agrupa los documentos. 
+
+Este valor se convierte en el \_id del documento recién generado con un documento generado para cada \_id único que crea la etapa $group.
+
+En términos de agregación, una expresión puede ser un literal, un objeto de expresión, un operador o una ruta de campo ($rated). Una ruta de campo es a qué campo acceder en los documentos de entrada.
+
+Al agregar, necesitamos decirle a la canalización que queremos acceder al campo del documento que está agregando actualmente. 
+
+En el siguiente código agrupará todas las películas por su clasificación, generando un solo registro para cada categoría de clasificación:
+```javascript
+var pipeline = [
+     {$group: {
+         _id: "$rated"
+     }}
+    ];
+    
+db.movies.aggregate(pipeline).forEach(printjson);
+```
+\_id: "$Rated" como equivalente a \_id: "$$CURRENT.rated". Para cada documento, encajará en el grupo que empareja ese mismo documento (actual) con la clave "rated" 
+
+### 🧡 Expresiones de acumulador
+
+El comando $group puede aceptar más de un argumento. También puede aceptar cualquier número de argumentos adicionales en el siguiente formato:
+```
+field: { $accumulator: expression}
+```
+Dividamos esto en sus tres componentes:
+
+• field definirá la clave de nuestro campo recién calculado para cada grupo.
+• El acumulador debe ser un operador de acumulador compatible. Se trata de un grupo de operadores, como otros operadores con los que ya puede haber trabajado, como $lte , excepto que, como sugiere el nombre, acumularán su valor en varios documentos que pertenecen al mismo grupo.
+• La expresión en este contexto se pasará al operador del acumulador como la entrada de qué campo en cada documento debería estar acumulando.
+```javascript
+var pipeline = [
+     {$group: {
+         _id: "$rated",
+         "numTitles": {$sum: 1},
+     }}
+    ];
+db.movies.aggregate(pipeline).forEach(printjson);
+```
+**numTitles** es el valor de este campo para cada grupo la suma de los documentos.  Estos campos recién creados a menudo se denominan campos calculados. Para cada documento de un grupo, podemos sumar el valor literal 1 con el resultado acumulado hasta el momento.
+
+Del mismo modo, en lugar de acumular 1 en cada documento, puede acumular el valor de un campo determinado.
+```javascript
+var pipeline = [
+     {$group: {
+         _id: "$rated",
+         "sumRuntime": { $sum: "$runtime"},
+     }}
+    ];
+    
+db.movies.aggregate(pipeline).forEach(printjson);
+```
+Queremos obtener el average runtime de los títulos para cada uno de nuestros grupos. Podemos cambiar nuestro acumulador de $sum a $avg, que devolverá el tiempo de ejecución promedio en cada grupo, por lo que nuestra canalización se convierte en el siguiente:
+```javascript
+ var pipeline = [
+  {$group: {
+     _id: "$rated",
+     "avgRuntime": { $avg: "$runtime"},
+  }}
+ ];
+
+db.movies.aggregate(pipeline).forEach(printjson);
+``` 
+
+Agreguemos otra etapa para proyectar el tiempo de ejecución, usando la etapa $trunc, para darnos un valor entero:
+```javascript
+ var pipeline = [
+     {$group: {
+         _id: "$rated",
+         "avgRuntime": { $avg: "$runtime"},
+     }},
+     {$project: {
+         "roundedAvgRuntime": { $trunc: "$avgRuntime"}
+     }}
+    ];
+
+db.movies.aggregate(pipeline).forEach(printjson);
+```
+Esto nos dará un resultado mucho mejor formateado, como este:
+```
+{"_id": "PG-13", "avgRuntime": 108}
+```
+
+## 🐥 8. Joins entre colecciones con $lookup <a name="joins_colecciones"></a>
+
+### 🧡 Usando $lookup para hacer joins
+
+En MongoDB, los joins de colecciones se realizan mediante el paso de agregación **$lookup**.
+```javascript
+var lookupExample = function() {
+    var pipeline = [
+        { $match: { $or: [{"name": "Catelyn Stark"}, {"name": "Ned Stark"}]}},
+        { $lookup: {
+            from: "comments",
+            localField: "name",
+            foreignField: "name",
+            as: "comments"
+        }},
+  { $limit: 2},
+    ];
+db.users.aggregate(pipeline).forEach(printjson);
+}
+
+lookupExample();
+```
+
+Primero, estamos ejecutando un $match en la colección de **users** para obtener solo dos usuarios llamados Ned Stark y Catelyn Stark. Una vez que tenemos estos dos registros, realizamos nuestra búsqueda en la otra colección **comments**. Los cuatro parámetros de $lookup son los siguientes:
+
+• **from**: La colección que estamos joining a nuestra agregación actual. En este caso, estamos trayendo los comentarios a los usuarios.
+• **localField**: el nombre del campo que vamos a utilizar para unir nuestros documentos en la colección local (la colección en la que estamos ejecutando la agregación: users). En este caso, el **name** de nuestro usuario.
+• **ForeignField**: el campo que enlaza con localField en la colección from (comments). Estos pueden tener diferentes nombres, pero en este escenario, es el mismo campo: name.
+• **as**: así es como se etiquetarán nuestros nuevos datos combinados.
+
+En este ejemplo, la búsqueda toma el nombre de nuestro usuario, busca en la colección de comentarios y agrega cualquier comentario con el mismo nombre en un nuevo campo array para el documento de usuario original. Esta nueva array se llama **comments**. De esta manera, podemos buscar un array de todos los documentos relacionados en otra colección e incrustarlos en nuestros documentos originales para usarlos en el resto de nuestra agregación.
+
+### 🧡 Usando $unwind para deconstruir un campo array anidado
+
+En este ejemplo, los usuarios han hecho muchos comentarios, por lo que la matriz incrustada se vuelve bastante sustancial y difícil de ver. 
+
+Estas uniones a menudo pueden dar como resultado grandes conjuntos de documentos relacionados. 
+
+El operador **$unwind**  es una etapa relativamente simple. Deconstruye un campo de matriz de un documento de entrada para generar un nuevo documento para cada elemento de la matriz. 
+
+Un ejemplo de $unwind seria:
+
+```
+{a: 1, b: 2, c: [1, 2, 3, 4]}
+
+La salida serán los siguientes documentos:
+{"a" : 1, "b" : 2, "c" : 1 }
+{"a" : 1, "b" : 2, "c" : 2 }
+{"a" : 1, "b" : 2, "c" : 3 }
+{"a" : 1, "b" : 2, "c" : 4 }
+```
+```javascript
+var lookupExample = function() {
+    var pipeline = [
+        { $match: { $or: [{"name": "Catelyn Stark"}, {"name": "Ned Stark"}]}},
+        { $lookup: {
+            from: "comments",
+            localField: "name",
+            foreignField: "name",
+            as: "comments"
+        }},
+        { $unwind: "$comments"},
+        { $limit: 3},
+    ];
+    db.users.aggregate(pipeline).forEach(printjson);
+}
+
+lookupExample();
+```
+
+### 🧡 Generación de resultados con $out
+
+Con $out nos permiten tomar la salida de nuestra canalización y escribirla en una colección para su uso posterior. 
+
+La sintaxis de $out es muy simple. El único parámetro es la colección a la que queremos enviar nuestro resultado. 
+
+A continuación, se muestra un ejemplo de una canalización con $out:
+```javascript
+var findTopRomanceMovies = function() {
+    var pipeline = [
+        { $sort: {"imdb.rating": -1}},
+        { $match: {
+            genres: {$in: ["Romance"]},
+            released: {$lte: new ISODate("2001-01-01T00:00: 00Z") }}},
+        { $limit: 5 },
+        { $project: { title: 1, genres: 1, released: 1, "imdb.rating": 1}},
+        { $out: "movies_top_romance"}
+    ];
+    db.movies.aggregate(pipeline).forEach(printjson);
+}
+findTopRomanceMovies();
+```
+Al ejecutar esta canalización, no recibirá ningún resultado. Esto se debe a que la salida se ha redirigido a nuestra colección deseada:
+```
+findTopRomanceMovies();
+
+```
+Podemos ver que se creó una nueva colección con nuestro resultado:
+```
+show collections
+```
+```
+comments
+movies
+movies_top_romance
+sessions
+theaters
+users
+```
+Y si ejecutamos una búsqueda en nuestra nueva colección, podemos ver que los resultados de nuestra agregación ahora se almacenan dentro de ella:
+```javascript
+db.movies_top_romance.findOne({})
+{
+        "_id" : ObjectId("573a1399f29313caabceeead"),
+        "genres" : [
+                "Drama",
+                "Romance"
+        ],
+        "title" : "Pride and Prejudice",
+        "released" : ISODate("1996-01-14T00:00:00Z"),
+        "imdb" : {
+                "rating" : 9.1
+        }
+}
+```
+Al colocar nuestros resultados en una colección, podemos almacenar, compartir y actualizar nuevos resultados de agregación complejos. Incluso podemos ejecutar más consultas y agregaciones contra esta nueva colección, $out es una etapa de agregación simple pero poderosa.
+
+Ejercicio: Enlistar las películas más comentadas por los usuarios
+
+La empresa de cine desea saber más sobre qué películas generan más comentarios por parte de sus usuarios. Sin embargo, dados los muchos comentarios en la base de datos, ha decidido que mientras desarrolla esta canalización, usará solo una muestra de los comentarios. A partir de esta muestra, averiguará las películas más comentadas y unirá estos documentos con el documento de la colección de películas para obtener más información sobre la película. La empresa también ha solicitado que la entrega final de su trabajo sea una nueva colección con los documentos de salida. 
+
+```javascript
+var findMostCommentedMovies = function() {
+    print("Finding the most commented on movies.");
+    var pipeline = [
+             { $sample: {size: 5000}},
+             { $group: {
+                 _id: "$movie_id",
+                 "sumComments": { $sum: 1}
+             }},
+             { $sort: { "sumComments": -1}},
+             { $limit: 5},
+             { $lookup: {
+                 from: "movies",
+                 localField: "_id",
+                 foreignField: "_id",
+                 as: "movie"
+             }},
+             { $unwind: "$movie" },
+             { $project: {
+                 "movie.title": 1,
+                 "movie.imdb.rating": 1,
+                 "sumComments": 1,
+             }},
+             { $out: "most_commented_movies" }
+    ];
+    db.comments.aggregate(pipeline).forEach(printjson);
+}
+findMostCommentedMovies();
+
+db.most_commented_movies.find()
+```
+
+## 🐥 9. Bibliografía <a name="bibliografia"></a>
+
+MongoDB Fundamentals: A hands-on guide to using MongoDB and Atlas in the real world. Packt Publishing (22 Diciembre 2020). 
+
+https://docs.mongodb.com/manual/tutorial/getting-started/
 
