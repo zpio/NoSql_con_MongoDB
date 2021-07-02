@@ -2577,12 +2577,11 @@ db.theaters.aggregate(pipeline)
 Pasándolo directamente al comando aggregate, la salida se verá de la siguiente manera: 
 ```javascript
 db.theaters.aggregate([
-... ... { $match: { "location.address.state": "MN"} },
-... ... { $project: { "location.address.city": 1 } },
-... ... { $sort: { "location.address.city": 1 } },
-... ... { $limit: 3 }
-... ... ]
-... );
+  { $match: { "location.address.state": "MN"} },
+  { $project: { "location.address.city": 1 } },
+  { $sort: { "location.address.city": 1 } },
+  { $limit: 3 }
+]);
 ```
 ```javascript
 { "_id" : ObjectId("59a47287cfa9a3a73e51e94f"), "location" : { "address" : { "city" : "Apple Valley" } } }
@@ -2692,7 +2691,9 @@ field: { $accumulator: expression}
 Dividamos esto en sus tres componentes:
 
 • field definirá la clave de nuestro campo recién calculado para cada grupo.
+
 • El acumulador debe ser un operador de acumulador compatible. Se trata de un grupo de operadores, como otros operadores con los que ya puede haber trabajado, como $lte , excepto que, como sugiere el nombre, acumularán su valor en varios documentos que pertenecen al mismo grupo.
+
 • La expresión en este contexto se pasará al operador del acumulador como la entrada de qué campo en cada documento debería estar acumulando.
 ```javascript
 var pipeline = [
@@ -2773,8 +2774,11 @@ lookupExample();
 Primero, estamos ejecutando un $match en la colección de **users** para obtener solo dos usuarios llamados Ned Stark y Catelyn Stark. Una vez que tenemos estos dos registros, realizamos nuestra búsqueda en la otra colección **comments**. Los cuatro parámetros de $lookup son los siguientes:
 
 • **from**: La colección que estamos joining a nuestra agregación actual. En este caso, estamos trayendo los comentarios a los usuarios.
+
 • **localField**: el nombre del campo que vamos a utilizar para unir nuestros documentos en la colección local (la colección en la que estamos ejecutando la agregación: users). En este caso, el **name** de nuestro usuario.
+
 • **ForeignField**: el campo que enlaza con localField en la colección from (comments). Estos pueden tener diferentes nombres, pero en este escenario, es el mismo campo: name.
+
 • **as**: así es como se etiquetarán nuestros nuevos datos combinados.
 
 En este ejemplo, la búsqueda toma el nombre de nuestro usuario, busca en la colección de comentarios y agrega cualquier comentario con el mismo nombre en un nuevo campo array para el documento de usuario original. Esta nueva array se llama **comments**. De esta manera, podemos buscar un array de todos los documentos relacionados en otra colección e incrustarlos en nuestros documentos originales para usarlos en el resto de nuestra agregación.
