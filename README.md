@@ -489,7 +489,7 @@ MongoDB no tienen palabras clave como **SELECT**, **FROM** y **WHERE**.
 
 Todas las consultas de esta sección son consultas de nivel superior; es decir, se basan en los campos de nivel superior (también conocidos como nivel raíz) de los documentos.
 
-**👉 Mostrar documentos - función find()**
+**👉 Mostrar documentos - función find**
 
 - La función **find** mostrará todos los documentos de la colección. 
 ```javascript
@@ -1461,7 +1461,7 @@ Sholay
 
  ## 🐥 5. Insertar, actualizar y eliminar documentos <a name="insertar_actualizar_eliminar"></a>
 
-### 🧡 Insertar documentos con insert()
+### 🧡 Insertar documentos con insert
 
 La funcion **insert()** se utiliza para crear un nuevo documento en una colección. Cuando se ejecuta un comando de inserción de documento, MongoDB también creará la colección dada, si aún no existe.
 
@@ -1482,7 +1482,7 @@ show collections
 ```
 `new_movies`
 
-### 🧡 Insertar varios documentos con insertMany()
+### 🧡 Insertar varios documentos con insertMany
 
 Se puede usar tanto la funcion **insert** o la funcion **insertMany**, que toma un array de documentos.
 ```javascript
@@ -1558,9 +1558,9 @@ db.new_movies.insertMany([
 ])
 ```
  
-### 🧡 Eliminar Documentos usando deleteOne()
+### 🧡 Eliminar Documentos usando deleteOne
 
-La función **deleteOne()** se usa para eliminar un solo documento de una colección. Como el método elimina solo un documento, el valor de respuesta **deletedCount** es 1. Si la condición de consulta dada coincide con más de un documento en la colección, solo se eliminará el primer documento.
+La función **deleteOne** se usa para eliminar un solo documento de una colección. Como el método elimina solo un documento, el valor de respuesta **deletedCount** es 1. Si la condición de consulta dada coincide con más de un documento en la colección, solo se eliminará el primer documento.
 ```javascript
 db.new_movies.deleteOne({"_id": 2})
 ```
@@ -1593,7 +1593,7 @@ db.new_movies.find({"title" : {"$regex": "^movie"}})
 { "_id" : 8, "title" : "movie_4" }
 ```
 
-### 🧡 Eliminación de varios documentos con deleteMany()
+### 🧡 Eliminación de varios documentos con deleteMany
 
 La función **deleteMany** sirve para eliminar varios documentos en un solo comando. Debe proporcionarse con una condición de consulta, y se eliminarán todos los documentos que coincidan con la consulta dada.
 ```javascript
@@ -1613,7 +1613,7 @@ db.new_movies.deleteMany({"non_existent_field" : null})
 ```
 Siempre debe asegurarse de que no haya errores tipográficos en el nombre del campo. Un nombre de campo incorrecto puede dar lugar a la eliminación de todos los documentos de la colección.
 
-### 🧡 Eliminar usando findOneAndDelete()
+### 🧡 Eliminar usando findOneAndDelete
 
 Busca y elimina un documento de la colección. Si se encuentra más de un documento, solo se eliminará el primero. Una vez eliminado, **muestra el documento eliminado** como respuesta. En el caso de coincidencias de varios documentos, la opción de **sort** se puede utilizar para influir en qué documento se elimina. La proyección se puede utilizar para incluir o excluir campos del documento en respuesta.
 
@@ -1665,7 +1665,7 @@ db.movies.findOneAndDelete(
 )
 ```
 
-### 🧡 Reemplazo de documentos con replaceOne()
+### 🧡 Reemplazo de documentos con replaceOne
 
 Reemplazar completamente los documentos de una colección. 
 
@@ -1758,9 +1758,9 @@ db.users.replaceOne(
 ```
 El resultado del primer upsert indica que se encontró una coincidencia y que el documento se actualizó. Sin embargo, el segundo denota que no se encontró la coincidencia y se insertó un nuevo documento con una clave primaria generada automáticamente.
 
-### 🧡 Reemplazo con findOneAndReplace()
+### 🧡 Reemplazo con findOneAndReplace
 
-Las principales características de findOneAndReplace() son las siguientes:
+Las principales características de findOneAndReplace son las siguientes:
 
 - Busca un documento y lo reemplaza.
 - Si se encuentra más de un documento que coincide con la consulta, se reemplazará el primero.
@@ -1862,7 +1862,7 @@ db.movies.find()
 ```
 Aunque los resultados son exactamente los mismos, la operación de dos pasos es más propensa a errores. Por lo tanto, siempre es preferible utilizar las funciones especiales proporcionadas por MongoDB.
 
-### 🧡 Actualizar un documento con updateOne() y $set
+### 🧡 Actualizar un documento con updateOne y $set
 
 Para modificar uno o solo algunos campos de un documento, MongoDB proporciona el comando de updateOne. Devolve las estadísticas de la consulta, como cuántos registros coincidieron y cuántos registros se modificaron.
 
