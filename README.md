@@ -620,7 +620,7 @@ db.movies.distinct(
   "rated", {"year" : 1994}
 )
 ```
-```
+```javascript
 [ "G", "NOT RATED", "PG", "PG-13", "R", "TV-14", "TV-PG", "UNRATED" ]
 ```
 **👉Contando los documentos con count**
@@ -992,7 +992,7 @@ Ejemplo: Encontrar películas protagonizadas por el actor Charles Chaplin.
 ```javascript
 db.movies.find ({"cast": "Charles Chaplin"}, {"cast": 1, "_id": 0})
 ```
- ```
+```javascript
 { "cast" : [ "Charles Chaplin", "Edna Purviance", "Eric Campbell", "Albert Austin" ] }
 { "cast" : [ "Carl Miller", "Edna Purviance", "Jackie Coogan", "Charles Chaplin" ] }
 { "cast" : [ "Charles Chaplin", "Mack Swain", "Tom Murray", "Henry Bergman" ] }
@@ -1383,7 +1383,7 @@ db.movies.find(
     {"title" : 1, "_id" :0}
 ).sort({"title" : 1})
 ```
-```
+```javascript
 { "title" : "A King in New York" }
 { "title" : "Limelight" }
 { "title" : "Modern Times" }
@@ -1564,7 +1564,9 @@ La función **deleteOne** se usa para eliminar un solo documento de una colecci�
 ```javascript
 db.new_movies.deleteOne({"_id": 2})
 ```
-`{ "acknowledged" : true, "deletedCount" : 1 }`
+```javascript
+{ "acknowledged" : true, "deletedCount" : 1 }
+```
 
 
 💪 **Ejercicio 5.01: eliminar uno de los muchos documentos coincidentes**
@@ -1582,12 +1584,13 @@ db.new_movies.find({"title" : {"$regex": "^movie"}})
 ```javascript
 db.new_movies.deleteOne({"title" : {"$regex": "^movie"}})
 ```
-`{ "acknowledged" : true, "deletedCount" : 1 }`
-
+```javascript
+{ "acknowledged" : true, "deletedCount" : 1 }
+```
 ```javascript
 db.new_movies.find({"title" : {"$regex": "^movie"}})
 ```
-```
+```javascript
 { "_id" : 10, "title" : "movie_2" }
 { "_id" : ObjectId("5ef2666a6c3f28e14fddc816"), "title" : "movie_3" }
 { "_id" : 8, "title" : "movie_4" }
@@ -1599,7 +1602,9 @@ La función **deleteMany** sirve para eliminar varios documentos en un solo coma
 ```javascript
 db.new_movies.deleteMany({"title" : {"$regex": "^movie"}})
 ```
-`{ "acknowledged" : true, "deletedCount" : 3 }`
+```javascript
+{ "acknowledged" : true, "deletedCount" : 3 }
+```
 
 Pasar un documento de consulta vacío equivale a no pasar ningún filtro y, por lo tanto, todos los documentos coinciden. La función **deleteOne** eliminará el documento que se encuentre primero. La función **deleteMany** eliminará todos los documentos de la colección. 
 ```javascript
@@ -1678,8 +1683,9 @@ db.users.insertMany([
   {"_id": 6, "name": "Khal Drogo", "email": "Khal.Drogo@got.es"}
 ])
 ```
-`{ "acknowledged" : true, "insertedIds" : [ 2, 3, 5, 6 ] }`
-
+```javascript
+{ "acknowledged" : true, "insertedIds" : [ 2, 3, 5, 6 ] }
+```
 ```javascript
 db.users.find()
 ```
@@ -1696,7 +1702,9 @@ db.users.replaceOne(
   {"name": "Margaery Baratheon", "email": "Margaery.Baratheon@got.es"}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
 
 No es necesario que el filtro de consulta sea siempre el campo \_id . Puede ser cualquier consulta que filtre usando cualquier campo o combinación de múltiples campos y operadores.
 ```javascript
@@ -1738,7 +1746,7 @@ db.users.find()
 {"_id": 6, "name": "Khal Drogo", "email": "Khal.Drogo@got.es"}
 ```
 La actualización que recibe del servidor de usuarios contiene el registro actualizado para Margaery y el nuevo registro para Tommen, de la siguiente manera:
-```
+```javascript
 {"name": "Margaery Tyrell", "email": "Margaery.Tyrell@got.es"}
 {"name": "Tommen Baratheon", "email": "Tommen.Baratheon@got.es"}
 ```
@@ -1823,7 +1831,9 @@ Primero, elimine todos los documentos previamente insertados o modificados de la
 ```javascript
 db.movies.deleteMany({})
 ```
-`{ "acknowledged" : true, "deletedCount" : 5 }`
+```javascript
+{ "acknowledged" : true, "deletedCount" : 5 }
+```
 
 Ahora, inserte los cinco documentos nuevamente:
 ```javascript
@@ -1880,7 +1890,9 @@ db.movies.insertMany([
   {"_id": 4, "title": "Everest", "year": 2015, "type": "movie", "num_mflix_comments": 1}
 ])
 ```
-`{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4 ] }`
+```javascript
+{ "acknowledged" : true, "insertedIds" : [ 1, 2, 3, 4 ] }
+```
 
 Actualize un documento con updateOne() y $set:
 ```javascript
@@ -1889,18 +1901,23 @@ db.movies.updateOne(
     {$set : {"year" : 2015}}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
 
 EL primer argumento es la condición de consulta. El segundo argumento es un documento que especifica un nuevo campo de año y su valor. Se usa $set, para asignar valores a los campos proporcionados en un documento. 
 ```javascript
 db.movies.find({"title" : "Macbeth"})
 ```
-`{ "_id" : 1, "title" : "Macbeth", "year" : 2015, "type" : "series" }`
+```javascript
+{ "_id" : 1, "title" : "Macbeth", "year" : 2015, "type" : "series" }
+```
 ```javascript
 db.movies.updateOne(
     {"title" : "Macbeth"},
     {$set : {"year" : 2015}}
 )
+
 { "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
 ```
 No se realizará ninguna actualización ya que el valor ya es 2015.
@@ -1912,6 +1929,7 @@ db.movies.updateOne(
   {"title" : "Macbeth"},
   {$set : {"type" : "movie", "num_mflix_comments" : 1}}
 )
+
 { "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
 ```
 El campo num_mflix_comment no existe en la película respectiva, un registro se modificó como se esperaba.
@@ -1936,7 +1954,9 @@ db.movies.updateOne(
   {$set : {"year" : 2015, "year" : 2015, "year" : 2016, "year" : 2017}}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
 
 ```javascript
 db.movies.find({"title" : "Macbeth"}).pretty()
@@ -1958,7 +1978,9 @@ db.movies.updateOne(
   {$set : {"flag" : "modified"}}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+```
 
 Recuerde que tenemos un total de tres documentos de tipo película en nuestra colección de películas. Si hay más de un documento que coincide con la condición de consulta dada, solo se elige y actualiza un documento.
 
@@ -1971,7 +1993,9 @@ db.movies.updateOne(
   {$set : {"year" : 2015}}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 0, "modifiedCount" : 0 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 0, "modifiedCount" : 0 }
+```
 
 El resultado indica que no se comparó ningún documento y no se actualizó ningún documento.
 
@@ -1987,7 +2011,7 @@ En este caso no se comparó ningún documento y no se actualizó ningún documen
 ```javascript
 db.movies.find({"_id" : ObjectId("5ef5484b76db1f20a60917d2")}).pretty()
 ```
-```
+```javascript
 {
   "_id" : ObjectId("5ef5484b76db1f20a60917d2"),
   "title" : "Sicario",
@@ -2006,11 +2030,10 @@ db.movies.findOneAndUpdate(
   {$set : {"num_mflix_comments" : 10}}
 )
 ```
-
 ```javascript
 db.movies.find({"title" : "Macbeth"}).pretty()
 ```
-```
+```javascript
 {
   "_id" : 1,
   "title" : "Macbeth",
@@ -2065,7 +2088,9 @@ db.movies.updateMany(
   {$set : {"languages" : ["English"]}}
 )
 ```
-`{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }`
+```javascript
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+```
 
 Algunos puntos importantes sobre las **operaciones de actualización** y son aplicables a las tres funciones:
 
@@ -2305,7 +2330,7 @@ El operador **$addToSet** es como $push, con la única diferencia de que un elem
 ```javascript
 db.movies.find({"_id" : 111}).pretty()
 ```
-```
+```javascript
 {
     "_id" : 111,
     "title" : "Macbeth",
@@ -2346,7 +2371,7 @@ El operador $pop, cuando se usa en un comando de actualización, le permite elim
 ```javascript
 db.movies.find({"_id" : 111}).pretty()
 ```
-```
+```javascript
 {
     "_id" : 111,
     "title" : "Macbeth",
@@ -2392,7 +2417,7 @@ Usaremos $pull, para escribir una condición de consulta, usando varios operador
 ```javascript
 db.items.find({"_id" : 11}).pretty()
 ```
-```
+```javascript
 {
     "_id" : 11,
     "items" : [
@@ -2440,8 +2465,10 @@ Considere el siguiente fragmento:
 ```javascript
 db.movies.find({"_id" : 111})
 ```
-```
-{ "_id" : 111, "title" : "Macbeth", "genre" : [ "History", "Drama" ] }
+```javascript
+{ "_id" : 111, 
+  "title" : "Macbeth", 
+  "genre" : [ "History", "Drama" ] }
 ```
 El operador $\[] se refiere a todos los elementos contenidos en un array y la expresión de actualización se aplicará a todos ellos. El array género sigue siendo una matriz de dos elementos.
 ```javascript
@@ -2451,8 +2478,11 @@ db.movies.findOneAndUpdate(
     {"returnNewDocument" : true}
 )
 ```
-```
-{ "_id" : 111, "title" : "Macbeth", "genre" : [ "Action", "Action" ] }
+```javascript
+{ "_id" : 111, 
+  "title" : "Macbeth", 
+  "genre" : [ "Action", "Action" ] 
+}
 ```
 Para ctualizar elementos específicos de una matriz primero debemos encontrar dichos elementos e identificarlos. Para derivar un **identificador** de elemento, podemos usar la opción de actualización de **arrayFilters** para proporcionar una condición de consulta y asignarle una variable (conocida como **identificador**) a los elementos coincidentes. Luego usamos el identificador junto con $\[] para actualizar los valores de esos elementos específicos.
 
@@ -2464,7 +2494,7 @@ db.items.findOneAndUpdate(
     {"returnNewDocument": true}
 )
 ```
-```
+```javascript
 {
     "_id" : 11,
     "items" : [
@@ -2551,7 +2581,7 @@ var pipeline = [
 ];
 ```
 Cada uno de los objetos del array representa una única etapa en la canalización general, y las etapas se ejecutan en su orden de matriz (de arriba a abajo). Cada objeto de escenario tiene la forma siguiente:
-```
+```javascript
 {$etapa : parametros}
 ```
 La $etapa representa la acción que queremos realizar sobre los datos (como limitar u ordenar) y los parámetros pueden ser un valor único u otro objeto, dependiendo de la etapa.
@@ -2603,6 +2633,7 @@ var simpleFind = function() {
     .limit(3)
     .forEach(printjson);
 }
+
 simpleFind();
 ```
 Ejecutando la funcion:
@@ -2685,7 +2716,7 @@ db.movies.aggregate(pipeline).forEach(printjson);
 ### 🧡 Expresiones de acumulador
 
 El comando $group puede aceptar más de un argumento. También puede aceptar cualquier número de argumentos adicionales en el siguiente formato:
-```
+```javascript
 field: { $accumulator: expression}
 ```
 Dividamos esto en sus tres componentes:
@@ -2702,6 +2733,7 @@ var pipeline = [
          "numTitles": {$sum: 1},
      }}
     ];
+    
 db.movies.aggregate(pipeline).forEach(printjson);
 ```
 **numTitles** es el valor de este campo para cada grupo la suma de los documentos.  Estos campos recién creados a menudo se denominan campos calculados. Para cada documento de un grupo, podemos sumar el valor literal 1 con el resultado acumulado hasta el momento.
@@ -2744,7 +2776,7 @@ Agreguemos otra etapa para proyectar el tiempo de ejecución, usando la etapa $t
 db.movies.aggregate(pipeline).forEach(printjson);
 ```
 Esto nos dará un resultado mucho mejor formateado, como este:
-```
+```javascript
 {"_id": "PG-13", "avgRuntime": 108}
 ```
 
@@ -2793,7 +2825,7 @@ El operador **$unwind**  es una etapa relativamente simple. Deconstruye un campo
 
 Un ejemplo de $unwind seria:
 
-```
+```javascript
 {a: 1, b: 2, c: [1, 2, 3, 4]}
 
 La salida serán los siguientes documentos:
@@ -2841,15 +2873,13 @@ var findTopRomanceMovies = function() {
     ];
     db.movies.aggregate(pipeline).forEach(printjson);
 }
-findTopRomanceMovies();
-```
-Al ejecutar esta canalización, no recibirá ningún resultado. Esto se debe a que la salida se ha redirigido a nuestra colección deseada:
-```
-findTopRomanceMovies();
 
+findTopRomanceMovies();
 ```
+Al ejecutar esta canalización, no recibirá ningún resultado. Esto se debe a que la salida se ha redirigido a nuestra colección deseada.
+
 Podemos ver que se creó una nueva colección con nuestro resultado:
-```
+```javascript
 show collections
 ```
 ```
@@ -2878,7 +2908,7 @@ db.movies_top_romance.findOne({})
 ```
 Al colocar nuestros resultados en una colección, podemos almacenar, compartir y actualizar nuevos resultados de agregación complejos. Incluso podemos ejecutar más consultas y agregaciones contra esta nueva colección, $out es una etapa de agregación simple pero poderosa.
 
-Ejercicio: Enlistar las películas más comentadas por los usuarios
+**Ejercicio: Enlistar las películas más comentadas por los usuarios**
 
 La empresa de cine desea saber más sobre qué películas generan más comentarios por parte de sus usuarios. Sin embargo, dados los muchos comentarios en la base de datos, ha decidido que mientras desarrolla esta canalización, usará solo una muestra de los comentarios. A partir de esta muestra, averiguará las películas más comentadas y unirá estos documentos con el documento de la colección de películas para obtener más información sobre la película. La empresa también ha solicitado que la entrega final de su trabajo sea una nueva colección con los documentos de salida. 
 
