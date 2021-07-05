@@ -395,7 +395,7 @@ Abra un validador JSON para verificar que tiene el formato correcto: [https://js
 
 ### ⚡ Conociendo comandos básicos
 
-Abier la consola de mongo y comenzar a escribir los siguientes comandos:
+Abrir la consola de mongo y comenzar a escribir los siguientes comandos:
 
 - El comando **`cls`** limpia la consola.
 ```
